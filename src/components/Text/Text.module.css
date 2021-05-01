@@ -1,0 +1,50 @@
+:root {
+	--normal-font-size: 18px;
+	font-size: var(--normal-font-size);
+
+	--h1-font-size: 2.6667rem; /* 48px */
+	--h2-font-size: 1.6667rem; /* 30px */
+	--h3-font-size: 1.1111rem; /* 20px */
+	--h4-font-size: 1rem; /* 18px */
+	
+	--heading-line-height: 130%;
+	--h4-font-weight: 600;
+	
+	--normal-caption-font-size: 0.7778rem;
+}
+
+.h1 {
+	font-size: var(--h1-font-size);
+	font-weight: bold;
+	line-height: var(--heading-line-height);
+}
+
+.h2 {
+	font-size: var(--h2-font-size);
+	font-weight: bold;
+	line-height: var(--heading-line-height);
+}
+
+.h3 {
+	font-size: var(--h3-font-size);
+	font-weight: bold;
+	line-height: var(--heading-line-height);
+}
+
+.h4 {
+	font-size: var(--h4-font-size);
+	font-weight: var(--h4-font-weight);
+	line-height: var(--heading-line-height);
+}
+
+.normalcap {
+	font-weight: normal;
+	font-size: var(--normal-caption-font-size);
+	line-height: 130%;
+}
+
+.normal {
+	font-weight: normal;
+	font-size: 1rem;
+	line-height: 130%;
+}

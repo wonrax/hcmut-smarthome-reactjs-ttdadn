@@ -1,0 +1,28 @@
+:root {
+	--border-width: 2px;
+	--card-border: var(--border-width) solid var(--gray-20);
+} 
+
+.device-card {
+	background: var(--gray-10); 
+	border: var(--card-border);
+	border-radius: 8px;
+}
+
+.device-brief div {
+	text-align: left;
+}
+
+.device-brief {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 16px;
+	width: 100%;
+}
+
+.divider {
+	width: 100%;
+	height: var(--border-width);
+	background-color: var(--gray-20);
+}

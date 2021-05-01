@@ -1,0 +1,8 @@
+.icon {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.icon svg {
+	display: block;
+}

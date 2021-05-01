@@ -1,0 +1,27 @@
+:root {
+	--gray-10: #F0F0F0;
+	--gray-20: #D3D3D3;
+	--gray-70: #656565;
+	--gray-100: #232323;
+	--white: white;
+}
+
+.gray10 {
+	color: var(--gray-10);
+}
+
+.gray20 {
+	color: var(--gray-20);
+}
+
+.gray70 {
+	color: var(--gray-70);
+}
+
+.gray100 {
+	color: var(--gray-100);
+}
+
+.white {
+	color: var(--white);
+}
