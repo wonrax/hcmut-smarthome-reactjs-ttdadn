@@ -4,7 +4,7 @@ import colorStyles from "../Colors.module.css";
 import classnames from "classnames";
 
 export const Text = (props: {
-  kind: string;
+  kind: "h1" | "h2" | "h3" | "h4" | "normalcap";
   color?: string;
   children: ReactChild;
 }) => {

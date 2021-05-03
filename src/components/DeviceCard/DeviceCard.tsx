@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./DeviceCard.module.css";
 import { Icon } from "..";
 import { Text } from "..";
+import { Box } from "../Box";
 
 type Props = {
   icon1: string;
@@ -32,12 +33,16 @@ const DeviceBrief = (props: Props) => {
       <Icon icon={props.icon1} />
       <div style={{ width: "100%", height: "100%", margin: "0 16px" }}>
         {props.text2 ? (
-          [
-            <Text kind="h4">{props.text1}</Text>,
-            <Text kind="normalcap" color="gray70">
+          <React.Fragment>
+            <Box margins="mb4">
+              <Text key="heading" kind="h4">
+                {props.text1}
+              </Text>
+            </Box>
+            <Text key="description" kind="normalcap" color="gray70">
               {props.text2}
-            </Text>,
-          ]
+            </Text>
+          </React.Fragment>
         ) : (
           <Text kind="normalcap">{props.text1}</Text>
         )}
