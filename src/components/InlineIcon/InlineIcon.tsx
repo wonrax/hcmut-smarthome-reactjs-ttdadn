@@ -1,5 +1,4 @@
 import React, { ReactChild } from "react";
-import { isPropertySignature } from "typescript";
 import { Icon } from "..";
 import styles from "./InlineIcon.module.css";
 
