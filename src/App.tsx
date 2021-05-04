@@ -4,8 +4,8 @@ import "./components/Colors.module.css";
 import { DeviceCard, Box } from "./components";
 
 function App() {
-  const test = new Array(4).fill(undefined).map(() => (
-    <Box margins="mb16">
+  const test = new Array(4).fill(undefined).map((val, index) => (
+    <Box key={index} margins="mb16">
       <DeviceCard />
     </Box>
   ));

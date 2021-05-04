@@ -31,7 +31,7 @@ const DeviceBrief = (props: Props) => {
       onClick={props.text2 ? toggleDevice : undefined}
     >
       <Icon icon={props.icon1} />
-      <div style={{ width: "100%", height: "100%", margin: "0 16px" }}>
+      <Box margins="mv16">
         {props.text2 ? (
           <React.Fragment>
             <Box margins="mb4">
@@ -46,7 +46,7 @@ const DeviceBrief = (props: Props) => {
         ) : (
           <Text kind="normalcap">{props.text1}</Text>
         )}
-      </div>
+      </Box>
       <Icon icon={secondIcon} />
     </button>
   );
