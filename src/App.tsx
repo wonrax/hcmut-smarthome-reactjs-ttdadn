@@ -1,8 +1,13 @@
 import React from "react";
+import { useRoutes } from "hookrouter";
 import "./App.css";
 import { DeviceCard, Box } from "./components";
 
-function App() {
+const routes = {
+  "/": () => <HomePage />,
+};
+
+function HomePage() {
   const test = (
     <>
       <Box margins="mb16">
@@ -22,6 +27,11 @@ function App() {
     </>
   );
   return <div className="SmartHome">{test}</div>;
+}
+
+function App() {
+  const routeResult = useRoutes(routes);
+  return routeResult || <p>Not found</p>;
 }
 
 export default App;
