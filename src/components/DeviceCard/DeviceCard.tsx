@@ -5,11 +5,11 @@ import { Box } from "..";
 import { InlineIcon, Icon } from "..";
 
 type subProps = {
-  icon1: string;
-  icon2: string;
-  icon3?: string;
-  text1: string;
-  text2?: string;
+  leftIcon: string;
+  rightIcon: string;
+  iconToggled?: string;
+  textAbove: string;
+  textBeneath?: string;
 };
 
 const DeviceBrief = (props: subProps) => {
@@ -19,36 +19,39 @@ const DeviceBrief = (props: subProps) => {
     | undefined = () => {
     setIsToggleOn(!isToggleOn);
   };
-  var secondIcon = props.icon3
+  var secondIcon = props.iconToggled
     ? isToggleOn
-      ? props.icon3
-      : props.icon2
-    : props.icon2;
+      ? props.iconToggled
+      : props.rightIcon
+    : props.rightIcon;
   return (
     <button
       className={styles["device-brief"]}
       type="button"
-      onClick={props.text2 ? toggleDevice : undefined}
+      onClick={props.textBeneath ? toggleDevice : undefined}
     >
       <InlineIcon>
         {/* Cheat to get aligned icons */}
-        <div style={props.text2 ? undefined : { marginLeft: "4px" }}>
-          <Icon icon={props.icon1} size={props.text2 ? 32 : undefined}></Icon>
+        <div style={props.textBeneath ? undefined : { marginLeft: "4px" }}>
+          <Icon
+            icon={props.leftIcon}
+            size={props.textBeneath ? 32 : undefined}
+          ></Icon>
         </div>
         <Box margins="mv16">
-          {props.text2 ? (
+          {props.textBeneath ? (
             <>
               <Box margins="mb4">
                 <Text key="heading" kind="h4">
-                  {props.text1}
+                  {props.textAbove}
                 </Text>
               </Box>
               <Text key="description" kind="normalcap" color="gray70">
-                {props.text2}
+                {props.textBeneath}
               </Text>
             </>
           ) : (
-            <Text kind="normalcap">{props.text1}</Text>
+            <Text kind="normalcap">{props.textAbove}</Text>
           )}
         </Box>
         <Icon icon={secondIcon}></Icon>
@@ -67,17 +70,17 @@ export const DeviceCard = (props: Props) => {
   return (
     <div className={styles["device-card"]}>
       <DeviceBrief
-        icon1={props.deviceType}
-        icon2="Toggle-Off"
-        icon3="Toggle-On"
-        text1={props.deviceName}
-        text2={props.deviceDescription}
+        leftIcon={props.deviceType}
+        rightIcon="Toggle-Off"
+        iconToggled="Toggle-On"
+        textAbove={props.deviceName}
+        textBeneath={props.deviceDescription}
       />
       <div className={styles.divider}></div>
       <DeviceBrief
-        icon1="Info-Circle"
-        icon2="Arrow-Right"
-        text1={props.deviceAutomationInfo}
+        leftIcon="Info-Circle"
+        rightIcon="Arrow-Right"
+        textAbove={props.deviceAutomationInfo}
       />
     </div>
   );
