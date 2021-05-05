@@ -1,7 +1,7 @@
 import React from "react";
 import { useRoutes } from "hookrouter";
 import "./App.css";
-import { DeviceCard, Box, Text, InlineIcon } from "./components";
+import { DeviceCard, Box, Text, InlineIcon, Icon } from "./components";
 
 const routes = {
   "/": () => <HomePage />,
@@ -13,11 +13,14 @@ function HomePage() {
   const todate: string = "05 tháng 05 năm 2021";
   const test = (
     <>
+      {/* Navbar ----- */}
+      {/* ------------- */}
       <Box margins="mb32">
-        <InlineIcon iconRight="Profile" iconBackground>
+        <InlineIcon iconBackground>
           <Box>
             <Text kind="h4">Nhà thông minh</Text>
           </Box>
+          <Icon icon="Profile" iconBackground></Icon>
         </InlineIcon>
       </Box>
       <Box margins="mb32">
@@ -29,6 +32,9 @@ function HomePage() {
           }}
         ></div>
       </Box>
+
+      {/* Welcome ----- */}
+      {/* ------------- */}
       <Box margins="mb32">
         <Text kind="normal">{`Chào ${timeOfDay},`}</Text>
         <Text kind="h2">{userFullName}</Text>
@@ -37,6 +43,31 @@ function HomePage() {
         <Text kind="normal">Hôm nay là</Text>
         <Text kind="h3">{todate}</Text>
       </Box>
+      <Box margins="mb32">
+        <div
+          style={{
+            width: "100%",
+            height: "2px",
+            backgroundColor: "var(--gray-10)",
+          }}
+        ></div>
+      </Box>
+
+      {/* Weather ----- */}
+      {/* ------------- */}
+
+      <Box margins="mb32">
+        <div
+          style={{
+            width: "100%",
+            height: "2px",
+            backgroundColor: "var(--gray-10)",
+          }}
+        ></div>
+      </Box>
+
+      {/* Devices ----- */}
+      {/* ------------- */}
       <Box margins="mb16">
         <Text kind="h3">Thiết bị</Text>
       </Box>
