@@ -5,6 +5,7 @@ import { ReactComponent as ArrowRight } from "./Arrow-Right.svg";
 import { ReactComponent as Close } from "./Close.svg";
 import { ReactComponent as Delete } from "./Delete.svg";
 import { ReactComponent as Edit } from "./Edit.svg";
+import { ReactComponent as Fan } from "./Fan.svg";
 import { ReactComponent as InfoCircle } from "./Info-Circle.svg";
 import { ReactComponent as Light } from "./Light.svg";
 import { ReactComponent as Logout } from "./Logout.svg";
@@ -25,6 +26,7 @@ export const Icons: any = {
   Close: Close,
   Delete: Delete,
   Edit: Edit,
+  Fan: Fan,
   "Info-Circle": InfoCircle,
   Light: Light,
   Logout: Logout,

@@ -53,6 +53,7 @@ const DeviceBrief = (props: subProps) => {
 };
 
 type Props = {
+  deviceType: "Fan" | "Light";
   deviceName: string;
   deviceDescription: string;
   deviceAutomationInfo: string;
@@ -61,7 +62,7 @@ export const DeviceCard = (props: Props) => {
   return (
     <div className={styles["device-card"]}>
       <DeviceBrief
-        icon1="Light"
+        icon1={props.deviceType}
         icon2="Toggle-Off"
         icon3="Toggle-On"
         text1={props.deviceName}

@@ -4,9 +4,9 @@ import colorStyles from "../Colors.module.css";
 import classnames from "classnames";
 
 export const Text = (props: {
-  kind: "h1" | "h2" | "h3" | "h4" | "normalcap";
+  kind: "h1" | "h2" | "h3" | "h4" | "normalcap" | "normal";
   color?: string;
-  children: ReactChild;
+  children: ReactChild | ReactChild[];
 }) => {
   var TagName = "p";
   const headingLists = ["h1", "h2", "h3", "h4"];

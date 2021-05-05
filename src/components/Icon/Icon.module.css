@@ -3,6 +3,18 @@
 	flex-direction: column;
 	justify-content: center;
 }
+
+.icon-w-bg {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--gray-10);
+	height: 32px;
+	width: 32px;
+	flex: none;
+	border-radius: 50%;
+}
 .icon svg {
-	display: block;
+	display: inline-block;
 }
