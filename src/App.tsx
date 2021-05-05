@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import "./components/Colors.module.css";
 import { DeviceCard, Box } from "./components";
 
 function App() {

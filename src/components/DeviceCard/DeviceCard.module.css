@@ -14,9 +14,6 @@
 }
 
 .device-brief {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
 	padding: 16px;
 	width: 100%;
 }
