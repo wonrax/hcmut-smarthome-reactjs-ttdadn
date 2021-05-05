@@ -11,7 +11,7 @@ export const Box = (props: {
 }) => {
   var cs = styles["box"];
   // Check if an array
-  if (props.margins && (props.margins as Array<string>).map) {
+  if (props.margins && Array.isArray(props.margins)) {
     cs = classnames(
       (props.margins as Array<string>).map((val) => styles[val]),
       cs
