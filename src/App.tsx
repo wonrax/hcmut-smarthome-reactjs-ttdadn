@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRoutes } from "hookrouter";
 import "./App.css";
 import { DeviceCard, Box, Text, InlineIcon, Icon } from "./components";
@@ -11,6 +11,7 @@ function HomePage() {
   const timeOfDay: string = "buổi tối";
   const userFullName: string = "Hà Huy Long Hải";
   const todate: string = "05 tháng 05 năm 2021";
+  const [deviceComps, setDeviceComps] = useState<JSX.Element[] | JSX.Element>();
   const test = (
     <>
       {/* Navbar ----- */}
@@ -71,32 +72,37 @@ function HomePage() {
       <Box margins="mb16">
         <Text kind="h3">Thiết bị</Text>
       </Box>
-      <Box margins="mb16">
-        <DeviceCard
-          deviceType="Light"
-          deviceName="Đèn hành lang tầng 1"
-          deviceDescription="TBH123UH"
-          deviceAutomationInfo="Tự động tắt trong 3 giờ 12 phút"
-        />
-      </Box>
-      <Box margins="mb16">
-        <DeviceCard
-          deviceType="Light"
-          deviceName="Đèn phòng ngủ"
-          deviceDescription="TBH124UH"
-          deviceAutomationInfo="Tự động bật trong 43 phút"
-        />
-      </Box>
-      <Box margins="mb16">
-        <DeviceCard
-          deviceType="Fan"
-          deviceName="Quạt trần phòng khách"
-          deviceDescription="FN224"
-          deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
-        />
-      </Box>
+      {deviceComps}
     </>
   );
+
+  useEffect(() => {
+    const url = "http://10.228.11.249:8000/api/demo/house/12/devices";
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {
+        var comps: Array<JSX.Element> = [];
+        for (let i = 0; i < data?.length; i++) {
+          comps.push(
+            <Box key={i} margins="mb16">
+              <DeviceCard
+                deviceType="Fan"
+                deviceName={data.devices[i]["device-name"]}
+                deviceDescription="FN224"
+                deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
+              />
+            </Box>
+          );
+        }
+        setDeviceComps(comps);
+      })
+      .catch(function () {
+        console.log("Error fetching url: " + url);
+        setDeviceComps(
+          <Text kind="normal">{`Error fetching url ${url}`}</Text>
+        );
+      });
+  }, []);
   return <div className="SmartHome">{test}</div>;
 }
 

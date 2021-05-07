@@ -19,6 +19,9 @@ const DeviceBrief = (props: subProps) => {
     | undefined = () => {
     setIsToggleOn(!isToggleOn);
   };
+  const deviceInfoClicked = () => {
+    alert("hehe");
+  };
   var secondIcon = props.iconToggled
     ? isToggleOn
       ? props.iconToggled
@@ -28,7 +31,7 @@ const DeviceBrief = (props: subProps) => {
     <button
       className={styles["device-brief"]}
       type="button"
-      onClick={props.textBeneath ? toggleDevice : undefined}
+      onClick={props.textBeneath ? toggleDevice : deviceInfoClicked}
     >
       <InlineIcon>
         {/* Cheat to get aligned icons */}
