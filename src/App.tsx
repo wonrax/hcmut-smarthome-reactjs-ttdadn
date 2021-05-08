@@ -11,7 +11,9 @@ function HomePage() {
   const timeOfDay: string = "buổi tối";
   const userFullName: string = "Hà Huy Long Hải";
   const todate: string = "05 tháng 05 năm 2021";
-  const [deviceComps, setDeviceComps] = useState<JSX.Element[] | JSX.Element>();
+  const [deviceComps, setDeviceComps] = useState<JSX.Element[] | JSX.Element>(
+    <Text kind="normal">Đang tải thiết bị...</Text>
+  );
   const test = (
     <>
       {/* Navbar ----- */}
@@ -77,29 +79,44 @@ function HomePage() {
   );
 
   useEffect(() => {
-    const url = "http://10.228.11.249:8000/api/demo/house/12/devices";
+    const url = "http://127.0.0.1:8000/api/@house/devices";
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
-        var comps: Array<JSX.Element> = [];
-        for (let i = 0; i < data?.length; i++) {
-          comps.push(
-            <Box key={i} margins="mb16">
+        setTimeout(() => {
+          console.log("heheheheh");
+          if (Array.isArray(deviceComps)) {
+            const newComps = new Array(
+              ...deviceComps.slice(0, deviceComps.length - 1)
+            );
+            newComps.push(
               <DeviceCard
                 deviceType="Fan"
-                deviceName={data.devices[i]["device-name"]}
+                deviceName="Hehe"
+                deviceDescription="?"
+                deviceAutomationInfo="Chế độ hẹn giờ: c"
+              />
+            );
+            setDeviceComps(newComps);
+          }
+        }, 3000);
+        setDeviceComps(
+          data.devices.map((device: any, index: number) => (
+            <Box key={index} margins="mb16">
+              <DeviceCard
+                deviceType="Fan"
+                deviceName={device["device-name"]}
                 deviceDescription="FN224"
                 deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
               />
             </Box>
-          );
-        }
-        setDeviceComps(comps);
+          ))
+        );
       })
       .catch(function () {
         console.log("Error fetching url: " + url);
         setDeviceComps(
-          <Text kind="normal">{`Error fetching url ${url}`}</Text>
+          <Text kind="normal">{`Không thể tải danh sách thiết bị từ server ${url}`}</Text>
         );
       });
   }, []);
@@ -108,7 +125,7 @@ function HomePage() {
 
 function App() {
   const routeResult = useRoutes(routes);
-  return routeResult || <p>Not found</p>;
+  return routeResult || <p>Page Not found</p>;
 }
 
 export default App;

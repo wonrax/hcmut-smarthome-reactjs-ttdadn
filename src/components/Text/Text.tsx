@@ -15,6 +15,7 @@ export const Text = (props: {
   }
 
   const cs = classnames(
+    styles.text,
     styles[props.kind],
     props.color ? colorStyles[props.color] : colorStyles["gray100"]
   );
