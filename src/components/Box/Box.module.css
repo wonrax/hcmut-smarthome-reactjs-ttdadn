@@ -21,6 +21,10 @@
 	margin-bottom: 4px;
 }
 
+.mb8 {
+	margin-bottom: 8px;
+}
+
 .mt4 {
 	margin-top: 4px;
 }
@@ -51,4 +55,20 @@
 
 .pr16 {
 	padding-right: 16px;
+}
+
+.pt64 {
+	padding-top: 64px;
+}
+
+.pb64 {
+	padding-bottom: 64px;
+}
+
+.pl32 {
+	padding-left: 32px;
+}
+
+.pr32 {
+	padding-right: 32px;
 }
