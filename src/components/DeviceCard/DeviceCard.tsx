@@ -41,7 +41,7 @@ const DeviceBrief = (props: subProps) => {
             size={props.textBeneath ? 32 : undefined}
           ></Icon>
         </div>
-        <Box margins="mv16">
+        <Box margins={["mr16", "ml16"]}>
           {props.textBeneath ? (
             <>
               <Box margins="mb4">

@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useRoutes } from "hookrouter";
 import "./App.css";
-import { DeviceCard, Box, Text, InlineIcon, Icon } from "./components";
+import {
+  DeviceCard,
+  Box,
+  Text,
+  InlineIcon,
+  Icon,
+  DeviceInfoPage,
+} from "./components";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const routes = {
   "/": () => <HomePage />,
+  "/device": () => <DeviceInfoPage />,
 };
 
 function HomePage() {
@@ -20,7 +28,7 @@ function HomePage() {
       {/* ------------- */}
       <Box margins="mb32">
         <InlineIcon iconBackground>
-          <Box>
+          <Box wid="width100" hei="height100">
             <Text kind="h4">Nhà thông minh</Text>
           </Box>
           <Icon icon="Profile" iconBackground></Icon>
@@ -35,7 +43,6 @@ function HomePage() {
           }}
         ></div>
       </Box>
-
       {/* Welcome ----- */}
       {/* ------------- */}
       <Box margins="mb32">
@@ -55,10 +62,8 @@ function HomePage() {
           }}
         ></div>
       </Box>
-
       {/* Weather ----- */}
       {/* ------------- */}
-
       <Box margins="mb32">
         <div
           style={{
@@ -68,7 +73,6 @@ function HomePage() {
           }}
         ></div>
       </Box>
-
       {/* Devices ----- */}
       {/* ------------- */}
       <Box margins="mb16">
@@ -124,8 +128,18 @@ function HomePage() {
 }
 
 function App() {
-  const routeResult = useRoutes(routes);
-  return routeResult || <p>Page Not found</p>;
+  return (
+    <Router>
+      <Switch>
+        <Route path="/device">
+          <DeviceInfoPage />
+        </Route>
+        <Route path="/">
+          <HomePage />
+        </Route>
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;
