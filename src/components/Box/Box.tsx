@@ -23,7 +23,7 @@ export const Box = (props: {
 }) => {
   var cs = classnames(
     props.wid ? styles[props.wid] : styles["widthauto"],
-    props.hei ? styles[props.hei] : styles["widthauto"]
+    props.hei ? styles[props.hei] : styles["heightauto"]
   );
   // Check if an array
 
