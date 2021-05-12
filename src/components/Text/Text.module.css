@@ -49,6 +49,6 @@
 
 .normal {
 	font-weight: normal;
-	font-size: 1rem;
+	font-size: var(--normal-font-size);
 	line-height: 130%;
 }

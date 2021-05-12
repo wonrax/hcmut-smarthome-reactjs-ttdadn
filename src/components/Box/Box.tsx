@@ -30,10 +30,12 @@ export const Box = (props: {
   paddings?: Padding | Padding[];
   wid?: string;
   hei?: string;
+  align?: "center";
 }) => {
   var cs = classnames(
     props.wid ? styles[props.wid] : styles["widthauto"],
-    props.hei ? styles[props.hei] : styles["heightauto"]
+    props.hei ? styles[props.hei] : styles["heightauto"],
+    props.align && styles[props.align]
   );
   // Check if an array
 

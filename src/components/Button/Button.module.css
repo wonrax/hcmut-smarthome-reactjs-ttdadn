@@ -1,0 +1,13 @@
+:root {
+	--button-min-height: calc(var(--normal-font-size) * 2.6667);
+}
+.button {
+	border-radius: var(--border-radius);
+	background-color: var(--gray-10);
+	width: fit-content;
+	min-height: var(--button-min-height);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0 16px 0 16px;
+}

@@ -72,3 +72,9 @@
 .pr32 {
 	padding-right: 32px;
 }
+
+.center {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}

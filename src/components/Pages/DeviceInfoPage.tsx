@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Icon, Box, Text } from "..";
+import { Icon, Box, Text, Button } from "..";
 import { Link } from "react-router-dom";
 
 export const DeviceInfoPage = () => {
@@ -24,6 +24,11 @@ export const DeviceInfoPage = () => {
         <Text kind="normal" color="gray70">
           Lầu 2
         </Text>
+      </Box>
+      <Box align="center">
+        <Button>
+          <Text kind="normal">Xem thống kê sử dụng</Text>
+        </Button>
       </Box>
     </>
   );

@@ -1,5 +1,4 @@
 :root {
-	--border-width: 2px;
 	--card-border: var(--border-width) solid var(--gray-20);
 } 
 
