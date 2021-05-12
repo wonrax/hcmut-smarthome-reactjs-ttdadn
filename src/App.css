@@ -53,7 +53,7 @@ table {
 }
 
 :root {
-	--border-width: 1.5px;
+	--border-width: 2px;
 	--border-radius: 8px;
 }
 
@@ -75,14 +75,14 @@ table {
 @media only screen and (max-width: 600px){
 	/*Big smartphones [426px -> 600px]*/
 	:root {
-		--normal-font-size: 18px important!;
+		--normal-font-size: 17px important!;
 		font-size: var(--normal-font-size) !important;
 	}
 }
 @media only screen and (max-width: 425px){
 	/*Small smartphones [325px -> 425px]*/
 	:root {
-		--normal-font-size: 19px !important;
+		--normal-font-size: 18px !important;
 		font-size: var(--normal-font-size) !important;
 	}
 }

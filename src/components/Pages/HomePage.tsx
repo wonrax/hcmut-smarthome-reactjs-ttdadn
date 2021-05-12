@@ -11,6 +11,8 @@ class HomePage extends React.Component<{}, Homestates> {
     this.state = {
       deviceElements: <Text kind="normal">Đang tải thiết bị...</Text>,
     };
+    this.createFakeDevices = this.createFakeDevices.bind(this);
+    this.fetchError = this.fetchError.bind(this);
   }
 
   static date = new Date();
@@ -23,7 +25,7 @@ class HomePage extends React.Component<{}, Homestates> {
   })();
   static userFullName: string = "Hà Huy Long Hải";
   static todate: string = (function () {
-    return `Ngày ${HomePage.date.getDate()} tháng ${
+    return `${HomePage.date.getDate()} tháng ${
       HomePage.date.getMonth() + 1
     } năm ${HomePage.date.getFullYear()}`;
   })();
@@ -59,8 +61,8 @@ class HomePage extends React.Component<{}, Homestates> {
         {/* ------------- */}
         <Box margins="mb32">
           <InlineIcon iconBackground>
-            <Box wid="width100" hei="height100">
-              <Text kind="h4">Nhà thông minh</Text>
+            <Box wid="100" hei="100">
+              <Text kind="h3">SmartHome</Text>
             </Box>
             <Icon icon="Profile" iconBackground></Icon>
           </InlineIcon>
@@ -70,30 +72,65 @@ class HomePage extends React.Component<{}, Homestates> {
         </Box>
         {/* Welcome ----- */}
         {/* ------------- */}
-        <Box margins="mb32">
-          <Text kind="normal">{`Chào ${HomePage.timeOfDay},`}</Text>
-          <Text kind="h2">{HomePage.userFullName}</Text>
+        <Box margins="mb16">
+          <Text
+            kind="normalcap"
+            color="gray70"
+          >{`Chào ${HomePage.timeOfDay},`}</Text>
+          <Text kind="h3">{HomePage.userFullName}</Text>
         </Box>
         <Box margins="mb32">
-          <Text kind="normal">Hôm nay là</Text>
-          <Text kind="h3">{HomePage.todate}</Text>
+          <Text kind="normalcap" color="gray70">
+            Hôm nay là
+          </Text>
+          <Text kind="normal">{HomePage.todate}</Text>
         </Box>
-        <Box margins="mb32">
-          <Divider />
-        </Box>
+        <Box margins="mb32"></Box>
         {/* Weather ----- */}
         {/* ------------- */}
-        <Box margins="mb32">
-          <Divider />
-        </Box>
+        <Box margins="mb32"></Box>
         {/* Devices ----- */}
         {/* ------------- */}
         <Box margins="mb16">
-          <Text kind="h3">Thiết bị</Text>
+          <Text kind="h2">Thiết bị</Text>
         </Box>
         {this.state.deviceElements}
       </>
     );
+  }
+
+  createFakeDevices() {
+    const fakeData = (
+      <>
+        <Box margins="mb16">
+          <DeviceCard
+            deviceType="Light"
+            deviceName="Đèn hành lang tầng 1"
+            deviceDescription="TBH123UH"
+            deviceAutomationInfo="Tự động tắt trong 3 giờ 12 phút"
+          />
+        </Box>
+        <Box margins="mb16">
+          <DeviceCard
+            deviceType="Light"
+            deviceName="Đèn phòng ngủ"
+            deviceDescription="TBH124UH"
+            deviceAutomationInfo="Tự động bật trong 43 phút"
+          />
+        </Box>
+        <Box margins="mb16">
+          <DeviceCard
+            deviceType="Fan"
+            deviceName="Quạt trần phòng khách"
+            deviceDescription="FN224"
+            deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
+          />
+        </Box>
+      </>
+    );
+    this.setState({
+      deviceElements: fakeData,
+    });
   }
 
   fetchError(url: string) {
@@ -103,6 +140,7 @@ class HomePage extends React.Component<{}, Homestates> {
         <Text kind="normal">{`Không thể tải danh sách thiết bị từ server ${url}`}</Text>
       ),
     });
+    setTimeout(this.createFakeDevices, 0);
   }
 }
 
@@ -111,7 +149,7 @@ const Divider = () => {
     <div
       style={{
         width: "100%",
-        height: "var(--border-width)",
+        height: "1.5px",
         backgroundColor: "var(--gray-10)",
       }}
     ></div>

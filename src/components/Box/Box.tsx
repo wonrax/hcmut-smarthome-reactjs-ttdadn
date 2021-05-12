@@ -33,8 +33,8 @@ export const Box = (props: {
   align?: "center";
 }) => {
   var cs = classnames(
-    props.wid ? styles[props.wid] : styles["widthauto"],
-    props.hei ? styles[props.hei] : styles["heightauto"],
+    props.wid ? styles["width" + props.wid] : styles["widthauto"],
+    props.hei ? styles["height" + props.hei] : styles["heightauto"],
     props.align && styles[props.align]
   );
   // Check if an array

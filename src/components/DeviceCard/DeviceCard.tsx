@@ -3,6 +3,7 @@ import styles from "./DeviceCard.module.css";
 import { Text } from "..";
 import { Box } from "..";
 import { InlineIcon, Icon } from "..";
+import { useHistory } from "react-router-dom";
 
 type subProps = {
   leftIcon: string;
@@ -14,13 +15,14 @@ type subProps = {
 
 const DeviceBrief = (props: subProps) => {
   const [isToggleOn, setIsToggleOn] = useState<boolean>(false);
-  const toggleDevice:
-    | React.MouseEventHandler<HTMLButtonElement>
-    | undefined = () => {
-    setIsToggleOn(!isToggleOn);
-  };
+  const toggleDevice: React.MouseEventHandler<HTMLButtonElement> | undefined =
+    () => {
+      setIsToggleOn(!isToggleOn);
+    };
+  const history = useHistory();
   const deviceInfoClicked = () => {
-    alert("hehe");
+    let path = `/device`;
+    history.push(path);
   };
   var secondIcon = props.iconToggled
     ? isToggleOn
@@ -41,7 +43,7 @@ const DeviceBrief = (props: subProps) => {
             size={props.textBeneath ? 32 : undefined}
           ></Icon>
         </div>
-        <Box margins={["mr16", "ml16"]}>
+        <Box margins={["mr16", "ml16"]} wid="100" hei="100">
           {props.textBeneath ? (
             <>
               <Box margins="mb4">

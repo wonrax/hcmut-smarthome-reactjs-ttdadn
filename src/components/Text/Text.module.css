@@ -52,3 +52,7 @@
 	font-size: var(--normal-font-size);
 	line-height: 130%;
 }
+
+.center {
+	text-align: center;
+}

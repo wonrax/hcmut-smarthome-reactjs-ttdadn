@@ -41,6 +41,14 @@
 	margin: 0 16px;
 }
 
+.ml16 {
+	margin-left: 16px;
+}
+
+.mr16 {
+	margin-right: 16px;
+}
+
 .pt32 {
 	padding-top: 32px;
 }
