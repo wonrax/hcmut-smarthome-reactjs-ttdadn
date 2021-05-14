@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Text, DeviceCard, InlineIcon, Box } from "..";
+import { Icon, Text, DeviceCard, InlineIcon, Box, BriefInfo } from "..";
 
 type Homestates = {
   deviceElements: JSX.Element[] | JSX.Element;
@@ -19,8 +19,8 @@ class HomePage extends React.Component<{}, Homestates> {
 
   static timeOfDay: string = (function () {
     const hourTime = HomePage.date.getHours();
-    if (hourTime >= 19 || hourTime < 5) return "buổi tối";
-    if (hourTime >= 5 || hourTime < 12) return "buổi sáng";
+    if (hourTime >= 19 && hourTime < 5) return "buổi tối";
+    if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
     return "buổi chiều";
   })();
   static userFullName: string = "Hà Huy Long Hải";
@@ -32,7 +32,7 @@ class HomePage extends React.Component<{}, Homestates> {
 
   componentDidMount() {
     document.title = "SmartHome";
-    const url = "http://localhost:8000/api/@house/devices";
+    const url = "google.com";
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -72,23 +72,24 @@ class HomePage extends React.Component<{}, Homestates> {
         </Box>
         {/* Welcome ----- */}
         {/* ------------- */}
-        <Box margins="mb16">
-          <Text
-            kind="normalcap"
-            color="gray70"
-          >{`Chào ${HomePage.timeOfDay},`}</Text>
-          <Text kind="h3">{HomePage.userFullName}</Text>
-        </Box>
         <Box margins="mb32">
-          <Text kind="normalcap" color="gray70">
-            Hôm nay là
-          </Text>
-          <Text kind="normal">{HomePage.todate}</Text>
+          <Text
+            kind="normal"
+            color="gray70"
+          >{`Chào ${HomePage.timeOfDay}`}</Text>
+          <Text
+            kind="h2"
+            color="gray100"
+          >{`${HomePage.date.getHours()}:${HomePage.date.getMinutes()}`}</Text>
         </Box>
-        <Box margins="mb32"></Box>
         {/* Weather ----- */}
         {/* ------------- */}
-        <Box margins="mb32"></Box>
+        <Box margins="mb16">
+          <BriefInfo main="27°C" info="Nhiệt độ trong nhà hiện tại" />
+        </Box>
+        <Box margins="mb32">
+          <BriefInfo main="68%" info="Độ ẩm trong nhà hiện tại" />
+        </Box>
         {/* Devices ----- */}
         {/* ------------- */}
         <Box margins="mb16">

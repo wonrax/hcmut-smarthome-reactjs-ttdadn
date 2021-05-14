@@ -52,6 +52,11 @@ table {
 	font-family: "Inter", sans-serif;
 }
 
+input {
+	font-family: "Inter", sans-serif;
+	font-size: var(--normal-caption-font-size);
+}
+
 :root {
 	--border-width: 1.5px;
 	--border-radius: 8px;

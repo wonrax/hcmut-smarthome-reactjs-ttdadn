@@ -4,7 +4,7 @@ import colorStyles from "../Colors.module.css";
 import classnames from "classnames";
 
 export const Text = (props: {
-  kind: "h1" | "h2" | "h3" | "h4" | "normalcap" | "normal";
+  kind: "h1" | "h2" | "h3" | "h4" | "normalcap" | "normal" | "caption";
   color?: string;
   children: ReactChild | ReactChild[];
   textAlign?: "center";
