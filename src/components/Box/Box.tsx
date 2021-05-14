@@ -7,6 +7,7 @@ const availableMargins = [
   "mt4",
   "mb8",
   "mb16",
+  "mb24",
   "mb32",
   "ml16",
   "mr16",
@@ -31,11 +32,13 @@ export const Box = (props: {
   wid?: string;
   hei?: string;
   align?: "center";
+  display?: "inlineFlex";
 }) => {
   var cs = classnames(
     props.wid ? styles["width" + props.wid] : styles["widthauto"],
     props.hei ? styles["height" + props.hei] : styles["heightauto"],
-    props.align && styles[props.align]
+    props.align && styles[props.align],
+    props.display && styles[props.display]
   );
   // Check if an array
 

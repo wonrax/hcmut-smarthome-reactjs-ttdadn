@@ -6,6 +6,8 @@ import { InlineIcon } from "./InlineIcon";
 import { DeviceInfoPage } from "./Pages";
 import { HomePage } from "./Pages";
 import { Button } from "./Button";
+import { ScheduledTask } from "./ScheduledTask";
+import { ScrollToTop } from "./ScrollToTop";
 
 export {
   Icon,
@@ -16,4 +18,6 @@ export {
   DeviceInfoPage,
   HomePage,
   Button,
+  ScheduledTask,
+  ScrollToTop,
 };

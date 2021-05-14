@@ -4,16 +4,15 @@
 	justify-content: center;
 }
 
+
 .icon-w-bg {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
 	align-items: center;
-	background-color: var(--gray-10);
-	height: 32px;
-	width: 32px;
+	background-color: var(--primary-10);
+	height: 40px;
+	width: 40px;
 	flex: none;
 	border-radius: 50%;
+	filter: var(--primary);
 }
 .icon svg {
 	display: inline-block;

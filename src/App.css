@@ -53,8 +53,11 @@ table {
 }
 
 :root {
-	--border-width: 2px;
+	--border-width: 1.5px;
 	--border-radius: 8px;
+	--card-shadow: 0px 4px 8px rgba(11, 132, 243, 0.03);
+	--card-shadow-darker: 0px 4px 8px rgba(90, 146, 255, 0.30);
+	background-color: var(--gray-10);
 }
 
 @media only screen and (min-width: 1200px){

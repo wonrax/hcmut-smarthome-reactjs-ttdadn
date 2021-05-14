@@ -102,30 +102,10 @@ class HomePage extends React.Component<{}, Homestates> {
   createFakeDevices() {
     const fakeData = (
       <>
-        <Box margins="mb16">
-          <DeviceCard
-            deviceType="Light"
-            deviceName="Đèn hành lang tầng 1"
-            deviceDescription="TBH123UH"
-            deviceAutomationInfo="Tự động tắt trong 3 giờ 12 phút"
-          />
-        </Box>
-        <Box margins="mb16">
-          <DeviceCard
-            deviceType="Light"
-            deviceName="Đèn phòng ngủ"
-            deviceDescription="TBH124UH"
-            deviceAutomationInfo="Tự động bật trong 43 phút"
-          />
-        </Box>
-        <Box margins="mb16">
-          <DeviceCard
-            deviceType="Fan"
-            deviceName="Quạt trần phòng khách"
-            deviceDescription="FN224"
-            deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
-          />
-        </Box>
+        <FakeDevice seed={0} />
+        <FakeDevice seed={1} />
+        <FakeDevice seed={2} />
+        <FakeDevice seed={3} />
       </>
     );
     this.setState({
@@ -150,9 +130,42 @@ const Divider = () => {
       style={{
         width: "100%",
         height: "1.5px",
-        backgroundColor: "var(--gray-10)",
+        backgroundColor: "var(--gray-20)",
       }}
     ></div>
+  );
+};
+
+const FakeDevice = (props: { seed: 0 | 1 | 2 | 3 }) => {
+  const types: ("Fan" | "Light")[] = ["Fan", "Fan", "Light", "Light"];
+
+  const titles = [
+    "Quạt trần phòng khách",
+    "Quạt phòng ngủ",
+    "Đèn hành lang",
+    "Đèn phòng ngủ",
+  ];
+  const descriptions = [
+    "Quạt 12BED8",
+    "Tầng 2, phòng Long Hải",
+    "Tầng 3 - 8G2DE",
+    "Tầng 1, phòng bố mẹ",
+  ];
+  const automateInfos = [
+    "Chế độ hẹn giờ: Tắt",
+    "Tự động bật trong 2 tiếng 15 phút.",
+    "Tự động tắt trong 2 phút.",
+    "Chế độ hẹn giờ: Tắt",
+  ];
+  return (
+    <Box margins="mb16">
+      <DeviceCard
+        deviceType={types[props.seed]}
+        deviceName={titles[props.seed]}
+        deviceDescription={descriptions[props.seed]}
+        deviceAutomationInfo={automateInfos[props.seed]}
+      />
+    </Box>
   );
 };
 

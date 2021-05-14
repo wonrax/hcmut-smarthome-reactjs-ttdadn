@@ -37,12 +37,7 @@ const DeviceBrief = (props: subProps) => {
     >
       <InlineIcon>
         {/* Cheat to get aligned icons */}
-        <div style={props.textBeneath ? undefined : { marginLeft: "4px" }}>
-          <Icon
-            icon={props.leftIcon}
-            size={props.textBeneath ? 32 : undefined}
-          ></Icon>
-        </div>
+        <Icon icon={props.leftIcon}></Icon>
         <Box margins={["mr16", "ml16"]} wid="100" hei="100">
           {props.textBeneath ? (
             <>

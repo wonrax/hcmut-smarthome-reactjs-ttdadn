@@ -8,6 +8,7 @@ export const Text = (props: {
   color?: string;
   children: ReactChild | ReactChild[];
   textAlign?: "center";
+  display?: "inline" | "inlineBlock";
 }) => {
   var TagName = "p";
   const headingLists = ["h1", "h2", "h3", "h4"];
@@ -19,7 +20,8 @@ export const Text = (props: {
     styles.text,
     styles[props.kind],
     props.color ? colorStyles[props.color] : colorStyles["gray100"],
-    props.textAlign && styles[props.textAlign]
+    props.textAlign && styles[props.textAlign],
+    props.display && styles[props.display]
   );
 
   return React.createElement(TagName, {

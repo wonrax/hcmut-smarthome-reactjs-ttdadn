@@ -7,7 +7,7 @@ function App() {
   return (
     <Router>
       <div className="SmartHome">
-        <Box paddings={["pt32", "pb32", "pl16", "pr16"]}>
+        <Box paddings={["pt64", "pb64", "pl16", "pr16"]}>
           <Switch>
             <Route path="/device">
               <DeviceInfoPage />

@@ -17,6 +17,10 @@
 	height: auto;
 }
 
+.inlineFlex {
+	display: inline-flex;
+}
+
 .mb4 {
 	margin-bottom: 4px;
 }
@@ -31,6 +35,10 @@
 
 .mb16 {
 	margin-bottom: 16px;
+}
+
+.mb24 {
+	margin-bottom: 24px;
 }
 
 .mb32 {

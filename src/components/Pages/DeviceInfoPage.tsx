@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { Icon, Box, Text, Button } from "..";
+import { Icon, Box, Text, Button, ScrollToTop } from "..";
 import { Link } from "react-router-dom";
 import { InlineIcon } from "../InlineIcon";
+import { ScheduledTask } from "..";
 
 type states = {
   isScheduleEnabled: boolean;
@@ -19,6 +20,7 @@ export class DeviceInfoPage extends React.Component<{}, states> {
   render() {
     return (
       <>
+        <ScrollToTop />
         {/*Container*/}
         <Box margins="mb32">
           <Link to="/">
@@ -36,9 +38,9 @@ export class DeviceInfoPage extends React.Component<{}, states> {
             Lầu 2
           </Text>
         </Box>
-        <Box align="center" margins="mb32">
-          <Button>
-            <Text kind="normal" textAlign="center" color="white">
+        <Box margins="mb32">
+          <Button kind="secondary">
+            <Text kind="normal" textAlign="center" color="primary">
               Xem thống kê sử dụng
             </Text>
           </Button>
@@ -72,12 +74,20 @@ export class DeviceInfoPage extends React.Component<{}, states> {
             </Box>
           </InlineIcon>
         </Box>
-        <Box align="center" margins="mb32">
+        <Box margins="mb32">
           <Button>
             <Text kind="normal" textAlign="center" color="white">
               Đặt lịch mới
             </Text>
           </Button>
+        </Box>
+        <Box>
+          <ScheduledTask />
+          <ScheduledTask />
+          <ScheduledTask />
+          <ScheduledTask />
+          <ScheduledTask />
+          <ScheduledTask />
         </Box>
       </>
     );

@@ -3,9 +3,10 @@
 } 
 
 .device-card {
-	background: var(--gray-10); 
+	background: var(--white); 
 	/* border: var(--card-border); */
 	border-radius: 8px;
+	box-shadow: var(--card-shadow);
 }
 
 .device-brief div {
@@ -22,5 +23,5 @@
 	width: 100%;
 	height: var(--border-width);
 	/* background-color: var(--gray-20); */
-	background-color: var(--white);
+	background-color: var(--gray-10);
 }
