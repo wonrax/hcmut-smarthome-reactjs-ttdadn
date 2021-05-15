@@ -69,7 +69,7 @@ input {
     /*Tablets [601px -> 1200px]*/
 	:root {
 		--normal-font-size: 16px !important;
-		font-size: var(--normal-font-size) !important;
+		font-size: var(--normal-font-size);
 	}
 }
 
@@ -77,20 +77,20 @@ input {
     /*Tablets [601px -> 1200px]*/
 	:root {
 		--normal-font-size: 17px !important;
-		font-size: var(--normal-font-size) !important;
+		font-size: var(--normal-font-size);
 	}
 }
 @media only screen and (max-width: 600px){
 	/*Big smartphones [426px -> 600px]*/
 	:root {
 		--normal-font-size: 17px important!;
-		font-size: var(--normal-font-size) !important;
+		font-size: var(--normal-font-size);
 	}
 }
 @media only screen and (max-width: 425px){
 	/*Small smartphones [325px -> 425px]*/
 	:root {
 		--normal-font-size: 18px !important;
-		font-size: var(--normal-font-size) !important;
+		font-size: var(--normal-font-size);
 	}
 }

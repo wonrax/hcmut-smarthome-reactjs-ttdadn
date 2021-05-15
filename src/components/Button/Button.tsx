@@ -6,21 +6,21 @@ export const Button = (props: {
   children: ReactChild;
   kind?: "default" | "secondary";
   as?: "button";
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) => {
   const cs = classnames(
     styles.button,
     props.kind ? styles[props.kind] : styles["default"]
   );
-  if (props.as == "button") {
+  if (props.as === "button") {
     return React.createElement("button", {
       children: props.children,
       className: cs,
     });
   }
   return (
-    <div onClick={props.onClick} className={cs}>
+    <button onClick={props.onClick} className={cs}>
       {props.children}
-    </div>
+    </button>
   );
 };

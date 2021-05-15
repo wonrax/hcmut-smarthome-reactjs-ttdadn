@@ -7,11 +7,8 @@ export const Icon = (props: {
   iconBackground?: boolean;
   size?: number;
 }) => {
-  const IconComp: React.FunctionComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined;
-    }
-  > = Icons[props.icon];
+  const IconComp: React.FunctionComponent<React.SVGProps<SVGSVGElement>> =
+    Icons[props.icon];
   const passingProps = props.size && { width: props.size, height: props.size };
   const cs = classnames(
     props.iconBackground && styles["icon-w-bg"],

@@ -1,0 +1,38 @@
+.input {
+	/* display: none; */
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+	user-select: none;
+	margin: 0;
+}
+
+.label {
+	user-select: none;
+}
+
+.label:before{
+	content: "";
+	box-sizing: border-box;
+	vertical-align: middle;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	background-image: url(../icons/Square-Unticked.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-right: 8px;
+	margin-bottom: 0.125rem;
+	/* background-color: red; */
+}
+
+.input:checked+.label:before{
+	background-image: url(../icons/Square-Ticked.svg);
+}
+
+.input:focus+label:before{
+	border-radius: 8px;
+	border: var(--primary) solid 2px;
+	/* outline:2px solid var(--primary); */
+	/* outline-offset:1px; */
+}

@@ -1,10 +1,13 @@
 .day {
 	display: inline-block;
 	border-radius: 50%;
-	padding: 8px;
+	/* padding: 8px; */
+	width: 36px;
+	height: 36px;
 	margin-right: 8px;
 	cursor: pointer;
 	box-sizing: border-box;
+	background-color: var(--white);
 }
 
 .enabled {
@@ -13,5 +16,5 @@
 
 .disabled {
 	/* border: var(--border-width) solid var(--gray-20); */
-	box-shadow:inset 0px 0px 0px var(--border-width) var(--gray-20);
+	box-shadow: var(--card-shadow);
 }

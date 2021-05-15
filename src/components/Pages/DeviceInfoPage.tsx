@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Icon, Box, Text, Button, ScrollToTop } from "..";
 import { Link } from "react-router-dom";
 import { InlineIcon } from "../InlineIcon";

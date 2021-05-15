@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React, { ReactChild, useState } from "react";
-import { Box, Button, Text } from "..";
+import { Box, Button, Text, Checkbox } from "..";
 import styles from "./ScheduledTask.module.css";
 
 export const ScheduledTask = () => {
@@ -10,10 +10,7 @@ export const ScheduledTask = () => {
         <Text kind="h2">18:00 - 12:00</Text>
       </Box>
       <Box margins="mb16">
-        <input type="checkbox" style={{ marginRight: "8px" }}></input>
-        <Text kind="normal" display="inline">
-          Lặp lại
-        </Text>
+        <Checkbox label="Lặp lại" id="isRepeat" />
       </Box>
       <Box margins="mb24">
         <Day>T2</Day>

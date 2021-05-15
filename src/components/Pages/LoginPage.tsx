@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Box, Button, Text } from "..";
 
@@ -18,27 +18,45 @@ export const LoginPage = () => {
     history.push(path);
   };
 
+  const passwordKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if (evt.code === "Enter" || evt.key === "Enter") signInClicked();
+  };
+
   return (
     <>
       <Box margins="mb32">
         <Text kind="h2">Đăng nhập vào SmartHome</Text>
       </Box>
       <form action="127.0.0.1/api/login" method="POST">
-        <Box margins="mb8">
-          <Text kind="caption">Số điện thoại</Text>
-        </Box>
+        <label htmlFor="phonenumber">
+          <Box margins="mb8">
+            <Text kind="caption">Số điện thoại</Text>
+          </Box>
+        </label>
         <Box margins="mb16" wid="100">
           <input
+            autoCapitalize="off"
             name="phonenumber"
+            id="phonenumber"
+            type="text"
             style={inputstyles}
             placeholder="03842xx.xx"
           />
         </Box>
-        <Box margins="mb8">
-          <Text kind="caption">Mật khẩu</Text>
-        </Box>
+        <label htmlFor="password">
+          <Box margins="mb8">
+            <Text kind="caption">Mật khẩu</Text>
+          </Box>
+        </label>
         <Box margins="mb24" wid="100">
-          <input name="password" style={inputstyles} placeholder="Mật khẩu" />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            style={inputstyles}
+            placeholder="Mật khẩu"
+            onKeyDown={passwordKeyDown}
+          />
         </Box>
         <Button onClick={signInClicked}>
           <Text kind="normal" textAlign="center" color="white">

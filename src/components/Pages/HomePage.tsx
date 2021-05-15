@@ -1,5 +1,6 @@
 import React from "react";
 import { Icon, Text, DeviceCard, InlineIcon, Box, BriefInfo } from "..";
+import axios from "axios";
 
 type Homestates = {
   deviceElements: JSX.Element[] | JSX.Element;
@@ -32,12 +33,11 @@ class HomePage extends React.Component<{}, Homestates> {
 
   componentDidMount() {
     document.title = "SmartHome";
-    const url = "google.com";
-    fetch(url)
-      .then((resp) => resp.json())
-      .then((data) => {
+    const url = "https://jsonplaceholder.typicode.com/todos/1";
+    axios(url)
+      .then((res) => {
         this.setState({
-          deviceElements: data.devices.map((device: any, index: number) => (
+          deviceElements: res.data.devices.map((device: any, index: number) => (
             <Box key={index} margins="mb16">
               <DeviceCard
                 deviceType="Fan"
@@ -50,6 +50,7 @@ class HomePage extends React.Component<{}, Homestates> {
         });
       })
       .catch((err) => {
+        console.log(err);
         this.fetchError(url);
       });
   }
@@ -93,7 +94,7 @@ class HomePage extends React.Component<{}, Homestates> {
         {/* Devices ----- */}
         {/* ------------- */}
         <Box margins="mb16">
-          <Text kind="h2">Thiết bị</Text>
+          <Text kind="h3">Thiết bị</Text>
         </Box>
         {this.state.deviceElements}
       </>

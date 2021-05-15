@@ -1,15 +1,14 @@
+import { Box } from "./Box";
+import { BriefInfo } from "./BriefInfo";
+import { Button } from "./Button";
+import { Checkbox } from "./Checkbox";
 import { DeviceCard } from "./DeviceCard";
 import { Icon } from "./Icon";
-import { Text } from "./Text";
-import { Box } from "./Box";
 import { InlineIcon } from "./InlineIcon";
-import { DeviceInfoPage } from "./Pages";
-import { HomePage } from "./Pages";
-import { LoginPage } from "./Pages";
-import { Button } from "./Button";
+import { DeviceInfoPage, HomePage, LoginPage } from "./Pages";
 import { ScheduledTask } from "./ScheduledTask";
 import { ScrollToTop } from "./ScrollToTop";
-import { BriefInfo } from "./BriefInfo";
+import { Text } from "./Text";
 
 export {
   Icon,
@@ -24,4 +23,5 @@ export {
   ScheduledTask,
   ScrollToTop,
   BriefInfo,
+  Checkbox,
 };
