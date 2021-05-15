@@ -23,10 +23,10 @@ export const LoginPage = () => {
 
   const signInClicked = () => {
     setSignInState("loading");
-    /* setTimeout(() => { */
-    /*   let path = `/`; */
-    /*   history.push(path); */
-    /* }, 4000); */
+    setTimeout(() => {
+      let path = `/`;
+      history.push(path);
+    }, 4000);
   };
 
   const passwordKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {

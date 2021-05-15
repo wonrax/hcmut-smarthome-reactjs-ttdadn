@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Text, DeviceCard, InlineIcon, Box, BriefInfo } from "..";
+import { Icon, Text, DeviceCard, InlineIcon, Box, BriefInfo, Button } from "..";
 import axios from "axios";
 
 type Homestates = {
@@ -7,6 +7,13 @@ type Homestates = {
 };
 
 class HomePage extends React.Component<{}, Homestates> {
+  date: Date;
+  hour: string;
+  minute: string;
+  second: string;
+  timeOfDay: string;
+  userFullName: string;
+
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -14,22 +21,19 @@ class HomePage extends React.Component<{}, Homestates> {
     };
     this.createFakeDevices = this.createFakeDevices.bind(this);
     this.fetchError = this.fetchError.bind(this);
+    this.date = new Date();
+    [this.hour, this.minute, this.second] = this.date
+      .toLocaleTimeString("vi-VN")
+      .split(/:| /);
+
+    this.timeOfDay = function (this: HomePage) {
+      const hourTime = this.date.getHours();
+      if (hourTime >= 19 && hourTime < 5) return "buổi tối";
+      if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
+      return "buổi chiều";
+    }.bind(this)();
+    this.userFullName = "Hà Huy Long Hải";
   }
-
-  static date = new Date();
-
-  static timeOfDay: string = (function () {
-    const hourTime = HomePage.date.getHours();
-    if (hourTime >= 19 && hourTime < 5) return "buổi tối";
-    if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
-    return "buổi chiều";
-  })();
-  static userFullName: string = "Hà Huy Long Hải";
-  static todate: string = (function () {
-    return `${HomePage.date.getDate()} tháng ${
-      HomePage.date.getMonth() + 1
-    } năm ${HomePage.date.getFullYear()}`;
-  })();
 
   componentDidMount() {
     document.title = "SmartHome";
@@ -65,7 +69,9 @@ class HomePage extends React.Component<{}, Homestates> {
             <Box wid="100" hei="100">
               <Text kind="h3">SmartHome</Text>
             </Box>
-            <Icon icon="Profile" iconBackground></Icon>
+            <Button lhref="/profile" noDecoration>
+              <Icon icon="Profile" iconBackground></Icon>
+            </Button>
           </InlineIcon>
         </Box>
         <Box margins="mb32">
@@ -74,14 +80,8 @@ class HomePage extends React.Component<{}, Homestates> {
         {/* Welcome ----- */}
         {/* ------------- */}
         <Box margins="mb32">
-          <Text
-            kind="normal"
-            color="gray70"
-          >{`Chào ${HomePage.timeOfDay}`}</Text>
-          <Text
-            kind="h2"
-            color="gray100"
-          >{`${HomePage.date.getHours()}:${HomePage.date.getMinutes()}`}</Text>
+          <Text kind="normal" color="gray70">{`Chào ${this.timeOfDay}`}</Text>
+          <Text kind="h2" color="gray100">{`${this.hour}:${this.minute}`}</Text>
         </Box>
         {/* Weather ----- */}
         {/* ------------- */}

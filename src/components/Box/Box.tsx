@@ -33,7 +33,7 @@ export const Box = (props: {
   wid?: string;
   hei?: string;
   align?: "center";
-  display?: "inlineFlex";
+  display?: "inlineFlex" | "inline";
 }) => {
   var cs = classnames(
     props.wid ? styles["width" + props.wid] : styles["widthauto"],

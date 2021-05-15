@@ -7,6 +7,7 @@ import { ReactComponent as Delete } from "./Delete.svg";
 import { ReactComponent as Edit } from "./Edit.svg";
 import { ReactComponent as Fan } from "./Fan.svg";
 import { ReactComponent as InfoCircle } from "./Info-Circle.svg";
+import { ReactComponent as Tick } from "./Tick.svg";
 import { ReactComponent as Light } from "./Light.svg";
 import { ReactComponent as Logout } from "./Logout.svg";
 import { ReactComponent as Message } from "./Message.svg";
@@ -43,4 +44,5 @@ export const Icons: any = {
   "Time-Circle": TimeCircle,
   "Toggle-Off": ToggleOff,
   "Toggle-On": ToggleOn,
+  Tick: Tick,
 };

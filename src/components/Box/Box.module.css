@@ -21,6 +21,10 @@
 	display: inline-flex;
 }
 
+.inline {
+	display: inline;
+}
+
 .mb4 {
 	margin-bottom: 4px;
 }

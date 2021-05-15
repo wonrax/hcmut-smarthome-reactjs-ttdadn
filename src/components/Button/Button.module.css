@@ -9,6 +9,9 @@
 	flex-direction: column;
 	justify-content: center;
 	padding: 0 16px 0 16px;
+}
+
+.button-nodecoration {
 	cursor: pointer;
 	user-select: none;
 }

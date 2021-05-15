@@ -1,17 +1,16 @@
 import React from "react";
-import { Icon, Box, Text, Button, ScrollToTop } from "..";
-import { Link } from "react-router-dom";
+import { Icon, Box, Text, Button } from "..";
 import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
+import { TitledPageTemplate } from "../Utils";
 
-type states = {
+type stateTypes = {
   isScheduleEnabled: boolean;
 };
-export class DeviceInfoPage extends React.Component<{}, states> {
+export class DeviceInfoPage extends React.Component<{}, stateTypes> {
   constructor(props: {}) {
     super(props);
     this.state = { isScheduleEnabled: false };
-    this.toggleScheduleEnabled = this.toggleScheduleEnabled.bind(this);
   }
 
   componentDidMount() {
@@ -19,17 +18,8 @@ export class DeviceInfoPage extends React.Component<{}, states> {
   }
   render() {
     return (
-      <>
-        <ScrollToTop />
+      <TitledPageTemplate title="Thông tin thiết bị" scrollToTop>
         {/*Container*/}
-        <Box margins="mb32">
-          <Link to="/">
-            <Icon icon="Arrow-Left" iconBackground />
-          </Link>
-        </Box>
-        <Box margins="mb32">
-          <Text kind="h2">Thông tin thiết bị</Text>
-        </Box>
         <Box margins="mb8">
           <Text kind="normal">Đèn hành lang</Text>
         </Box>
@@ -90,11 +80,8 @@ export class DeviceInfoPage extends React.Component<{}, states> {
           <ScheduledTask />
           <ScheduledTask />
           <ScheduledTask />
-          <ScheduledTask />
-          <ScheduledTask />
-          <ScheduledTask />
         </Box>
-      </>
+      </TitledPageTemplate>
     );
   }
 
