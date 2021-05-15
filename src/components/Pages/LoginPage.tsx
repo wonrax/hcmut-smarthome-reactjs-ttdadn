@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Box, Button, Text } from "..";
+import { Box, Button, InlineIcon, InlineLoading, Text } from "..";
 
 export const LoginPage = () => {
   const inputstyles: React.CSSProperties = {
@@ -13,9 +13,20 @@ export const LoginPage = () => {
   };
 
   const history = useHistory();
+  const [signInState, setSignInState] =
+    useState<"initial" | "loading">("initial");
+
+  const formSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("form submitted");
+    e.preventDefault();
+  };
+
   const signInClicked = () => {
-    let path = `/`;
-    history.push(path);
+    setSignInState("loading");
+    /* setTimeout(() => { */
+    /*   let path = `/`; */
+    /*   history.push(path); */
+    /* }, 4000); */
   };
 
   const passwordKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
@@ -27,7 +38,7 @@ export const LoginPage = () => {
       <Box margins="mb32">
         <Text kind="h2">Đăng nhập vào SmartHome</Text>
       </Box>
-      <form action="127.0.0.1/api/login" method="POST">
+      <form onSubmit={formSubmitHandle}>
         <label htmlFor="phonenumber">
           <Box margins="mb8">
             <Text kind="caption">Số điện thoại</Text>
@@ -58,11 +69,16 @@ export const LoginPage = () => {
             onKeyDown={passwordKeyDown}
           />
         </Box>
-        <Button onClick={signInClicked}>
-          <Text kind="normal" textAlign="center" color="white">
-            Đăng nhập
-          </Text>
-        </Button>
+        <InlineIcon>
+          <Button onClick={signInClicked}>
+            <Text kind="normal" textAlign="center" color="white">
+              Đăng nhập
+            </Text>
+          </Button>
+          <Box margins="ml16">
+            {signInState === "loading" ? <InlineLoading /> : ""}
+          </Box>
+        </InlineIcon>
       </form>
     </>
   );

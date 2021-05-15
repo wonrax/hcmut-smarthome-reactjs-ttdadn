@@ -18,6 +18,7 @@ import { ReactComponent as SquareUnticked } from "./Square-Unticked.svg";
 import { ReactComponent as TimeCircle } from "./Time-Circle.svg";
 import { ReactComponent as ToggleOff } from "./Toggle-Off.svg";
 import { ReactComponent as ToggleOn } from "./Toggle-On.svg";
+import { ReactComponent as Loading } from "./Loading.svg";
 
 /* TypeScript any workaround */
 export const Icons: any = {
@@ -31,6 +32,7 @@ export const Icons: any = {
   Fan: Fan,
   "Info-Circle": InfoCircle,
   Light: Light,
+  Loading: Loading,
   Logout: Logout,
   Message: Message,
   Password: Password,

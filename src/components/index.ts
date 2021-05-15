@@ -9,6 +9,7 @@ import { DeviceInfoPage, HomePage, LoginPage } from "./Pages";
 import { ScheduledTask } from "./ScheduledTask";
 import { ScrollToTop } from "./ScrollToTop";
 import { Text } from "./Text";
+import { InlineLoading } from "./InlineLoading";
 
 export {
   Icon,
@@ -24,4 +25,5 @@ export {
   ScrollToTop,
   BriefInfo,
   Checkbox,
+  InlineLoading,
 };

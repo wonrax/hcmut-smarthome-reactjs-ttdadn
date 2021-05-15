@@ -49,9 +49,14 @@ export class DeviceInfoPage extends React.Component<{}, states> {
           <Text kind="h3">Hẹn giờ</Text>
         </Box>
         <Box margins="mb8">
-          <div
+          <button
             onClick={this.toggleScheduleEnabled}
-            style={{ cursor: "pointer" }}
+            style={{
+              cursor: "pointer",
+              userSelect: "none",
+              width: "100%",
+              textAlign: "left",
+            }}
           >
             <InlineIcon>
               <Box wid="100" hei="100" margins="mr16">
@@ -61,7 +66,7 @@ export class DeviceInfoPage extends React.Component<{}, states> {
                 icon={this.state.isScheduleEnabled ? "Toggle-On" : "Toggle-Off"}
               />
             </InlineIcon>
-          </div>
+          </button>
         </Box>
         <Box margins="mb32">
           <InlineIcon>

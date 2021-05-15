@@ -11,6 +11,7 @@ const availableMargins = [
   "mb32",
   "ml16",
   "mr16",
+  "mr8",
 ] as const;
 const availablePaddings = [
   "pt32",
