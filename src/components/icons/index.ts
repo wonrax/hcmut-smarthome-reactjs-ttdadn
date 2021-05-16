@@ -20,6 +20,8 @@ import { ReactComponent as TimeCircle } from "./Time-Circle.svg";
 import { ReactComponent as ToggleOff } from "./Toggle-Off.svg";
 import { ReactComponent as ToggleOn } from "./Toggle-On.svg";
 import { ReactComponent as Loading } from "./Loading.svg";
+import { ReactComponent as Graph } from "./Graph.svg";
+import { ReactComponent as Plus } from "./Plus.svg";
 
 /* TypeScript any workaround */
 export const Icons: any = {
@@ -31,12 +33,14 @@ export const Icons: any = {
   Delete: Delete,
   Edit: Edit,
   Fan: Fan,
+  Graph: Graph,
   "Info-Circle": InfoCircle,
   Light: Light,
   Loading: Loading,
   Logout: Logout,
   Message: Message,
   Password: Password,
+  Plus: Plus,
   Profile: Profile,
   Setting: Setting,
   "Square-Ticked": SquareTicked,

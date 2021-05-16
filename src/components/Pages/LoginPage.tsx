@@ -14,7 +14,7 @@ export const LoginPage = () => {
 
   const history = useHistory();
   const [signInState, setSignInState] =
-    useState<"initial" | "loading">("initial");
+    useState<"initial" | "loading" | "done">("initial");
 
   const formSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     console.log("form submitted");
@@ -24,8 +24,11 @@ export const LoginPage = () => {
   const signInClicked = () => {
     setSignInState("loading");
     setTimeout(() => {
-      let path = `/`;
-      history.push(path);
+      setSignInState("done");
+      setTimeout(() => {
+        let path = `/`;
+        history.push(path);
+      }, 1000);
     }, 4000);
   };
 
@@ -70,13 +73,20 @@ export const LoginPage = () => {
           />
         </Box>
         <InlineIcon>
-          <Button onClick={signInClicked}>
-            <Text kind="normal" textAlign="center" color="white">
-              Đăng nhập
-            </Text>
-          </Button>
-          <Box margins="ml16">
-            {signInState === "loading" ? <InlineLoading /> : ""}
+          <Box margins="mr16">
+            <Button
+              text="Đăng nhập"
+              onClick={signInClicked}
+              iconPosition="right"
+              iconName="Arrow-Right-Dash"
+            />
+          </Box>
+          <Box>
+            {signInState === "initial" ? (
+              ""
+            ) : (
+              <InlineLoading kind={signInState} />
+            )}
           </Box>
         </InlineIcon>
       </form>

@@ -79,13 +79,13 @@ class HomePage extends React.Component<{}, Homestates> {
         </Box>
         {/* Welcome ----- */}
         {/* ------------- */}
-        <Box margins="mb32">
+        <Box>
           <Text kind="normal" color="gray70">{`Chào ${this.timeOfDay}`}</Text>
           <Text kind="h1" color="gray100">{`${this.hour}:${this.minute}`}</Text>
         </Box>
         {/* Weather ----- */}
         {/* ------------- */}
-        <Box margins="mb16">
+        <Box>
           <BriefInfo main="27°C" info="Nhiệt độ trong nhà hiện tại" />
         </Box>
         <Box margins="mb32">

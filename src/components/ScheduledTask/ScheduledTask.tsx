@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React, { ReactChild, useState } from "react";
-import { Box, Button, Text, Checkbox } from "..";
+import { Box, Button, Text, Checkbox, BackButton } from "..";
 import styles from "./ScheduledTask.module.css";
 
 export const ScheduledTask = (props: { id: string }) => {
@@ -22,20 +22,20 @@ export const ScheduledTask = (props: { id: string }) => {
         <Day>CN</Day>
       </Box>
       <Box margins="mb24">
-        <Box display="inlineFlex" margins="mr16">
-          <Button kind="secondary">
-            <Text kind="normal" textAlign="center" color="primary">
-              Xoá
-            </Text>
-          </Button>
+        <Box margins="mr16" display="inlineFlex">
+          <Button
+            bgColor="bgDanger"
+            text="Xoá"
+            iconPosition="left"
+            iconName="Delete"
+          />
         </Box>
-        <Box display="inlineFlex">
-          <Button kind="secondary">
-            <Text kind="normal" textAlign="center" color="primary">
-              Chỉnh sửa
-            </Text>
-          </Button>
-        </Box>
+        <Button
+          text="Chỉnh sửa"
+          kind="secondary"
+          iconPosition="left"
+          iconName="Edit"
+        />
       </Box>
       <div
         style={{

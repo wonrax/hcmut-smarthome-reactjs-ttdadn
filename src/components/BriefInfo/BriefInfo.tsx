@@ -6,7 +6,7 @@ export const BriefInfo = (props: { main: string; info: string }) => {
   return (
     <div className={styles["brief-info"]}>
       <InlineIcon>
-        <Box wid="100" margins="mr16">
+        <Box wid="100">
           <Text kind="h2" color="primary">
             {props.main}
           </Text>
@@ -14,7 +14,7 @@ export const BriefInfo = (props: { main: string; info: string }) => {
             {props.info}
           </Text>
         </Box>
-        <Icon icon="Arrow-Right" />
+        <Icon icon="Arrow-Right" iconBackground />
       </InlineIcon>
     </div>
   );

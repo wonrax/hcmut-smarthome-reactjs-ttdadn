@@ -7,6 +7,8 @@
 	--white: white;
 	--primary: #0B84F3;
 	--primary-10: #D8ECFF;
+	--danger: #FF4A55;
+	--success: #52E73A;
 }
 
 .gray10 {
@@ -39,6 +41,22 @@
 
 .primary10 {
 	color: var(--primary-10);
+}
+
+.bgWhite {
+	background-color: var(--white);
+}
+
+.bgPrimary {
+	background-color: var(--primary);
+}
+
+.bgDanger {
+	background-color: var(--danger);
+}
+
+.bgTransparent {
+	background-color: var(--danger);
 }
 
 .icon-primary svg path{

@@ -1,6 +1,4 @@
 .brief-info {
-	padding: 16px;
-	background-color: var(--white);
-	border-radius: var(--border-radius);
+	padding: 16px 0 16px 0;
 	width: auto;
 }

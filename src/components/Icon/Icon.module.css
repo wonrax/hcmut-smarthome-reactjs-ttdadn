@@ -8,13 +8,18 @@
 
 .icon-w-bg {
 	align-items: center;
-	background-color: var(--white);
+	background-color: var(--primary-10);
 	height: 40px;
 	width: 40px;
 	flex: none;
 	border-radius: 50%;
 	box-shadow: var(--card-shadow);
 }
+
+.icon-w-bg svg path{
+	fill: var(--primary);
+}
+
 .icon svg {
 	display: inline-block;
 }

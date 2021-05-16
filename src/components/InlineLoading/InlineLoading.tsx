@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Icon, InlineIcon, Text } from "..";
 
-export const InlineLoading = () => {
+export const InlineLoading = (props: { kind: "loading" | "done" }) => {
   return (
     <div
       style={{
@@ -12,9 +12,11 @@ export const InlineLoading = () => {
     >
       <InlineIcon>
         <Box margins="mr8">
-          <Icon icon="Loading"></Icon>
+          <Icon icon={props.kind === "loading" ? "Loading" : "Tick"}></Icon>
         </Box>
-        <Text kind="normalcap">Đang gọi anh Bảnh...</Text>
+        <Text kind="normalcap">
+          {props.kind === "loading" ? "Đang gọi anh Bảnh..." : "Anh Bảnh đã OK"}
+        </Text>
       </InlineIcon>
     </div>
   );

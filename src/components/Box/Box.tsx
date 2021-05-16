@@ -10,6 +10,7 @@ const availableMargins = [
   "mb24",
   "mb32",
   "ml16",
+  "ml8",
   "mr16",
   "mr8",
 ] as const;
@@ -41,7 +42,6 @@ export const Box = (props: {
     props.align && styles[props.align],
     props.display && styles[props.display]
   );
-  // Check if an array
 
   [props.margins, props.paddings].forEach((properti) => {
     if (properti && Array.isArray(properti)) {

@@ -29,11 +29,12 @@ export class DeviceInfoPage extends React.Component<{}, stateTypes> {
           </Text>
         </Box>
         <Box margins="mb32">
-          <Button kind="secondary">
-            <Text kind="normal" textAlign="center" color="primary">
-              Xem thống kê sử dụng
-            </Text>
-          </Button>
+          <Button
+            text="Xem thống kê sử dụng"
+            kind="secondary"
+            iconPosition="left"
+            iconName="Graph"
+          />
         </Box>
         <Box margins="mb8">
           <Text kind="h3">Hẹn giờ</Text>
@@ -70,11 +71,7 @@ export class DeviceInfoPage extends React.Component<{}, stateTypes> {
           </InlineIcon>
         </Box>
         <Box margins="mb32">
-          <Button>
-            <Text kind="normal" textAlign="center" color="white">
-              Đặt lịch mới
-            </Text>
-          </Button>
+          <Button text="Đặt lịch mới" iconPosition="left" iconName="Plus" />
         </Box>
         <Box>
           <ScheduledTask id="1" />
