@@ -7,7 +7,7 @@ export const BackButton = () => {
   };
   return (
     <Button onClick={moveBack} noDecoration>
-      <Icon icon="Arrow-Left" iconBackground />
+      <Icon icon="Arrow-Left-Dash" iconBackground />
     </Button>
   );
 };

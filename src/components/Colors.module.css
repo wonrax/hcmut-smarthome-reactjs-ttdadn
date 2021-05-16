@@ -40,3 +40,11 @@
 .primary10 {
 	color: var(--primary-10);
 }
+
+.icon-primary svg path{
+	fill: var(--primary);
+}
+
+.icon-white svg path {
+	fill: var(--white);
+}

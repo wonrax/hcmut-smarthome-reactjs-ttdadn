@@ -3,14 +3,14 @@ import React, { ReactChild, useState } from "react";
 import { Box, Button, Text, Checkbox } from "..";
 import styles from "./ScheduledTask.module.css";
 
-export const ScheduledTask = () => {
+export const ScheduledTask = (props: { id: string }) => {
   return (
     <div>
       <Box margins="mb24">
         <Text kind="h2">18:00 - 12:00</Text>
       </Box>
       <Box margins="mb16">
-        <Checkbox label="Lặp lại" id="isRepeat" />
+        <Checkbox label="Lặp lại" id={props.id} />
       </Box>
       <Box margins="mb24">
         <Day>T2</Day>

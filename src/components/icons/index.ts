@@ -1,5 +1,5 @@
 import { ReactComponent as ArrowDown } from "./Arrow-Down.svg";
-import { ReactComponent as ArrowLeft } from "./Arrow-Left.svg";
+import { ReactComponent as ArrowLeftDash } from "./Arrow-Left-Dash.svg";
 import { ReactComponent as ArrowRightDash } from "./Arrow-Right-Dash.svg";
 import { ReactComponent as ArrowRight } from "./Arrow-Right.svg";
 import { ReactComponent as Close } from "./Close.svg";
@@ -24,7 +24,7 @@ import { ReactComponent as Loading } from "./Loading.svg";
 /* TypeScript any workaround */
 export const Icons: any = {
   "Arrow-Down": ArrowDown,
-  "Arrow-Left": ArrowLeft,
+  "Arrow-Left-Dash": ArrowLeftDash,
   "Arrow-Right-Dash": ArrowRightDash,
   "Arrow-Right": ArrowRight,
   Close: Close,

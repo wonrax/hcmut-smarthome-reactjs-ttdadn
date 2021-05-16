@@ -54,7 +54,7 @@ table {
 
 input {
 	font-family: "Inter", sans-serif;
-	font-size: var(--normal-caption-font-size);
+	font-size: var(--normal-font-size);
 }
 
 :root {

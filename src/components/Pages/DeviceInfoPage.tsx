@@ -77,9 +77,9 @@ export class DeviceInfoPage extends React.Component<{}, stateTypes> {
           </Button>
         </Box>
         <Box>
-          <ScheduledTask />
-          <ScheduledTask />
-          <ScheduledTask />
+          <ScheduledTask id="1" />
+          <ScheduledTask id="2" />
+          <ScheduledTask id="3" />
         </Box>
       </TitledPageTemplate>
     );

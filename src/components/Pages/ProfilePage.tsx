@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Box, Button, Text, TitledPageTemplate } from "..";
+import { Box, Button, Icon, Text, TitledPageTemplate } from "..";
 
 export const ProfilePage = () => {
   const history = useHistory();
