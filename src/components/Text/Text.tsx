@@ -2,10 +2,13 @@ import React, { ReactChild } from "react";
 import styles from "./Text.module.css";
 import colorStyles from "../Colors.module.css";
 import classnames from "classnames";
+import { textColors } from "../types";
+
+type TextColors = typeof textColors[number];
 
 export const Text = (props: {
   kind: "h1" | "h2" | "h3" | "h4" | "normalcap" | "normal" | "caption";
-  color?: string;
+  color?: TextColors;
   children: ReactChild | ReactChild[];
   textAlign?: "center";
   display?: "inline" | "inlineBlock";

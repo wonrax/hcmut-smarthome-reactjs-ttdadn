@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React, { ReactChild, useState } from "react";
-import { Box, Button, Text, Checkbox, BackButton } from "..";
+import { Box, Button, Text, Checkbox } from "..";
 import styles from "./ScheduledTask.module.css";
 
 export const ScheduledTask = (props: { id: string }) => {
@@ -24,7 +24,8 @@ export const ScheduledTask = (props: { id: string }) => {
       <Box margins="mb24">
         <Box margins="mr16" display="inlineFlex">
           <Button
-            bgColor="bgDanger"
+            kind="secondary"
+            iconColor="danger"
             text="Xoá"
             iconPosition="left"
             iconName="Delete"
@@ -64,10 +65,19 @@ const Day = (props: { children: ReactChild }) => {
   };
 
   return (
-    <button className={cs} onClick={toggleEnabled}>
-      <Text kind="normalcap" display="inlineBlock" color={textColor}>
-        {props.children}
-      </Text>
-    </button>
+    // <button className={cs} onClick={toggleEnabled}>
+    //   <Text kind="normalcap" display="inlineBlock" color={textColor}>
+    //     {props.children}
+    //   </Text>
+    // </button>
+    <Box margins="mr8" display="inline">
+      <Button noDecoration onClick={toggleEnabled}>
+        <div className={cs}>
+          <Text kind="normalcap" display="inlineBlock" color={textColor}>
+            {props.children}
+          </Text>
+        </div>
+      </Button>
+    </Box>
   );
 };

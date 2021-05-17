@@ -2,12 +2,15 @@ import classnames from "classnames";
 import { Icons } from "../icons";
 import styles from "./Icon.module.css";
 import colorStyles from "../Colors.module.css";
+import { iconColors } from "../types";
+
+type IconColors = typeof iconColors[number];
 
 export const Icon = (props: {
   icon: string;
   iconBackground?: boolean;
   size?: number;
-  color?: "primary" | "white";
+  color?: IconColors;
 }) => {
   const IconComp: React.FunctionComponent<React.SVGProps<SVGSVGElement>> =
     Icons[props.icon];

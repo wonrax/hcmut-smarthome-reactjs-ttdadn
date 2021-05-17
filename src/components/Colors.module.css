@@ -8,7 +8,7 @@
 	--primary: #0B84F3;
 	--primary-10: #D8ECFF;
 	--danger: #FF4A55;
-	--success: #52E73A;
+	--success: #3bbb27;
 }
 
 .gray10 {
@@ -65,4 +65,12 @@
 
 .icon-white svg path {
 	fill: var(--white);
+}
+
+.icon-success svg path{
+	fill: var(--success);
+}
+
+.icon-danger svg path{
+	fill: var(--danger);
 }

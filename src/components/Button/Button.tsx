@@ -4,15 +4,24 @@ import { Link } from "react-router-dom";
 import { Box, Icon, InlineIcon, Text } from "..";
 import styles from "./Button.module.css";
 import colorStyles from "../Colors.module.css";
+import { iconColors } from "../types";
+import { backgroundColors } from "../types";
+
+type ButtonKind = "default" | "secondary" | "ghost";
+type IconColors = typeof iconColors[number];
+type BackgroundColors = typeof backgroundColors[number];
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 export const Button = (props: {
   children?: ReactChild;
   text?: string;
-  kind?: "default" | "secondary" | "ghost";
-  bgColor?: string;
+  kind?: ButtonKind;
+  bgColor?: BackgroundColors;
+  iconColor?: IconColors;
   iconPosition?: "left" | "right";
   iconName?: string;
-  as?: "button";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   noDecoration?: boolean;
   lhref?: string; // local href (cannot use outside URL)
@@ -21,62 +30,79 @@ export const Button = (props: {
   var renderingElementChildren;
   var renderingText;
 
+  const kind = props.kind || "default";
+
+  const BUTTON_BG_COLOR: { [key in ButtonKind]: BackgroundColors } = {
+    default: "primary",
+    secondary: "white",
+    ghost: "transparent",
+  };
+
+  const BUTTON_ICON_COLOR: { [key in ButtonKind]: IconColors } = {
+    default: "white",
+    secondary: "primary",
+    ghost: "primary",
+  };
+
+  const TEXT_COLOR_KIND = {
+    default: "white",
+    secondary: "gray100",
+    ghost: "primary",
+  };
+
+  const bgColor = (function () {
+    if (props.bgColor) return "bg" + capitalizeFirstLetter(props.bgColor);
+    return "bg" + capitalizeFirstLetter(BUTTON_BG_COLOR[kind]);
+  })();
+
+  const iconColor = (function () {
+    if (props.iconColor) return props.iconColor;
+    return BUTTON_ICON_COLOR[kind];
+  })() as IconColors;
+
   // Processing text if being passed
   if (props.text) {
     if (props.children)
-      throw "Either Button.props.text or Button.props.children can be specified at once.";
-    const textColor = (function () {
-      const textColorKind = {
-        default: "white",
-        secondary: "gray100",
-        ghost: "primary",
-      };
-      if (props.kind) return textColorKind[props.kind];
-      return textColorKind["default"];
-    })();
+      throw new Error(
+        "Either Button.props.text or Button.props.children can be specified at once."
+      );
+    const textColor = TEXT_COLOR_KIND[kind];
     renderingText = (
       <Text kind="normal" color={textColor}>
         {props.text}
       </Text>
     );
   } else if (!props.children) {
-    throw "Neither Button.props.text nor Button.props.children was specified.";
+    throw new Error(
+      "Neither Button.props.text nor Button.props.children was specified."
+    );
   }
 
-  const bgColor = (function () {
-    if (props.bgColor) return props.bgColor;
-    const bgColorKind = {
-      default: "bgPrimary",
-      secondary: "bgWhite",
-      ghost: "bgTransparent",
-    };
-    if (props.kind) return bgColorKind[props.kind];
-    return "bgPrimary"; //default
-  })();
+  const renderingElementMainChild = props.text ? renderingText : props.children;
+
   var cs;
-  // No decoration,
   if (props.noDecoration) {
     cs = styles["button-nodecoration"];
   } else {
     cs = classnames(
       styles.button,
       styles["button-nodecoration"],
-      props.kind ? styles[props.kind] : styles["default"],
+      styles[kind],
       colorStyles[bgColor]
     );
   }
 
-  const renderingElementMainChild = props.text ? renderingText : props.children;
-
   if (props.iconPosition) {
-    if (!props.iconName) throw "No Button.props.iconName was specified.";
-    if (props.kind === "ghost") throw 'Button type "ghost" doesn\'t use icon';
+    if (!props.iconName)
+      throw new Error("No Button.props.iconName was specified.");
+    if (kind === "ghost")
+      throw new Error('Button type "ghost" doesn\'t use icon');
 
-    const iconColor =
-      props.kind && props.kind !== "default" ? "primary" : "white" || "white";
     const iconElement = <Icon icon={props.iconName} color={iconColor} />;
+
     var leftElement;
     var rightElement;
+
     if (props.iconPosition === "left") {
       leftElement = <Box margins="mr8">{iconElement}</Box>;
       rightElement = renderingElementMainChild;
@@ -95,10 +121,13 @@ export const Button = (props: {
   } else {
     renderingElementChildren = renderingElementMainChild;
   }
+
   renderingElement = (
-    <button className={cs} onClick={props.onClick}>
-      {renderingElementChildren}
-    </button>
+    <div className={styles.wrapper}>
+      <button className={cs} onClick={props.onClick}>
+        {renderingElementChildren}
+      </button>
+    </div>
   );
 
   if (props.lhref) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Box, Button, InlineIcon, InlineLoading, Text } from "..";
+import { Box, Button, InlineLoading, Text } from "..";
 
 export const LoginPage = () => {
   const inputstyles: React.CSSProperties = {
@@ -26,10 +26,10 @@ export const LoginPage = () => {
     setTimeout(() => {
       setSignInState("done");
       setTimeout(() => {
-        let path = `/`;
+        let path = `/device`;
         history.push(path);
       }, 1000);
-    }, 4000);
+    }, 5000);
   };
 
   const passwordKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
@@ -72,23 +72,16 @@ export const LoginPage = () => {
             onKeyDown={passwordKeyDown}
           />
         </Box>
-        <InlineIcon>
-          <Box margins="mr16">
-            <Button
-              text="Đăng nhập"
-              onClick={signInClicked}
-              iconPosition="right"
-              iconName="Arrow-Right-Dash"
-            />
-          </Box>
-          <Box>
-            {signInState === "initial" ? (
-              ""
-            ) : (
-              <InlineLoading kind={signInState} />
-            )}
-          </Box>
-        </InlineIcon>
+        {signInState === "initial" ? (
+          <Button
+            text="Đăng nhập"
+            onClick={signInClicked}
+            iconPosition="right"
+            iconName="Arrow-Right-Dash"
+          />
+        ) : (
+          <InlineLoading kind={signInState} />
+        )}
       </form>
     </>
   );
