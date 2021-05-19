@@ -16,4 +16,4 @@ export const textColors = [
   "white",
   "primary",
   "primary10",
-];
+] as const;

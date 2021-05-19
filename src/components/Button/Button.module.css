@@ -1,6 +1,20 @@
 :root {
 	--button-min-height: calc(var(--normal-font-size) * 2.6667);
 }
+
+.button-nodecoration {
+	position: relative;
+	bottom: 0;
+	cursor: pointer;
+	user-select: none;
+	transition: all 0.2s ease;
+	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
+	transition-property: bottom, box-shadow;
+	transition-duration: 0.2s;
+	transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 .button {
 	border-radius: var(--border-radius);
 	width: fit-content;
@@ -11,30 +25,18 @@
 	padding: 0 16px 0 16px;
 	position: relative;
 	bottom: 0;
-	transition: all 0.2s ease;
-}
-
-.button-nodecoration {
-	position: relative;
-	bottom: 0;
-	cursor: pointer;
-	user-select: none;
-	transition: all 0.2s ease;
 }
 
 .secondary {
 	box-shadow: var(--card-shadow);
-
 }
 
 .wrapper {
 	display: inline-flex;
 }
 
-.wrapper:hover .button-nodecoration {
-	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px white; */
+.wrapper:hover .button {
 	bottom: 3px;
-	transition: all 0.2s ease;
 }
 
 .wrapper:hover .default {
@@ -43,10 +45,4 @@
 
 .wrapper:hover .secondary {
 	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
-}
-
-/*No decoration hover style*/
-.wrapper:hover > :not(.secondary, .default) > div{
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
-	transition: all 0.2s ease;
 }

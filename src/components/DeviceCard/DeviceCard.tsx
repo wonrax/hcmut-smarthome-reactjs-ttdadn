@@ -42,7 +42,7 @@ const DeviceBrief = (props: subProps) => {
           {props.textBeneath ? (
             <>
               <Box margins="mb4">
-                <Text key="heading" kind="h4">
+                <Text key="heading" kind="h4" color="primary">
                   {props.textAbove}
                 </Text>
               </Box>

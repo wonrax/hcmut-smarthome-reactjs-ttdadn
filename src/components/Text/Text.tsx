@@ -10,7 +10,7 @@ export const Text = (props: {
   kind: "h1" | "h2" | "h3" | "h4" | "normalcap" | "normal" | "caption";
   color?: TextColors;
   children: ReactChild | ReactChild[];
-  textAlign?: "center";
+  align?: "center";
   display?: "inline" | "inlineBlock";
 }) => {
   var TagName = "p";
@@ -23,7 +23,7 @@ export const Text = (props: {
     styles.text,
     styles[props.kind],
     props.color ? colorStyles[props.color] : colorStyles["gray100"],
-    props.textAlign && styles[props.textAlign],
+    props.align && styles[props.align],
     props.display && styles[props.display]
   );
 

@@ -79,9 +79,19 @@ class HomePage extends React.Component<{}, Homestates> {
         </Box>
         {/* Welcome ----- */}
         {/* ------------- */}
-        <Box>
-          <Text kind="normal" color="gray70">{`Chào ${this.timeOfDay}`}</Text>
-          <Text kind="h1" color="gray100">{`${this.hour}:${this.minute}`}</Text>
+        <Box align="center">
+          <Box>
+            <Text
+              align="center"
+              kind="h3"
+              color="gray50"
+            >{`Chào ${this.timeOfDay}`}</Text>
+            <Text
+              align="center"
+              kind="h1"
+              color="gray100"
+            >{`${this.hour}:${this.minute}`}</Text>
+          </Box>
         </Box>
         {/* Weather ----- */}
         {/* ------------- */}

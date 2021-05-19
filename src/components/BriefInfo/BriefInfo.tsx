@@ -5,6 +5,7 @@ import { Box, Icon, InlineIcon, Text } from "..";
 export const BriefInfo = (props: { main: string; info: string }) => {
   return (
     <div className={styles["brief-info"]}>
+      Text
       <InlineIcon>
         <Box wid="100">
           <Text kind="h2" color="primary">

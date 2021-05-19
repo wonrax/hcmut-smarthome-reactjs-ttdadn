@@ -13,22 +13,24 @@ function App() {
   return (
     <Router>
       <div className="SmartHome">
-        <Box paddings={["pt64", "pb64", "pl16", "pr16"]}>
-          <Switch>
-            <Route path="/profile">
-              <ProfilePage />
-            </Route>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/device">
-              <DeviceInfoPage />
-            </Route>
-            <Route path="/">
-              <HomePage />
-            </Route>
-          </Switch>
-        </Box>
+        <div className="container">
+          <Box paddings={["pt64", "pb64", "pl16", "pr16"]}>
+            <Switch>
+              <Route path="/profile">
+                <ProfilePage />
+              </Route>
+              <Route path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="/device">
+                <DeviceInfoPage />
+              </Route>
+              <Route path="/">
+                <HomePage />
+              </Route>
+            </Switch>
+          </Box>
+        </div>
       </div>
     </Router>
   );

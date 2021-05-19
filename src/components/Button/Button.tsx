@@ -6,9 +6,11 @@ import styles from "./Button.module.css";
 import colorStyles from "../Colors.module.css";
 import { iconColors } from "../types";
 import { backgroundColors } from "../types";
+import { textColors } from "../types";
 
 type ButtonKind = "default" | "secondary" | "ghost";
 type IconColors = typeof iconColors[number];
+type TextColors = typeof textColors[number];
 type BackgroundColors = typeof backgroundColors[number];
 const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -44,7 +46,7 @@ export const Button = (props: {
     ghost: "primary",
   };
 
-  const TEXT_COLOR_KIND = {
+  const TEXT_COLOR_KIND: { [key in ButtonKind]: TextColors } = {
     default: "white",
     secondary: "gray100",
     ghost: "primary",
