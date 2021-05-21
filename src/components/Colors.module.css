@@ -6,6 +6,7 @@
 	--gray-100: #232323;
 	--white: white;
 	--primary: #0B84F3;
+	--primary-darker: #0a6fce;
 	--primary-10: #D8ECFF;
 	--danger: #FF4A55;
 	--success: #3bbb27;
@@ -49,6 +50,10 @@
 
 .bgPrimary {
 	background-color: var(--primary);
+}
+
+.bgPrimaryDarker {
+	background-color: var(--primary-darker);
 }
 
 .bgDanger {

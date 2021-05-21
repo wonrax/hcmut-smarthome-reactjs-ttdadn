@@ -3,6 +3,7 @@ export const backgroundColors = [
   "primary",
   "danger",
   "transparent",
+  "primaryDarker",
 ] as const;
 
 export const iconColors = ["primary", "white", "success", "danger"] as const;

@@ -8,7 +8,7 @@ import { iconColors } from "../types";
 import { backgroundColors } from "../types";
 import { textColors } from "../types";
 
-type ButtonKind = "default" | "secondary" | "ghost";
+type ButtonKind = "default" | "secondary" | "ghost" | "danger";
 type IconColors = typeof iconColors[number];
 type TextColors = typeof textColors[number];
 type BackgroundColors = typeof backgroundColors[number];
@@ -20,13 +20,12 @@ export const Button = (props: {
   children?: ReactChild;
   text?: string;
   kind?: ButtonKind;
-  bgColor?: BackgroundColors;
-  iconColor?: IconColors;
   iconPosition?: "left" | "right";
   iconName?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   noDecoration?: boolean;
   lhref?: string; // local href (cannot use outside URL)
+  wid?: "100";
 }) => {
   var renderingElement;
   var renderingElementChildren;
@@ -38,27 +37,28 @@ export const Button = (props: {
     default: "primary",
     secondary: "white",
     ghost: "transparent",
+    danger: "white",
   };
 
   const BUTTON_ICON_COLOR: { [key in ButtonKind]: IconColors } = {
     default: "white",
     secondary: "primary",
     ghost: "primary",
+    danger: "danger",
   };
 
   const TEXT_COLOR_KIND: { [key in ButtonKind]: TextColors } = {
     default: "white",
     secondary: "gray100",
     ghost: "primary",
+    danger: "gray100",
   };
 
   const bgColor = (function () {
-    if (props.bgColor) return "bg" + capitalizeFirstLetter(props.bgColor);
     return "bg" + capitalizeFirstLetter(BUTTON_BG_COLOR[kind]);
   })();
 
   const iconColor = (function () {
-    if (props.iconColor) return props.iconColor;
     return BUTTON_ICON_COLOR[kind];
   })() as IconColors;
 
@@ -124,8 +124,12 @@ export const Button = (props: {
     renderingElementChildren = renderingElementMainChild;
   }
 
+  const wrapperCs = classnames(
+    props.wid && styles["wid" + props.wid],
+    styles.wrapper
+  );
   renderingElement = (
-    <div className={styles.wrapper}>
+    <div className={wrapperCs}>
       <button className={cs} onClick={props.onClick}>
         {renderingElementChildren}
       </button>

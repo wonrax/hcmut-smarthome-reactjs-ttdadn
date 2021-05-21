@@ -24,8 +24,7 @@ export const ScheduledTask = (props: { id: string }) => {
       <Box margins="mb24">
         <Box margins="mr16" display="inlineFlex">
           <Button
-            kind="secondary"
-            iconColor="danger"
+            kind="danger"
             text="Xoá"
             iconPosition="left"
             iconName="Delete"

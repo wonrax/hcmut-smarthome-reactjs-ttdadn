@@ -4,15 +4,15 @@
 
 .button-nodecoration {
 	position: relative;
-	bottom: 0;
 	cursor: pointer;
 	user-select: none;
-	transition: all 0.2s ease;
 	pointer-events: auto;
 	-webkit-tap-highlight-color: transparent;
-	transition-property: bottom, box-shadow;
+	transition-property: bottom, box-shadow, background-color;
 	transition-duration: 0.2s;
 	transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+	display: inline-flex;
+	width: 100%;
 }
 
 .button {
@@ -24,7 +24,6 @@
 	justify-content: center;
 	padding: 0 16px 0 16px;
 	position: relative;
-	bottom: 0;
 }
 
 .secondary {
@@ -35,14 +34,34 @@
 	display: inline-flex;
 }
 
-.wrapper:hover .button {
-	bottom: 3px;
-}
-
-.wrapper:hover .default {
-	box-shadow: var(--card-shadow-darker);
+.wid100 {
+	width: 100%;
 }
 
 .wrapper:hover .secondary {
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
+	background-color: var(--primary);
+}
+
+.wrapper:hover .secondary p {
+	color: var(--white);
+}
+
+.wrapper:hover .secondary path {
+	fill: var(--white);
+}
+
+.wrapper:hover .danger {
+	background-color: var(--danger);
+}
+
+.wrapper:hover .danger p {
+	color: var(--white);
+}
+
+.wrapper:hover .danger path {
+	fill: var(--white);
+}
+
+.wrapper:hover .default {
+	background-color: var(--primary-darker);
 }
