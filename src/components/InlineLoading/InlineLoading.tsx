@@ -19,7 +19,7 @@ export const InlineLoading = (props: {
     return () => {
       clearTimeout(timeout);
     };
-  }, [props.kind]);
+  }, [props.kind, props.loadingMessage]);
   return (
     <div
       style={{

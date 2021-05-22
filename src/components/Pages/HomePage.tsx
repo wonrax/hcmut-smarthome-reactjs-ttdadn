@@ -58,7 +58,7 @@ class HomePage extends React.Component<{}, Homestates> {
       light: "Light",
     };
     const statusMapping: { [key: string]: boolean } = {
-      On: true,
+      ON: true,
       OFF: false,
     };
     axios(url)
@@ -75,6 +75,7 @@ class HomePage extends React.Component<{}, Homestates> {
                     deviceDescription={device.description}
                     deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
                     defaultStatus={statusMapping[device.status]}
+                    device_id={device["device-id"]}
                   />
                 </Box>
               );
@@ -205,6 +206,7 @@ const FakeDevice = (props: { seed: 0 | 1 | 2 | 3 }) => {
         deviceName={titles[props.seed]}
         deviceDescription={descriptions[props.seed]}
         deviceAutomationInfo={automateInfos[props.seed]}
+        device_id={1}
       />
     </Box>
   );

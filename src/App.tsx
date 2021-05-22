@@ -22,7 +22,7 @@ function App() {
               <Route path="/login">
                 <LoginPage />
               </Route>
-              <Route path="/device">
+              <Route path="/devices/:device_id">
                 <DeviceInfoPage />
               </Route>
               <Route path="/">
