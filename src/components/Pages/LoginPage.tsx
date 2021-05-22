@@ -55,6 +55,7 @@ export const LoginPage = () => {
             type="text"
             style={inputstyles}
             placeholder="03842xx.xx"
+            autoFocus
           />
         </Box>
         <label htmlFor="password">

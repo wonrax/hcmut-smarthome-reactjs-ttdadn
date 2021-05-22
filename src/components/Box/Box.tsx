@@ -33,7 +33,7 @@ export const Box = (props: {
   paddings?: Padding | Padding[];
   wid?: string;
   hei?: string;
-  align?: "center";
+  align?: "hcenter" | "vcenter";
   display?: "inlineFlex" | "inline";
 }) => {
   var cs = classnames(

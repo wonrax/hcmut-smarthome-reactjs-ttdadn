@@ -23,9 +23,11 @@ export const Button = (props: {
   iconPosition?: "left" | "right";
   iconName?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onFocus?: React.FocusEventHandler<HTMLDivElement>;
   noDecoration?: boolean;
   lhref?: string; // local href (cannot use outside URL)
   wid?: "100";
+  as?: "div";
 }) => {
   var renderingElement;
   var renderingElementChildren;
@@ -128,13 +130,14 @@ export const Button = (props: {
     props.wid && styles["wid" + props.wid],
     styles.wrapper
   );
-  renderingElement = (
-    <div className={wrapperCs}>
-      <button className={cs} onClick={props.onClick}>
-        {renderingElementChildren}
-      </button>
-    </div>
+
+  const renderingButton = React.createElement(
+    props.as ? props.as : "button",
+    { className: cs, onClick: props.onClick, onFocus: props.onFocus },
+    renderingElementChildren
   );
+
+  renderingElement = <div className={wrapperCs}>{renderingButton}</div>;
 
   if (props.lhref) {
     // Wrapping link outside

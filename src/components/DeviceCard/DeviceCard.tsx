@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./DeviceCard.module.css";
 import { Button, Text } from "..";
 import { Box } from "..";
@@ -13,14 +13,14 @@ type subProps = {
   textBeneath?: string;
   handleOnMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   handleOnMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  handleFocus?: React.FocusEventHandler<HTMLDivElement>;
 };
 
 const DeviceBrief = (props: subProps) => {
   const [isToggleOn, setIsToggleOn] = useState<boolean>(false);
-  const toggleDevice: React.MouseEventHandler<HTMLButtonElement> | undefined =
-    () => {
-      setIsToggleOn(!isToggleOn);
-    };
+  const toggleDevice: React.MouseEventHandler<HTMLButtonElement> = () => {
+    setIsToggleOn(!isToggleOn);
+  };
   const history = useHistory();
   const deviceInfoClicked = () => {
     let path = `/device`;
@@ -43,9 +43,8 @@ const DeviceBrief = (props: subProps) => {
         className={styles["device-brief"]}
       >
         <InlineIcon>
-          {/* Cheat to get aligned icons */}
           <Icon icon={props.leftIcon}></Icon>
-          <Box margins={["mr16", "ml16"]} wid="100" hei="100">
+          <Box margins={["mr16", "ml16"]} wid="100" hei="100" align="vcenter">
             {props.textBeneath ? (
               <>
                 <Box margins="mb4">

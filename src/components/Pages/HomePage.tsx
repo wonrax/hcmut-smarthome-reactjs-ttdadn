@@ -69,7 +69,7 @@ class HomePage extends React.Component<{}, Homestates> {
             <Box wid="100" hei="100">
               <Text kind="h3">SmartHome</Text>
             </Box>
-            <Button lhref="/profile" noDecoration>
+            <Button as="div" lhref="/profile" noDecoration>
               <Icon icon="Profile" iconBackground></Icon>
             </Button>
           </InlineIcon>
@@ -79,7 +79,7 @@ class HomePage extends React.Component<{}, Homestates> {
         </Box>
         {/* Welcome ----- */}
         {/* ------------- */}
-        <Box align="center">
+        <Box align="hcenter">
           <Box>
             <Text
               align="center"

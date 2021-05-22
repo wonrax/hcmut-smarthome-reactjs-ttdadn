@@ -33,18 +33,18 @@
 	background-color: transparent;
 }
 
-.device-brief:hover {
+.device-brief:hover, .device-brief:focus, .device-brief:focus-visible {
 	background-color: var(--primary);
 }
 
-.device-brief:hover p{
+.device-brief:hover p, .device-brief:focus p, .device-brief:focus-visible p{
 	color: var(--white);
 }
 
-.device-brief:hover h4{
+.device-brief:hover h4, .device-brief:focus h4, .device-brief:focus-visible h4{
 	color: var(--white);
 }
 
-.device-brief:hover path{
+.device-brief:hover path, .device-brief:focus path, .device-brief:focus-visible path {
 	fill: var(--white);
 }
