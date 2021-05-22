@@ -13,7 +13,7 @@ export const Checkbox = (props: {
         className={styles.input}
         id={props.id}
         type="checkbox"
-        checked={props.isDefaultChecked}
+        defaultChecked={props.isDefaultChecked}
       />
       <label className={styles.label} htmlFor={props.id}>
         <Text kind="normal" display="inline">

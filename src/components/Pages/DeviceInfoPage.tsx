@@ -110,6 +110,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
       let response = await axios(url);
       setResponse(response);
       setFetched(true);
+      setScheduleEnabled(response.data.mode !== 0 ? true : false);
     };
     fetchDeviceInfo();
   }, [device_id]);
