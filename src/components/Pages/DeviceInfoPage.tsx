@@ -4,19 +4,20 @@ import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
 import { TitledPageTemplate } from "../Utils";
 import { useParams } from "react-router";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 type propsTypes = {};
 
 export const DeviceInfoPage = (props: propsTypes) => {
   const [isScheduleEnabled, setScheduleEnabled] = useState<boolean>(false);
-  const [deviceInfo, setDeviceInfo] = useState<JSX.Element | JSX.Element[]>(
+  const deviceInfo = (
     <InlineLoading
       kind="loading"
       loadingMessage="Đang tải thông tin thiết bị..."
     />
   );
   const [isFetched, setFetched] = useState<boolean>(false);
+  const [response, setResponse] = useState<AxiosResponse>();
 
   const { device_id } = useParams<{ device_id: string }>();
 
@@ -24,11 +25,30 @@ export const DeviceInfoPage = (props: propsTypes) => {
     setScheduleEnabled(!isScheduleEnabled);
   };
 
+  const scheduleList =
+    isFetched &&
+    response?.data.schedule.map((schedule: any, index: number) => {
+      return (
+        <ScheduledTask
+          key={index}
+          id={index.toString()}
+          enabledDays={schedule.repeat_day}
+        />
+      );
+    });
+
   const DeviceInfoRaw = () => (
     <>
-      {deviceInfo}
-      {isFetched && (
+      {isFetched ? (
         <>
+          <Box margins="mb8">
+            <Text kind="normal">{response?.data.device_name}</Text>
+          </Box>
+          <Box margins="mb32">
+            <Text kind="normal" color="gray70">
+              {response?.data.description}
+            </Text>
+          </Box>
           <Box margins="mb32">
             <Button
               text="Xem thống kê sử dụng"
@@ -72,12 +92,10 @@ export const DeviceInfoPage = (props: propsTypes) => {
           <Box margins="mb32">
             <Button text="Đặt lịch mới" iconPosition="left" iconName="Plus" />
           </Box>
-          <Box>
-            <ScheduledTask id="1" />
-            <ScheduledTask id="2" />
-            <ScheduledTask id="3" />
-          </Box>
+          <Box>{scheduleList}</Box>
         </>
+      ) : (
+        deviceInfo
       )}
     </>
   );
@@ -85,22 +103,11 @@ export const DeviceInfoPage = (props: propsTypes) => {
   useEffect(() => {
     document.title = "Device";
 
-    const url = "http://localhost:8000/api/@0789123456/devices/" + device_id;
+    const url =
+      "http://10.228.11.249:8000/api/@0789123456/devices/" + device_id;
     const fetchDeviceInfo = async function () {
       let response = await axios(url);
-      console.log(response.data);
-      setDeviceInfo(
-        <>
-          <Box margins="mb8">
-            <Text kind="normal">{response.data.device_name}</Text>
-          </Box>
-          <Box margins="mb32">
-            <Text kind="normal" color="gray70">
-              {response.data.description}
-            </Text>
-          </Box>
-        </>
-      );
+      setResponse(response);
       setFetched(true);
     };
     fetchDeviceInfo();

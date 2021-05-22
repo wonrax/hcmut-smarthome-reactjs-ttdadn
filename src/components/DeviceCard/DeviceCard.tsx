@@ -4,7 +4,7 @@ import { Button, Text } from "..";
 import { Box } from "..";
 import { InlineIcon, Icon } from "..";
 import { useHistory } from "react-router-dom";
-import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 type subProps = {
   leftIcon: string;
@@ -24,7 +24,7 @@ const DeviceBrief = (props: subProps) => {
     typeof props.defaultStatus != "undefined" ? props.defaultStatus : false
   );
   const toggleDevice: React.MouseEventHandler<HTMLButtonElement> = () => {
-    let url = `http://localhost:8000/api/@0789123456/devices`;
+    let url = `http://10.228.11.249:8000/api/@0789123456/devices`;
     const postData: AxiosRequestConfig = {
       method: "post",
       url: url,
@@ -33,13 +33,14 @@ const DeviceBrief = (props: subProps) => {
         data: isToggleOn ? "OFF" : "ON",
       },
     };
-    let response;
+    let response: AxiosResponse;
     async function toggleDeviceRemote() {
       try {
         response = await axios(postData);
         setIsToggleOn(!isToggleOn);
       } catch (e) {
         console.log(e);
+        console.log(response);
       }
     }
     toggleDeviceRemote();

@@ -3,7 +3,27 @@ import React, { ReactChild, useState } from "react";
 import { Box, Button, Text, Checkbox } from "..";
 import styles from "./ScheduledTask.module.css";
 
-export const ScheduledTask = (props: { id: string }) => {
+export const ScheduledTask = (props: { id: string; enabledDays: number[] }) => {
+  const enabledDayMapping: { [key: number]: boolean } = {};
+  const mappings: number[] = [1, 2, 3, 4, 5, 6, 7];
+  mappings.map((value, index) => {
+    if (props.enabledDays.includes(value)) enabledDayMapping[value] = true;
+    else enabledDayMapping[value] = false;
+    return undefined;
+  });
+
+  const listOfDays = (
+    <>
+      <Day isDefaultEnabled={enabledDayMapping[2]}>T2</Day>
+      <Day isDefaultEnabled={enabledDayMapping[3]}>T3</Day>
+      <Day isDefaultEnabled={enabledDayMapping[4]}>T4</Day>
+      <Day isDefaultEnabled={enabledDayMapping[5]}>T5</Day>
+      <Day isDefaultEnabled={enabledDayMapping[6]}>T6</Day>
+      <Day isDefaultEnabled={enabledDayMapping[7]}>T7</Day>
+      <Day isDefaultEnabled={enabledDayMapping[1]}>CN</Day>
+    </>
+  );
+
   return (
     <div>
       <Box margins="mb24">
@@ -12,15 +32,7 @@ export const ScheduledTask = (props: { id: string }) => {
       <Box margins="mb16">
         <Checkbox label="Lặp lại" id={props.id} />
       </Box>
-      <Box margins="mb24">
-        <Day>T2</Day>
-        <Day>T3</Day>
-        <Day>T4</Day>
-        <Day>T5</Day>
-        <Day>T6</Day>
-        <Day>T7</Day>
-        <Day>CN</Day>
-      </Box>
+      <Box margins="mb24">{listOfDays}</Box>
       <Box margins="mb24">
         <Box margins="mr16" display="inlineFlex">
           <Button
@@ -49,8 +61,8 @@ export const ScheduledTask = (props: { id: string }) => {
   );
 };
 
-const Day = (props: { children: ReactChild }) => {
-  const [isEnabled, setIsEnabled] = useState<boolean>(false);
+const Day = (props: { children: ReactChild; isDefaultEnabled: boolean }) => {
+  const [isEnabled, setIsEnabled] = useState<boolean>(props.isDefaultEnabled);
 
   const cs = classnames(
     styles.day,

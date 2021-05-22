@@ -10,7 +10,6 @@ import {
   InlineLoading,
 } from "..";
 import axios from "axios";
-import { capitalizeFirstLetter } from "..";
 
 type Homestates = {
   deviceElements: JSX.Element[] | JSX.Element;
@@ -52,7 +51,7 @@ class HomePage extends React.Component<{}, Homestates> {
 
   componentDidMount() {
     document.title = "SmartHome";
-    const url = "http://localhost:8000/api/@0789123456/devices";
+    const url = "http://10.228.11.249:8000/api/@0789123456/devices";
     const deviceTypeMapping: { [key: string]: "Fan" | "Light" } = {
       fan: "Fan",
       light: "Light",
@@ -63,7 +62,6 @@ class HomePage extends React.Component<{}, Homestates> {
     };
     axios(url)
       .then((res) => {
-        console.log(capitalizeFirstLetter(res.data.devices[1].device_type));
         this.setState({
           deviceElements: res.data.devices.map((device: any, index: number) => {
             if (device.device_type === "fan" || device.device_type === "light")
