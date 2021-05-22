@@ -9,10 +9,12 @@ import {
   Button,
   InlineLoading,
 } from "..";
+import { baseURL } from "../api";
 import axios from "axios";
 
 type Homestates = {
   deviceElements: JSX.Element[] | JSX.Element;
+  weatherElements: JSX.Element[] | JSX.Element | undefined;
 };
 
 class HomePage extends React.Component<{}, Homestates> {
@@ -27,10 +29,20 @@ class HomePage extends React.Component<{}, Homestates> {
     super(props);
     this.state = {
       deviceElements: (
-        <InlineLoading
-          loadingMessage="Đang tải danh sách thiết bị..."
-          kind="loading"
-        />
+        <Box margins="mb16">
+          <InlineLoading
+            loadingMessage="Đang tải danh sách thiết bị..."
+            kind="loading"
+          />
+        </Box>
+      ),
+      weatherElements: (
+        <Box margins="mb16">
+          <InlineLoading
+            loadingMessage="Đang tải thông tin cảm biến..."
+            kind="loading"
+          />
+        </Box>
       ),
     };
     this.createFakeDevices = this.createFakeDevices.bind(this);
@@ -51,34 +63,57 @@ class HomePage extends React.Component<{}, Homestates> {
 
   componentDidMount() {
     document.title = "SmartHome";
-    const url = "http://10.228.11.249:8000/api/@0789123456/devices";
+    const url = baseURL + "/@0789123456/devices";
     const deviceTypeMapping: { [key: string]: "Fan" | "Light" } = {
       fan: "Fan",
       light: "Light",
     };
-    const statusMapping: { [key: string]: boolean } = {
-      ON: true,
-      OFF: false,
+    const statusMapping: { [key: number]: boolean } = {
+      1: true,
+      0: false,
     };
     axios(url)
       .then((res) => {
-        this.setState({
-          deviceElements: res.data.devices.map((device: any, index: number) => {
-            if (device.device_type === "fan" || device.device_type === "light")
-              return (
-                <Box key={index} margins="mb16">
-                  <DeviceCard
-                    deviceType={deviceTypeMapping[device.device_type]}
-                    deviceName={device.device_name}
-                    deviceDescription={device.description}
-                    deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
-                    defaultStatus={statusMapping[device.status]}
-                    device_id={device["device-id"]}
+        const deviceElements = [];
+        let weatherElements;
+        for (var i = 0; i < res.data.devices.length; i++) {
+          const device = res.data.devices[i];
+          const device_type = device.device_type;
+          if (device_type === "fan" || device_type === "light")
+            deviceElements.push(
+              <Box key={i} margins="mb16">
+                <DeviceCard
+                  deviceType={deviceTypeMapping[device_type]}
+                  deviceName={device.device_name}
+                  deviceDescription={device.description}
+                  deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
+                  defaultStatus={statusMapping[device.status]}
+                  device_id={device["device-id"]}
+                />
+              </Box>
+            );
+          else if (device_type === "ht sensor") {
+            weatherElements = (
+              <>
+                <Box>
+                  <BriefInfo
+                    main={device.status[0] + "°C"}
+                    info="Nhiệt độ trong nhà hiện tại"
                   />
                 </Box>
-              );
-            return "";
-          }),
+                <Box margins="mb32">
+                  <BriefInfo
+                    main={device.status[1] + "%"}
+                    info="Độ ẩm trong nhà hiện tại"
+                  />
+                </Box>
+              </>
+            );
+          }
+        }
+        this.setState({
+          deviceElements: deviceElements,
+          weatherElements: weatherElements,
         });
       })
       .catch((err) => {
@@ -123,12 +158,10 @@ class HomePage extends React.Component<{}, Homestates> {
         </Box>
         {/* Weather ----- */}
         {/* ------------- */}
-        <Box>
-          <BriefInfo main="27°C" info="Nhiệt độ trong nhà hiện tại" />
+        <Box margins="mb16">
+          <Text kind="h3">Thời tiết</Text>
         </Box>
-        <Box margins="mb32">
-          <BriefInfo main="68%" info="Độ ẩm trong nhà hiện tại" />
-        </Box>
+        {this.state.weatherElements}
         {/* Devices ----- */}
         {/* ------------- */}
         <Box margins="mb16">

@@ -3,7 +3,11 @@ import React, { ReactChild, useState } from "react";
 import { Box, Button, Text, Checkbox } from "..";
 import styles from "./ScheduledTask.module.css";
 
-export const ScheduledTask = (props: { id: string; enabledDays: number[] }) => {
+export const ScheduledTask = (props: {
+  id: string;
+  enabledDays: number[];
+  isDefaultRepeat: boolean;
+}) => {
   const enabledDayMapping: { [key: number]: boolean } = {};
   const mappings: number[] = [1, 2, 3, 4, 5, 6, 7];
   mappings.map((value, index) => {
@@ -30,7 +34,11 @@ export const ScheduledTask = (props: { id: string; enabledDays: number[] }) => {
         <Text kind="h2">18:00 - 12:00</Text>
       </Box>
       <Box margins="mb16">
-        <Checkbox label="Lặp lại" id={props.id} />
+        <Checkbox
+          isDefaultChecked={props.isDefaultRepeat}
+          label="Lặp lại"
+          id={props.id}
+        />
       </Box>
       <Box margins="mb24">{listOfDays}</Box>
       <Box margins="mb24">
