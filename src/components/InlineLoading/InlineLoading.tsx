@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Box, Icon, InlineIcon, Text } from "..";
 
-export const InlineLoading = (props: { kind: "loading" | "done" }) => {
+export const InlineLoading = (props: {
+  kind: "loading" | "done";
+  loadingMessage?: string;
+}) => {
   const [message, setMessage] = useState<string>("Đang gọi anh Bảnh...");
   useEffect(() => {
     const messageKind = {
-      loading: "Đang gọi anh Bảnh...",
-      waitMore: "Đợi thêm trút nữa",
+      loading: props.loadingMessage || "Đang gọi anh Bảnh...",
+      waitMore: "Đợi thêm chút nữa",
       done: "Anh Bảnh đã OK.",
     };
     setMessage(messageKind[props.kind]);

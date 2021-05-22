@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./DeviceCard.module.css";
 import { Button, Text } from "..";
 import { Box } from "..";
@@ -14,10 +14,13 @@ type subProps = {
   handleOnMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   handleOnMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   handleFocus?: React.FocusEventHandler<HTMLDivElement>;
+  defaultStatus?: boolean;
 };
 
 const DeviceBrief = (props: subProps) => {
-  const [isToggleOn, setIsToggleOn] = useState<boolean>(false);
+  const [isToggleOn, setIsToggleOn] = useState<boolean>(
+    typeof props.defaultStatus != "undefined" ? props.defaultStatus : false
+  );
   const toggleDevice: React.MouseEventHandler<HTMLButtonElement> = () => {
     setIsToggleOn(!isToggleOn);
   };
@@ -72,6 +75,7 @@ type Props = {
   deviceName: string;
   deviceDescription: string;
   deviceAutomationInfo: string;
+  defaultStatus?: boolean;
 };
 export const DeviceCard = (props: Props) => {
   const [isDividerVisible, setDividerVisible] = useState<boolean>(true);
@@ -91,6 +95,7 @@ export const DeviceCard = (props: Props) => {
         iconToggled="Toggle-On"
         textAbove={props.deviceName}
         textBeneath={props.deviceDescription}
+        defaultStatus={props.defaultStatus}
       />
       <div
         className={isDividerVisible ? styles.divider : styles.dividerInvisible}

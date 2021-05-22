@@ -1,6 +1,16 @@
 import React from "react";
-import { Icon, Text, DeviceCard, InlineIcon, Box, BriefInfo, Button } from "..";
+import {
+  Icon,
+  Text,
+  DeviceCard,
+  InlineIcon,
+  Box,
+  BriefInfo,
+  Button,
+  InlineLoading,
+} from "..";
 import axios from "axios";
+import { capitalizeFirstLetter } from "..";
 
 type Homestates = {
   deviceElements: JSX.Element[] | JSX.Element;
@@ -17,7 +27,12 @@ class HomePage extends React.Component<{}, Homestates> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      deviceElements: <Text kind="normal">Đang tải thiết bị...</Text>,
+      deviceElements: (
+        <InlineLoading
+          loadingMessage="Đang tải danh sách thiết bị..."
+          kind="loading"
+        />
+      ),
     };
     this.createFakeDevices = this.createFakeDevices.bind(this);
     this.fetchError = this.fetchError.bind(this);
@@ -37,20 +52,34 @@ class HomePage extends React.Component<{}, Homestates> {
 
   componentDidMount() {
     document.title = "SmartHome";
-    const url = "https://jsonplaceholder.typicode.com/todos/1";
+    const url = "http://localhost:8000/api/@0789123456/devices";
+    const deviceTypeMapping: { [key: string]: "Fan" | "Light" } = {
+      fan: "Fan",
+      light: "Light",
+    };
+    const statusMapping: { [key: string]: boolean } = {
+      On: true,
+      OFF: false,
+    };
     axios(url)
       .then((res) => {
+        console.log(capitalizeFirstLetter(res.data.devices[1].device_type));
         this.setState({
-          deviceElements: res.data.devices.map((device: any, index: number) => (
-            <Box key={index} margins="mb16">
-              <DeviceCard
-                deviceType="Fan"
-                deviceName={device["device-name"]}
-                deviceDescription="FN224"
-                deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
-              />
-            </Box>
-          )),
+          deviceElements: res.data.devices.map((device: any, index: number) => {
+            if (device.device_type === "fan" || device.device_type === "light")
+              return (
+                <Box key={index} margins="mb16">
+                  <DeviceCard
+                    deviceType={deviceTypeMapping[device.device_type]}
+                    deviceName={device.device_name}
+                    deviceDescription={device.description}
+                    deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
+                    defaultStatus={statusMapping[device.status]}
+                  />
+                </Box>
+              );
+            return "";
+          }),
         });
       })
       .catch((err) => {
@@ -132,7 +161,7 @@ class HomePage extends React.Component<{}, Homestates> {
         <Text kind="normal">{`Không thể tải danh sách thiết bị từ server ${url}`}</Text>
       ),
     });
-    setTimeout(this.createFakeDevices, 0);
+    this.createFakeDevices();
   }
 }
 

@@ -10,7 +10,7 @@ import { ScheduledTask } from "./ScheduledTask";
 import { ScrollToTop } from "./ScrollToTop";
 import { Text } from "./Text";
 import { InlineLoading } from "./InlineLoading";
-import { BackButton, TitledPageTemplate } from "./Utils";
+import { BackButton, TitledPageTemplate, capitalizeFirstLetter } from "./Utils";
 
 export {
   TitledPageTemplate,
@@ -30,4 +30,5 @@ export {
   Checkbox,
   InlineLoading,
   BackButton,
+  capitalizeFirstLetter,
 };
