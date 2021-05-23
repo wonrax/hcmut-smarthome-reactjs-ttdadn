@@ -10,6 +10,8 @@ export const ScheduledTask = (props: {
   timeRange: string;
   onDelete: (id: string) => void;
 }) => {
+  const [animationState, setAnimationState] =
+    useState<"initial" | "running">("initial");
   const enabledDayMapping: { [key: number]: boolean } = {};
   const mappings: number[] = [1, 2, 3, 4, 5, 6, 7];
   mappings.map((value, index) => {
@@ -31,11 +33,24 @@ export const ScheduledTask = (props: {
   );
 
   const handleOnClickDelete = () => {
-    props.onDelete(props.id);
+    setAnimationState("running");
   };
 
+  const handleOnAnimationEnd: React.TransitionEventHandler<HTMLDivElement> = (
+    e
+  ) => {
+    if (e.currentTarget.className === styles.scheduledTaskFading)
+      props.onDelete(props.id);
+  };
+
+  const cs = classnames(
+    animationState === "running"
+      ? styles.scheduledTaskFading
+      : styles.scheduledTask
+  );
+
   return (
-    <div>
+    <div className={cs} onTransitionEnd={handleOnAnimationEnd}>
       <Box margins="mb24">
         <Text kind="h2">{props.timeRange}</Text>
       </Box>

@@ -1,3 +1,15 @@
+.scheduledTask {
+	opacity: 100%;
+}
+.scheduledTaskFading {
+	opacity: 0%;
+	transform-origin: top center;
+	transform: translateX(100%);
+	transition-property: transform, opacity;
+	transition-duration: 0.3s, 0.2s;
+	transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 .day {
 	display: inline-flex;
 	border-radius: 50%;

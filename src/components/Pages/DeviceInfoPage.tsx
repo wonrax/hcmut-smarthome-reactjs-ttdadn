@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Icon, Box, Text, Button, InlineLoading } from "..";
 import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
@@ -76,7 +76,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
     );
     scheduleListRef.current = list_;
     setScheduleList(list_);
-  }, [isFetched]);
+  }, [isFetched, response]);
 
   return (
     <TitledPageTemplate title="Thông tin thiết bị" scrollToTop>
