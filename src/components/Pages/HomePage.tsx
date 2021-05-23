@@ -23,7 +23,6 @@ class HomePage extends React.Component<{}, Homestates> {
   minute: string;
   second: string;
   timeOfDay: string;
-  userFullName: string;
 
   constructor(props: {}) {
     super(props);
@@ -31,7 +30,7 @@ class HomePage extends React.Component<{}, Homestates> {
       deviceElements: (
         <Box margins="mb16">
           <InlineLoading
-            loadingMessage="Đang tải danh sách thiết bị..."
+            message="Đang tải danh sách thiết bị..."
             kind="loading"
           />
         </Box>
@@ -39,13 +38,13 @@ class HomePage extends React.Component<{}, Homestates> {
       weatherElements: (
         <Box margins="mb16">
           <InlineLoading
-            loadingMessage="Đang tải thông tin cảm biến..."
+            message="Đang tải thông tin cảm biến..."
             kind="loading"
           />
         </Box>
       ),
     };
-    this.createFakeDevices = this.createFakeDevices.bind(this);
+    this.createMockData = this.createMockData.bind(this);
     this.fetchError = this.fetchError.bind(this);
     this.date = new Date();
     [this.hour, this.minute, this.second] = this.date
@@ -58,7 +57,6 @@ class HomePage extends React.Component<{}, Homestates> {
       if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
       return "buổi chiều";
     }.bind(this)();
-    this.userFullName = "Hà Huy Long Hải";
   }
 
   componentDidMount() {
@@ -172,17 +170,34 @@ class HomePage extends React.Component<{}, Homestates> {
     );
   }
 
-  createFakeDevices() {
-    const fakeData = (
+  createMockData() {
+    const mockDevicesData = (
       <>
+        <Box margins="mb32">
+          <Text kind="caption">Displaying mock data</Text>
+        </Box>
         <FakeDevice seed={0} />
         <FakeDevice seed={1} />
         <FakeDevice seed={2} />
         <FakeDevice seed={3} />
       </>
     );
+    const mockWeatherData = (
+      <>
+        <Box margins="mb16">
+          <Text kind="caption">Displaying mock data</Text>
+        </Box>
+        <Box>
+          <BriefInfo main="27°C" info="Nhiệt độ trong nhà hiện tại" />
+        </Box>
+        <Box margins="mb32">
+          <BriefInfo main="68%" info="Độ ẩm trong nhà hiện tại" />
+        </Box>
+      </>
+    );
     this.setState({
-      deviceElements: fakeData,
+      deviceElements: mockDevicesData,
+      weatherElements: mockWeatherData,
     });
   }
 
@@ -190,10 +205,31 @@ class HomePage extends React.Component<{}, Homestates> {
     console.log("Error fetching url: " + url);
     this.setState({
       deviceElements: (
-        <Text kind="normal">{`Không thể tải danh sách thiết bị từ server ${url}`}</Text>
+        <InlineIcon>
+          <Icon icon="Error" />
+          <Box margins="ml16">
+            <Text kind="normal">
+              {`Không thể tải danh sách thiết bị từ server`}
+            </Text>
+            <Text kind="normal">Hiển thị mock data trong 3 giây...</Text>
+          </Box>
+        </InlineIcon>
+      ),
+      weatherElements: (
+        <Box margins="mb32">
+          <InlineIcon>
+            <Icon icon="Error" />
+            <Box margins="ml16">
+              <Text kind="normal">
+                {`Không thể tải dữ liệu nhiệt độ, độ ẩm từ server`}
+              </Text>
+              <Text kind="normal">Hiển thị mock data trong 3 giây...</Text>
+            </Box>
+          </InlineIcon>
+        </Box>
       ),
     });
-    this.createFakeDevices();
+    setTimeout(this.createMockData, 3000);
   }
 }
 

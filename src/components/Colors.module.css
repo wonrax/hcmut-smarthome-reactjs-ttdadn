@@ -32,6 +32,10 @@
 	color: var(--gray-100);
 }
 
+.danger {
+	color: var(--danger);
+}
+
 .white {
 	color: var(--white);
 }

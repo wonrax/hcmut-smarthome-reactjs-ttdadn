@@ -12,10 +12,7 @@ type propsTypes = {};
 export const DeviceInfoPage = (props: propsTypes) => {
   const [isScheduleEnabled, setScheduleEnabled] = useState<boolean>(false);
   const deviceInfo = (
-    <InlineLoading
-      kind="loading"
-      loadingMessage="Đang tải thông tin thiết bị..."
-    />
+    <InlineLoading kind="loading" message="Đang tải thông tin thiết bị..." />
   );
   const [isFetched, setFetched] = useState<boolean>(false);
   const [response, setResponse] = useState<AxiosResponse>();
