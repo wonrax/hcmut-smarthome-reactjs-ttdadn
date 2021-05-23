@@ -8,6 +8,7 @@ export const ScheduledTask = (props: {
   enabledDays: number[];
   isDefaultRepeat: boolean;
   timeRange: string;
+  onDelete: (id: string) => void;
 }) => {
   const enabledDayMapping: { [key: number]: boolean } = {};
   const mappings: number[] = [1, 2, 3, 4, 5, 6, 7];
@@ -29,6 +30,10 @@ export const ScheduledTask = (props: {
     </>
   );
 
+  const handleOnClickDelete = () => {
+    props.onDelete(props.id);
+  };
+
   return (
     <div>
       <Box margins="mb24">
@@ -49,6 +54,7 @@ export const ScheduledTask = (props: {
             text="Xoá"
             iconPosition="left"
             iconName="Delete"
+            onClick={handleOnClickDelete}
           />
         </Box>
         <Button
