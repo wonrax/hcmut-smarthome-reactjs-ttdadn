@@ -9,7 +9,7 @@ import {
   Button,
   InlineLoading,
 } from "..";
-import { baseURL } from "../api";
+import { baseURL, testUser } from "../api";
 import axios from "axios";
 
 type Homestates = {
@@ -61,7 +61,7 @@ class HomePage extends React.Component<{}, Homestates> {
 
   componentDidMount() {
     document.title = "SmartHome";
-    const url = baseURL + "/@0789123456/devices";
+    const url = baseURL + "/@" + testUser + "/devices";
     const deviceTypeMapping: { [key: string]: "Fan" | "Light" } = {
       fan: "Fan",
       light: "Light",
@@ -90,7 +90,7 @@ class HomePage extends React.Component<{}, Homestates> {
                 />
               </Box>
             );
-          else if (device_type === "ht sensor") {
+          else if (device_type === "temperature") {
             weatherElements = (
               <>
                 <Box>

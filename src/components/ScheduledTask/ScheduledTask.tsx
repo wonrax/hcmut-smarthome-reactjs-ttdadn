@@ -7,6 +7,7 @@ export const ScheduledTask = (props: {
   id: string;
   enabledDays: number[];
   isDefaultRepeat: boolean;
+  timeRange: string;
 }) => {
   const enabledDayMapping: { [key: number]: boolean } = {};
   const mappings: number[] = [1, 2, 3, 4, 5, 6, 7];
@@ -31,7 +32,7 @@ export const ScheduledTask = (props: {
   return (
     <div>
       <Box margins="mb24">
-        <Text kind="h2">18:00 - 12:00</Text>
+        <Text kind="h2">{props.timeRange}</Text>
       </Box>
       <Box margins="mb16">
         <Checkbox

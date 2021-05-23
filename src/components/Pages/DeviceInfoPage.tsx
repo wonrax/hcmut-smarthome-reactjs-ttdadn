@@ -4,7 +4,7 @@ import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
 import { TitledPageTemplate } from "../Utils";
 import { useParams } from "react-router";
-import { baseURL } from "../api";
+import { baseURL, testUser } from "../api";
 import axios, { AxiosResponse } from "axios";
 
 type propsTypes = {};
@@ -32,6 +32,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
           id={index.toString()}
           enabledDays={schedule.repeat_day}
           isDefaultRepeat={schedule.is_repeat}
+          timeRange={schedule.time_on + " - " + schedule.time_off}
         />
       );
     });
@@ -102,7 +103,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
   useEffect(() => {
     document.title = "Device";
 
-    const url = baseURL + "/@0789123456/devices/" + device_id;
+    const url = baseURL + "/@" + testUser + "/devices/" + device_id;
     const fetchDeviceInfo = async function () {
       let response = await axios(url);
       setResponse(response);

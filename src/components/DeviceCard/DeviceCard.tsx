@@ -5,7 +5,7 @@ import { Box } from "..";
 import { InlineIcon, Icon } from "..";
 import { useHistory } from "react-router-dom";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { baseURL } from "../api";
+import { baseURL, testUser } from "../api";
 
 type subProps = {
   leftIcon: string;
@@ -25,7 +25,7 @@ const DeviceBrief = (props: subProps) => {
     typeof props.defaultStatus != "undefined" ? props.defaultStatus : false
   );
   const toggleDevice: React.MouseEventHandler<HTMLButtonElement> = () => {
-    let url = baseURL + `/@0789123456/devices`;
+    let url = baseURL + "/@" + testUser + "/devices";
     const postData: AxiosRequestConfig = {
       method: "post",
       url: url,
