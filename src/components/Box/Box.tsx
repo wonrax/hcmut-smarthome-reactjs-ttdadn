@@ -5,6 +5,7 @@ import classnames from "classnames";
 const availableMargins = [
   "mb4",
   "mt4",
+  "mt16",
   "mb8",
   "mb16",
   "mb24",

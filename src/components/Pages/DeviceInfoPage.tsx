@@ -68,7 +68,8 @@ export const DeviceInfoPage = (props: propsTypes) => {
             id={index.toString()}
             enabledDays={schedule.repeat_day}
             isDefaultRepeat={schedule.is_repeat}
-            timeRange={schedule.time_on + " - " + schedule.time_off}
+            timeOn={schedule.time_on}
+            timeOff={schedule.time_off}
             onDelete={handleOnDeleteSchedule}
           />
         );

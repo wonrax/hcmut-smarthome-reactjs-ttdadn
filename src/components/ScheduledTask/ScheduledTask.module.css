@@ -42,3 +42,11 @@
 	/* border: var(--border-width) solid var(--gray-20); */
 	box-shadow: var(--card-shadow);
 }
+
+.timeChangeModal {
+	display: block;
+}
+
+.timeChangeModalHidden {
+	display: none;
+}
