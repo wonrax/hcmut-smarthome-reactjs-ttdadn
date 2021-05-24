@@ -104,22 +104,19 @@ export const DeviceInfoPage = (props: propsTypes) => {
               <Text kind="h3">Hẹn giờ</Text>
             </Box>
             <Box margins="mb8">
-              <button
+              <Button
                 onClick={toggleScheduleEnabled}
-                style={{
-                  cursor: "pointer",
-                  userSelect: "none",
-                  width: "100%",
-                  textAlign: "left",
-                }}
+                noDecoration
+                wid="100"
+                textAlign="left"
               >
                 <InlineIcon>
-                  <Box wid="100" hei="100" margins="mr16">
+                  <Box wid="100" hei="100" margins="mr16" align="vcenter">
                     <Text kind="normal">Kích hoạt tính năng hẹn giờ</Text>
                   </Box>
                   <Icon icon={isScheduleEnabled ? "Toggle-On" : "Toggle-Off"} />
                 </InlineIcon>
-              </button>
+              </Button>
             </Box>
             <Box margins="mb32">
               <InlineIcon>

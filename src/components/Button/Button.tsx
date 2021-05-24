@@ -28,6 +28,7 @@ export const Button = (props: {
   lhref?: string; // local href (cannot use outside URL)
   wid?: "100";
   as?: "div";
+  textAlign?: "left";
 }) => {
   var renderingElement;
   var renderingElementChildren;
@@ -86,7 +87,10 @@ export const Button = (props: {
 
   var cs;
   if (props.noDecoration) {
-    cs = styles["button-nodecoration"];
+    cs = classnames(
+      styles["button-nodecoration"],
+      props.textAlign && styles["textAlign" + props.textAlign]
+    );
   } else {
     cs = classnames(
       styles.button,

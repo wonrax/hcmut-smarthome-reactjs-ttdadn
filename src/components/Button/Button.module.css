@@ -65,3 +65,7 @@
 .wrapper:hover .default {
 	background-color: var(--primary-darker);
 }
+
+.textAlignleft {
+	text-align: left;
+}
