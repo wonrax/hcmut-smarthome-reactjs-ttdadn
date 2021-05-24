@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, TitledPageTemplate, Text } from "..";
+import { Box, Button, TitledPageTemplate, Text, LineGraph } from "..";
 
 export const StatisticsPage = () => {
   return (
@@ -53,6 +53,10 @@ export const StatisticsPage = () => {
           Thời gian sử dụng trong tháng này
         </Text>
       </Box>
+      <Box margins="mb32">
+        <Text kind="h3">Biểu đồ thời gian sử dụng theo ngày</Text>
+      </Box>
+      <LineGraph />
     </TitledPageTemplate>
   );
 };

@@ -1,10 +1,12 @@
 import { Box } from "./Box";
 import { BriefInfo } from "./BriefInfo";
 import { Button } from "./Button";
+import { LineGraph } from "./Charts";
 import { Checkbox } from "./Checkbox";
 import { DeviceCard } from "./DeviceCard";
 import { Icon } from "./Icon";
 import { InlineIcon } from "./InlineIcon";
+import { InlineLoading } from "./InlineLoading";
 import {
   DeviceInfoPage,
   HomePage,
@@ -15,8 +17,7 @@ import {
 import { ScheduledTask } from "./ScheduledTask";
 import { ScrollToTop } from "./ScrollToTop";
 import { Text } from "./Text";
-import { InlineLoading } from "./InlineLoading";
-import { BackButton, TitledPageTemplate, capitalizeFirstLetter } from "./Utils";
+import { BackButton, TitledPageTemplate } from "./Utils";
 
 export {
   TitledPageTemplate,
@@ -37,5 +38,5 @@ export {
   Checkbox,
   InlineLoading,
   BackButton,
-  capitalizeFirstLetter,
+  LineGraph,
 };
