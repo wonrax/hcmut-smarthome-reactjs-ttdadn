@@ -1,2 +1,3 @@
 import { LineGraph } from "./LineGraph";
-export { LineGraph };
+import { BarGraph } from "./BarGraph";
+export { LineGraph, BarGraph };

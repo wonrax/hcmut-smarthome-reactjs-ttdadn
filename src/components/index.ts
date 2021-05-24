@@ -1,7 +1,7 @@
 import { Box } from "./Box";
 import { BriefInfo } from "./BriefInfo";
 import { Button } from "./Button";
-import { LineGraph } from "./Charts";
+import { LineGraph, BarGraph } from "./Charts";
 import { Checkbox } from "./Checkbox";
 import { DeviceCard } from "./DeviceCard";
 import { Icon } from "./Icon";
@@ -39,4 +39,5 @@ export {
   InlineLoading,
   BackButton,
   LineGraph,
+  BarGraph,
 };

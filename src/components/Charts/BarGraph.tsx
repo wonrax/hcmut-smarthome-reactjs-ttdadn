@@ -51,24 +51,25 @@ Chart.register(
   Tooltip
 );
 
-export const LineGraph = () => {
+export const BarGraph = () => {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const ctx = chartRef.current?.getContext("2d");
     if (!ctx) return;
     const chart = new Chart(ctx, {
-      type: "line",
+      type: "bar",
       data: {
         //Bring in data
-        labels: ["17/05", "18/05", "19/05", "20/05", "21/05"],
+        labels: ["Đèn hành lang", "Đèn phòng ngủ", "Đèn phòng khách"],
         datasets: [
           {
-            label: "Số giờ sử dụng trong ngày",
-            data: [16, 17, 11, 20, 10],
-            cubicInterpolationMode: "monotone",
-            pointBackgroundColor: "#D8ECFF",
+            label: "Số giờ sử dụng trong tháng",
+            data: [91, 131, 72],
             borderColor: "#0B84F3",
+            backgroundColor: "#D8ECFF",
+            borderWidth: 2,
+            maxBarThickness: 50,
           },
         ],
       },
