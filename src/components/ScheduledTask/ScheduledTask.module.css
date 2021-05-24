@@ -13,20 +13,20 @@
 
 @keyframes appearing {
 	0% {
-		opacity: 0%;
+		opacity: 0;
 	}
 	100% {
-		opacity: 100%;
+		opacity: 1;
 	}
 }
 
 @keyframes slideFadingOut {
 	0% {
-		opacity: 100%;
+		opacity: 1;
 		transform: translateX(0);
 	}
 	100% {
-		opacity: 0%;
+		opacity: 0;
 		transform: translateX(100%);
 	}
 }
