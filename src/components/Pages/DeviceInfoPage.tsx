@@ -118,6 +118,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
                 kind="secondary"
                 iconPosition="left"
                 iconName="Graph"
+                lhref="/statistics"
               />
             </Box>
             <Box margins="mb8">

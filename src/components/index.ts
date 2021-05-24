@@ -5,7 +5,13 @@ import { Checkbox } from "./Checkbox";
 import { DeviceCard } from "./DeviceCard";
 import { Icon } from "./Icon";
 import { InlineIcon } from "./InlineIcon";
-import { DeviceInfoPage, HomePage, LoginPage, ProfilePage } from "./Pages";
+import {
+  DeviceInfoPage,
+  HomePage,
+  LoginPage,
+  ProfilePage,
+  StatisticsPage,
+} from "./Pages";
 import { ScheduledTask } from "./ScheduledTask";
 import { ScrollToTop } from "./ScrollToTop";
 import { Text } from "./Text";
@@ -23,6 +29,7 @@ export {
   HomePage,
   LoginPage,
   ProfilePage,
+  StatisticsPage,
   Button,
   ScheduledTask,
   ScrollToTop,

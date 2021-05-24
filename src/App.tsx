@@ -6,6 +6,7 @@ import {
   DeviceInfoPage,
   LoginPage,
   ProfilePage,
+  StatisticsPage,
 } from "./components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -21,6 +22,9 @@ function App() {
               </Route>
               <Route path="/login">
                 <LoginPage />
+              </Route>
+              <Route path="/statistics">
+                <StatisticsPage />
               </Route>
               <Route path="/devices/:device_id">
                 <DeviceInfoPage />

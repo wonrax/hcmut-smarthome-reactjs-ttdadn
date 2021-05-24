@@ -13,6 +13,7 @@ const availableMargins = [
   "ml16",
   "ml8",
   "mr16",
+  "mr4",
   "mr8",
 ] as const;
 const availablePaddings = [

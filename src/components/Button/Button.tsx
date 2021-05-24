@@ -135,8 +135,14 @@ export const Button = (props: {
     styles.wrapper
   );
 
+  const renderAs = () => {
+    if (props.as) return props.as;
+    if (props.lhref) return "div";
+    return "button";
+  };
+
   const renderingButton = React.createElement(
-    props.as ? props.as : "button",
+    renderAs(),
     { className: cs, onClick: props.onClick, onFocus: props.onFocus },
     renderingElementChildren
   );

@@ -6,7 +6,7 @@
 }
 .scheduledTaskFading {
 	animation-name: slideFadingOut;
-	animation-duration: 0.3s;
+	animation-duration: 0.2s;
 	animation-fill-mode: forwards;
 	animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
 }
