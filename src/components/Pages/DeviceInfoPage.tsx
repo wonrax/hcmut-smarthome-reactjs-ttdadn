@@ -6,6 +6,7 @@ import { TitledPageTemplate } from "../Utils";
 import { useParams } from "react-router";
 import { baseURL, testUser } from "../api";
 import axios, { AxiosResponse } from "axios";
+import { time } from "node:console";
 
 type propsTypes = {};
 
@@ -31,8 +32,6 @@ export const DeviceInfoPage = (props: propsTypes) => {
   const handleOnDeleteSchedule = (id: string) => {
     if (!scheduleListRef.current || !Array.isArray(scheduleListRef.current))
       return;
-    console.log(scheduleListRef.current.length);
-    console.log(scheduleListRef.current);
     for (var i = 0; i < scheduleListRef.current.length; i++) {
       if (scheduleListRef.current[i].props.id === id) {
         const copyList = scheduleListRef.current.slice();
@@ -43,6 +42,27 @@ export const DeviceInfoPage = (props: propsTypes) => {
       }
     }
   };
+
+  const handleNewScheduleClick: React.MouseEventHandler<HTMLButtonElement> =
+    () => {
+      if (!scheduleListRef.current || !Array.isArray(scheduleListRef.current))
+        return;
+      const copyList = scheduleListRef.current.slice();
+      copyList.unshift(
+        <ScheduledTask
+          //TODO: Get the properly key e.g. by incrementing the current larget index
+          key={new Date().toString()}
+          id={new Date().toString()}
+          enabledDays={[]}
+          isDefaultRepeat={false}
+          timeOn="07:00"
+          timeOff="09:00"
+          onDelete={handleOnDeleteSchedule}
+        />
+      );
+      scheduleListRef.current = copyList;
+      setScheduleList(copyList);
+    };
 
   useEffect(() => {
     document.title = "Device";
@@ -130,7 +150,12 @@ export const DeviceInfoPage = (props: propsTypes) => {
               </InlineIcon>
             </Box>
             <Box margins="mb32">
-              <Button text="Đặt lịch mới" iconPosition="left" iconName="Plus" />
+              <Button
+                onClick={handleNewScheduleClick}
+                text="Đặt lịch mới"
+                iconPosition="left"
+                iconName="Plus"
+              />
             </Box>
             <Box>{scheduleList}</Box>
           </>

@@ -1,11 +1,23 @@
 .scheduledTask {
-	opacity: 100%;
+	animation-name: appearing;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+	animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
 }
 .scheduledTaskFading {
 	animation-name: slideFadingOut;
 	animation-duration: 0.3s;
 	animation-fill-mode: forwards;
 	animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes appearing {
+	0% {
+		opacity: 0%;
+	}
+	100% {
+		opacity: 100%;
+	}
 }
 
 @keyframes slideFadingOut {
