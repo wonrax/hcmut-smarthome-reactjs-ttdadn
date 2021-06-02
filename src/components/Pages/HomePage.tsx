@@ -9,7 +9,7 @@ import {
   Button,
   InlineLoading,
 } from "..";
-import { baseURL, testUser } from "../api";
+import { baseURL, testUser, websocketURL } from "../api";
 import axios from "axios";
 
 type Homestates = {
@@ -23,9 +23,11 @@ class HomePage extends React.Component<{}, Homestates> {
   minute: string;
   second: string;
   timeOfDay: string;
+  websocketConnection: WebSocket;
 
   constructor(props: {}) {
     super(props);
+    this.websocketConnection = new WebSocket(websocketURL);
     this.state = {
       deviceElements: (
         <Box margins="mb16">
@@ -118,6 +120,18 @@ class HomePage extends React.Component<{}, Homestates> {
         console.log(err);
         this.fetchError(url);
       });
+
+    // this.websocketConnection = new WebSocket(websocketURL);
+    this.websocketConnection.onopen = () => {
+      console.log("WebSocket connected");
+    };
+    this.websocketConnection.onmessage = (message: any) => {
+      console.log(message);
+    };
+  }
+
+  componentWillUnmount() {
+    this.websocketConnection.close();
   }
 
   render() {

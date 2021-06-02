@@ -6,7 +6,6 @@ import { TitledPageTemplate } from "../Utils";
 import { useParams } from "react-router";
 import { baseURL, testUser } from "../api";
 import axios, { AxiosResponse } from "axios";
-import { time } from "node:console";
 
 type propsTypes = {};
 
