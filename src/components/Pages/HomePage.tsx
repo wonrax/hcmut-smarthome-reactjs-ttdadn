@@ -84,6 +84,7 @@ class HomePage extends React.Component<{}, Homestates> {
     };
     axios(url)
       .then((res) => {
+        console.log(res.data);
         const deviceElements = [];
         let weatherElements;
         for (var i = 0; i < res.data.devices.length; i++) {
@@ -98,7 +99,7 @@ class HomePage extends React.Component<{}, Homestates> {
                   deviceDescription={device.description}
                   deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
                   defaultStatus={statusMapping[device.status]}
-                  device_id={device["device-id"]}
+                  device_id={device["device_id"]}
                 />
               </Box>
             );
