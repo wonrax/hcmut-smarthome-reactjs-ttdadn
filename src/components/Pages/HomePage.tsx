@@ -17,17 +17,16 @@ type Homestates = {
   weatherElements: JSX.Element[] | JSX.Element | undefined;
 };
 
+const websocketConnection = new WebSocket(websocketURL);
 class HomePage extends React.Component<{}, Homestates> {
   date: Date;
   hour: string;
   minute: string;
   second: string;
   timeOfDay: string;
-  websocketConnection: WebSocket;
 
   constructor(props: {}) {
     super(props);
-    this.websocketConnection = new WebSocket(websocketURL);
     this.state = {
       deviceElements: (
         <Box margins="mb16">
@@ -71,6 +70,17 @@ class HomePage extends React.Component<{}, Homestates> {
     const statusMapping: { [key: number]: boolean } = {
       1: true,
       0: false,
+    };
+    websocketConnection.onopen = () => {
+      console.log("WebSocket connected");
+    };
+    websocketConnection.onmessage = (message: any) => {
+      console.log(message.data);
+    };
+
+    websocketConnection.onclose = (ev: any) => {
+      console.log(ev);
+      websocketConnection.close();
     };
     axios(url)
       .then((res) => {
@@ -120,18 +130,11 @@ class HomePage extends React.Component<{}, Homestates> {
         console.log(err);
         this.fetchError(url);
       });
-
-    // this.websocketConnection = new WebSocket(websocketURL);
-    this.websocketConnection.onopen = () => {
-      console.log("WebSocket connected");
-    };
-    this.websocketConnection.onmessage = (message: any) => {
-      console.log(message);
-    };
   }
 
   componentWillUnmount() {
-    this.websocketConnection.close();
+    // console.log("WebSocket closing connection");
+    // websocketConnection.close(1000);
   }
 
   render() {
