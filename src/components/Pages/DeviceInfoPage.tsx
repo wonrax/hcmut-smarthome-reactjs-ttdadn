@@ -79,12 +79,12 @@ export const DeviceInfoPage = (props: propsTypes) => {
 
   useEffect(() => {
     if (!isFetched) return;
-    const list_ = response?.data.schedule.map(
+    const list_ = response?.data.schedules.map(
       (schedule: any, index: number) => {
         return (
           <ScheduledTask
-            key={index}
-            id={index.toString()}
+            key={schedule.schedule_id}
+            id={schedule.schedule_id.toString()}
             enabledDays={schedule.repeat_day}
             isDefaultRepeat={schedule.is_repeat}
             timeOn={schedule.time_on}
