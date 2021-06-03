@@ -24,9 +24,11 @@ class HomePage extends React.Component<{}, Homestates> {
   minute: string;
   second: string;
   timeOfDay: string;
+  deviceRefs: React.RefObject<any>[];
 
   constructor(props: {}) {
     super(props);
+    this.deviceRefs = [];
     this.state = {
       deviceElements: (
         <Box margins="mb16">
@@ -75,7 +77,18 @@ class HomePage extends React.Component<{}, Homestates> {
       console.log("WebSocket connected");
     };
     websocketConnection.onmessage = (message: any) => {
-      console.log(message.data);
+      const socketData = JSON.parse(message.data)["message"];
+      console.log(socketData);
+      if (socketData) {
+        for (var i = 0; i < this.deviceRefs.length; i++) {
+          if (this.deviceRefs[i].current.device_id === socketData.device_id) {
+            this.deviceRefs[i].current.setIsToggleOn(
+              socketData.value === "1" ? true : false
+            );
+            return;
+          }
+        }
+      }
     };
 
     websocketConnection.onclose = (ev: any) => {
@@ -90,7 +103,9 @@ class HomePage extends React.Component<{}, Homestates> {
         for (var i = 0; i < res.data.devices.length; i++) {
           const device = res.data.devices[i];
           const device_type = device.device_type;
-          if (device_type === "fan" || device_type === "light")
+          if (device_type === "fan" || device_type === "light") {
+            const deviceRef = React.createRef<HTMLDivElement>();
+            this.deviceRefs.push(deviceRef);
             deviceElements.push(
               <Box key={i} margins="mb16">
                 <DeviceCard
@@ -100,21 +115,23 @@ class HomePage extends React.Component<{}, Homestates> {
                   deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
                   defaultStatus={statusMapping[device.status]}
                   device_id={device["device_id"]}
+                  ref={deviceRef}
                 />
               </Box>
             );
-          else if (device_type === "temperature") {
+          } else if (device_type === "temperature") {
+            const temphumid = device.status.split("-");
             weatherElements = (
               <>
                 <Box>
                   <BriefInfo
-                    main={device.status[0] + "°C"}
+                    main={temphumid[0] + "°C"}
                     info="Nhiệt độ trong nhà hiện tại"
                   />
                 </Box>
                 <Box margins="mb32">
                   <BriefInfo
-                    main={device.status[1] + "%"}
+                    main={temphumid[1] + "%"}
                     info="Độ ẩm trong nhà hiện tại"
                   />
                 </Box>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 import styles from "./DeviceCard.module.css";
 import { Button, Text } from "..";
 import { Box } from "..";
@@ -20,10 +20,18 @@ type subProps = {
   device_id: number;
 };
 
-const DeviceBrief = (props: subProps) => {
+const DeviceBrief = React.forwardRef((props: subProps, ref) => {
   const [isToggleOn, setIsToggleOn] = useState<boolean>(
     typeof props.defaultStatus != "undefined" ? props.defaultStatus : false
   );
+
+  useImperativeHandle(ref, () => {
+    return {
+      setIsToggleOn: setIsToggleOn,
+      device_id: props.device_id,
+    };
+  });
+
   const toggleDevice: React.MouseEventHandler<HTMLButtonElement> = () => {
     let url = baseURL + "/@" + testUser + "/devices";
     const postData: AxiosRequestConfig = {
@@ -31,7 +39,7 @@ const DeviceBrief = (props: subProps) => {
       url: url,
       data: {
         device_id: props.device_id,
-        data: isToggleOn ? "OFF" : "ON",
+        data: isToggleOn ? "0" : "1",
       },
     };
     let response: AxiosResponse;
@@ -90,7 +98,7 @@ const DeviceBrief = (props: subProps) => {
       </div>
     </Button>
   );
-};
+});
 
 type Props = {
   deviceType: "Fan" | "Light";
@@ -100,7 +108,7 @@ type Props = {
   defaultStatus?: boolean;
   device_id: number;
 };
-export const DeviceCard = (props: Props) => {
+export const DeviceCard = React.forwardRef((props: Props, ref) => {
   const [isDividerVisible, setDividerVisible] = useState<boolean>(true);
   const handleOnMouseEnter = () => {
     setDividerVisible(false);
@@ -108,6 +116,7 @@ export const DeviceCard = (props: Props) => {
   const handleOnMouseLeave = () => {
     setDividerVisible(true);
   };
+
   return (
     <div className={styles["device-card"]}>
       <DeviceBrief
@@ -120,6 +129,7 @@ export const DeviceCard = (props: Props) => {
         textBeneath={props.deviceDescription}
         defaultStatus={props.defaultStatus}
         device_id={props.device_id}
+        ref={ref}
       />
       <div
         className={isDividerVisible ? styles.divider : styles.dividerInvisible}
@@ -134,4 +144,4 @@ export const DeviceCard = (props: Props) => {
       />
     </div>
   );
-};
+});

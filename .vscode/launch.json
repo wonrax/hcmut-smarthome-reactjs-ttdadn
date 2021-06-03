@@ -15,16 +15,5 @@
 			"runtimeExecutable": "npm",
 			"runtimeArgs": ["run", "start"]
 		},
-		{
-			"type": "pwa-node",
-			"request": "launch",
-			"cwd": "${workspaceFolder}",
-			"name": "Build ReactJS Production",
-			"skipFiles": [
-				"node_modules/**"
-			],
-			"runtimeExecutable": "npm",
-			"runtimeArgs": ["run", "build"]
-		}
 	]
 }
