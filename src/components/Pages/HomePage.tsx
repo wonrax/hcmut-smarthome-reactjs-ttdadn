@@ -25,10 +25,12 @@ class HomePage extends React.Component<{}, Homestates> {
   second: string;
   timeOfDay: string;
   deviceRefs: React.RefObject<any>[];
+  weatherDeviceId: number;
 
   constructor(props: {}) {
     super(props);
     this.deviceRefs = [];
+    this.weatherDeviceId = 0;
     this.state = {
       deviceElements: (
         <Box margins="mb16">
@@ -56,7 +58,7 @@ class HomePage extends React.Component<{}, Homestates> {
 
     this.timeOfDay = function (this: HomePage) {
       const hourTime = this.date.getHours();
-      if (hourTime >= 19 && hourTime < 5) return "buổi tối";
+      if (hourTime >= 19 || hourTime < 5) return "buổi tối";
       if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
       return "buổi chiều";
     }.bind(this)();
@@ -65,25 +67,34 @@ class HomePage extends React.Component<{}, Homestates> {
   componentDidMount() {
     document.title = "SmartHome";
     const url = baseURL + "/@" + testUser + "/devices";
-    const deviceTypeMapping: { [key: string]: "Fan" | "Light" } = {
-      fan: "Fan",
-      light: "Light",
-    };
-    const statusMapping: { [key: number]: boolean } = {
-      1: true,
-      0: false,
-    };
+
     websocketConnection.onopen = () => {
       console.log("WebSocket connected");
     };
+
     websocketConnection.onmessage = (message: any) => {
+      if (!message.data) {
+        return;
+      }
       const socketData = JSON.parse(message.data)["message"];
       console.log(socketData);
-      if (socketData) {
+      if (socketData && socketData.device_id && socketData.value) {
+        if (socketData.device_id === this.weatherDeviceId) {
+          const temphumid: string[] = socketData.value.split("-");
+          if (temphumid.length !== 2) {
+            console.log("WARNING: Possibly wrong temperature/humid format");
+          }
+          const weatherElements = (
+            <WeatherElement temp={temphumid[0]} humid={temphumid[1]} />
+          );
+          this.setState({ weatherElements: weatherElements });
+          console.log("Updated weather data");
+          return;
+        }
         for (var i = 0; i < this.deviceRefs.length; i++) {
           if (this.deviceRefs[i].current.device_id === socketData.device_id) {
             this.deviceRefs[i].current.setIsToggleOn(
-              socketData.value === "1" ? true : false
+              socketData.value === "0" ? false : true
             );
             return;
           }
@@ -97,12 +108,34 @@ class HomePage extends React.Component<{}, Homestates> {
     };
     axios(url)
       .then((res) => {
-        console.log(res.data);
         const deviceElements = [];
+        const statusMapping: { [key: number]: boolean } = {
+          1: true,
+          0: false,
+        };
+        const deviceTypeMapping: { [key: string]: "Fan" | "Light" } = {
+          fan: "Fan",
+          light: "Light",
+        };
         let weatherElements;
+        if (!(res.data && res.data.devices && res.data.devices.length)) {
+          console.log("Wrong data format.");
+          console.log(res);
+        }
         for (var i = 0; i < res.data.devices.length; i++) {
           const device = res.data.devices[i];
+
           const device_type = device.device_type;
+          const device_name = device.device_name;
+          const device_status = device.status;
+          const device_description = device.description || "";
+          const device_id = device.device_id;
+
+          if (!(device_type && device_name && device_status && device_id)) {
+            console.log("Wrong device data format.");
+            console.log(device);
+          }
+
           if (device_type === "fan" || device_type === "light") {
             const deviceRef = React.createRef<HTMLDivElement>();
             this.deviceRefs.push(deviceRef);
@@ -110,32 +143,21 @@ class HomePage extends React.Component<{}, Homestates> {
               <Box key={i} margins="mb16">
                 <DeviceCard
                   deviceType={deviceTypeMapping[device_type]}
-                  deviceName={device.device_name}
-                  deviceDescription={device.description}
+                  deviceName={device_name}
+                  deviceDescription={device_description}
                   deviceAutomationInfo="Chế độ hẹn giờ: Tắt"
-                  defaultStatus={statusMapping[device.status]}
-                  device_id={device["device_id"]}
+                  defaultStatus={statusMapping[device_status]}
+                  device_id={device_id}
                   ref={deviceRef}
                 />
               </Box>
             );
           } else if (device_type === "temperature") {
+            this.weatherDeviceId = device["device_id"];
+            console.log(this.weatherDeviceId);
             const temphumid = device.status.split("-");
             weatherElements = (
-              <>
-                <Box>
-                  <BriefInfo
-                    main={temphumid[0] + "°C"}
-                    info="Nhiệt độ trong nhà hiện tại"
-                  />
-                </Box>
-                <Box margins="mb32">
-                  <BriefInfo
-                    main={temphumid[1] + "%"}
-                    info="Độ ẩm trong nhà hiện tại"
-                  />
-                </Box>
-              </>
+              <WeatherElement temp={temphumid[0]} humid={temphumid[1]} />
             );
           }
         }
@@ -160,35 +182,18 @@ class HomePage extends React.Component<{}, Homestates> {
       <>
         {/* Navbar ----- */}
         {/* ------------- */}
-        <Box margins="mb32">
-          <InlineIcon iconBackground>
-            <Box wid="100" hei="100">
-              <Text kind="h3">SmartHome</Text>
-            </Box>
-            <Button as="div" lhref="/profile" noDecoration>
-              <Icon icon="Profile" iconBackground></Icon>
-            </Button>
-          </InlineIcon>
-        </Box>
+        <Navbar />
         <Box margins="mb32">
           <Divider />
         </Box>
+
         {/* Welcome ----- */}
         {/* ------------- */}
-        <Box align="hcenter">
-          <Box>
-            <Text
-              align="center"
-              kind="h3"
-              color="gray50"
-            >{`Chào ${this.timeOfDay}`}</Text>
-            <Text
-              align="center"
-              kind="h1"
-              color="gray100"
-            >{`${this.hour}:${this.minute}`}</Text>
-          </Box>
-        </Box>
+        <WelcomeMessage
+          timeOfDay={this.timeOfDay}
+          hour={this.hour}
+          minute={this.minute}
+        />
         {/* Weather ----- */}
         {/* ------------- */}
         <Box margins="mb16">
@@ -203,6 +208,19 @@ class HomePage extends React.Component<{}, Homestates> {
         {this.state.deviceElements}
       </>
     );
+  }
+
+  fetchError(url: string) {
+    console.log("Error fetching url: " + url);
+    this.setState({
+      deviceElements: (
+        <FetchErrorElement message="Không thể tải danh sách thiết bị từ server" />
+      ),
+      weatherElements: (
+        <FetchErrorElement message="Không thể tải dữ liệu nhiệt độ, độ ẩm từ server" />
+      ),
+    });
+    setTimeout(this.createMockData, 0);
   }
 
   createMockData() {
@@ -222,49 +240,13 @@ class HomePage extends React.Component<{}, Homestates> {
         <Box margins="mb16">
           <Text kind="caption">Displaying mock data</Text>
         </Box>
-        <Box>
-          <BriefInfo main="27°C" info="Nhiệt độ trong nhà hiện tại" />
-        </Box>
-        <Box margins="mb32">
-          <BriefInfo main="68%" info="Độ ẩm trong nhà hiện tại" />
-        </Box>
+        <WeatherElement humid="68" temp="32" />
       </>
     );
     this.setState({
       deviceElements: mockDevicesData,
       weatherElements: mockWeatherData,
     });
-  }
-
-  fetchError(url: string) {
-    console.log("Error fetching url: " + url);
-    this.setState({
-      deviceElements: (
-        <InlineIcon>
-          <Icon icon="Error" />
-          <Box margins="ml16">
-            <Text kind="normal">
-              {`Không thể tải danh sách thiết bị từ server`}
-            </Text>
-            <Text kind="normal">Hiển thị mock data trong 3 giây...</Text>
-          </Box>
-        </InlineIcon>
-      ),
-      weatherElements: (
-        <Box margins="mb32">
-          <InlineIcon>
-            <Icon icon="Error" />
-            <Box margins="ml16">
-              <Text kind="normal">
-                {`Không thể tải dữ liệu nhiệt độ, độ ẩm từ server`}
-              </Text>
-              <Text kind="normal">Hiển thị mock data trong 3 giây...</Text>
-            </Box>
-          </InlineIcon>
-        </Box>
-      ),
-    });
-    setTimeout(this.createMockData, 3000);
   }
 }
 
@@ -310,6 +292,74 @@ const FakeDevice = (props: { seed: 0 | 1 | 2 | 3 }) => {
         deviceAutomationInfo={automateInfos[props.seed]}
         device_id={1}
       />
+    </Box>
+  );
+};
+
+const WeatherElement = (props: { temp: string; humid: string }) => {
+  return (
+    <>
+      <Box>
+        <BriefInfo
+          main={props.temp + "°C"}
+          info="Nhiệt độ trong nhà hiện tại"
+        />
+      </Box>
+      <Box margins="mb32">
+        <BriefInfo main={props.humid + "%"} info="Độ ẩm trong nhà hiện tại" />
+      </Box>
+    </>
+  );
+};
+
+const Navbar = () => {
+  return (
+    <Box margins="mb32">
+      <InlineIcon iconBackground>
+        <Box wid="100" hei="100">
+          <Text kind="h3">SmartHome</Text>
+        </Box>
+        <Button as="div" lhref="/profile" noDecoration>
+          <Icon icon="Profile" iconBackground></Icon>
+        </Button>
+      </InlineIcon>
+    </Box>
+  );
+};
+
+const WelcomeMessage = (props: {
+  timeOfDay: string;
+  hour: string;
+  minute: string;
+}) => {
+  return (
+    <Box align="hcenter">
+      <Box>
+        <Text
+          align="center"
+          kind="h3"
+          color="gray50"
+        >{`Chào ${props.timeOfDay}`}</Text>
+        <Text
+          align="center"
+          kind="h1"
+          color="gray100"
+        >{`${props.hour}:${props.minute}`}</Text>
+      </Box>
+    </Box>
+  );
+};
+
+const FetchErrorElement = (props: { message: string }) => {
+  return (
+    <Box margins="mb32">
+      <InlineIcon>
+        <Icon icon="Error" />
+        <Box margins="ml16">
+          <Text kind="normal">{props.message}</Text>
+          <Text kind="normal">Hiển thị mock data trong 3 giây...</Text>
+        </Box>
+      </InlineIcon>
     </Box>
   );
 };

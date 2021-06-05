@@ -7,7 +7,53 @@ import { useHistory } from "react-router-dom";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { baseURL, testUser } from "../api";
 
-type subProps = {
+type Props = {
+  deviceType: "Fan" | "Light";
+  deviceName: string;
+  deviceDescription: string;
+  deviceAutomationInfo: string;
+  defaultStatus?: boolean;
+  device_id: number;
+};
+export const DeviceCard = React.forwardRef((props: Props, ref) => {
+  const [isDividerVisible, setDividerVisible] = useState<boolean>(true);
+  const handleOnMouseEnter = () => {
+    setDividerVisible(false);
+  };
+  const handleOnMouseLeave = () => {
+    setDividerVisible(true);
+  };
+
+  return (
+    <div className={styles["device-card"]}>
+      <DeviceBrief
+        handleOnMouseEnter={handleOnMouseEnter}
+        handleOnMouseLeave={handleOnMouseLeave}
+        leftIcon={props.deviceType}
+        rightIcon="Toggle-Off"
+        iconToggled="Toggle-On"
+        textAbove={props.deviceName}
+        textBeneath={props.deviceDescription}
+        defaultStatus={props.defaultStatus}
+        device_id={props.device_id}
+        ref={ref}
+      />
+      <div
+        className={isDividerVisible ? styles.divider : styles.dividerInvisible}
+      ></div>
+      <DeviceBrief
+        handleOnMouseEnter={handleOnMouseEnter}
+        handleOnMouseLeave={handleOnMouseLeave}
+        leftIcon="Info-Circle"
+        rightIcon="Arrow-Right"
+        textAbove={props.deviceAutomationInfo}
+        device_id={props.device_id}
+      />
+    </div>
+  );
+});
+
+type deviceBriefProps = {
   leftIcon: string;
   rightIcon: string;
   iconToggled?: string;
@@ -20,7 +66,7 @@ type subProps = {
   device_id: number;
 };
 
-const DeviceBrief = React.forwardRef((props: subProps, ref) => {
+const DeviceBrief = React.forwardRef((props: deviceBriefProps, ref) => {
   const [isToggleOn, setIsToggleOn] = useState<boolean>(
     typeof props.defaultStatus != "undefined" ? props.defaultStatus : false
   );
@@ -97,51 +143,5 @@ const DeviceBrief = React.forwardRef((props: subProps, ref) => {
         </InlineIcon>
       </div>
     </Button>
-  );
-});
-
-type Props = {
-  deviceType: "Fan" | "Light";
-  deviceName: string;
-  deviceDescription: string;
-  deviceAutomationInfo: string;
-  defaultStatus?: boolean;
-  device_id: number;
-};
-export const DeviceCard = React.forwardRef((props: Props, ref) => {
-  const [isDividerVisible, setDividerVisible] = useState<boolean>(true);
-  const handleOnMouseEnter = () => {
-    setDividerVisible(false);
-  };
-  const handleOnMouseLeave = () => {
-    setDividerVisible(true);
-  };
-
-  return (
-    <div className={styles["device-card"]}>
-      <DeviceBrief
-        handleOnMouseEnter={handleOnMouseEnter}
-        handleOnMouseLeave={handleOnMouseLeave}
-        leftIcon={props.deviceType}
-        rightIcon="Toggle-Off"
-        iconToggled="Toggle-On"
-        textAbove={props.deviceName}
-        textBeneath={props.deviceDescription}
-        defaultStatus={props.defaultStatus}
-        device_id={props.device_id}
-        ref={ref}
-      />
-      <div
-        className={isDividerVisible ? styles.divider : styles.dividerInvisible}
-      ></div>
-      <DeviceBrief
-        handleOnMouseEnter={handleOnMouseEnter}
-        handleOnMouseLeave={handleOnMouseLeave}
-        leftIcon="Info-Circle"
-        rightIcon="Arrow-Right"
-        textAbove={props.deviceAutomationInfo}
-        device_id={props.device_id}
-      />
-    </div>
   );
 });
