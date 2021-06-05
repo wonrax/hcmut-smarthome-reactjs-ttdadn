@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Icon,
   Text,
@@ -12,59 +12,37 @@ import {
 import { baseURL, testUser, websocketURL } from "../api";
 import axios from "axios";
 
-type Homestates = {
-  deviceElements: JSX.Element[] | JSX.Element;
-  weatherElements: JSX.Element[] | JSX.Element | undefined;
-};
-
 const websocketConnection = new WebSocket(websocketURL);
-class HomePage extends React.Component<{}, Homestates> {
-  date: Date;
-  hour: string;
-  minute: string;
-  second: string;
-  timeOfDay: string;
-  deviceRefs: React.RefObject<any>[];
-  weatherDeviceId: number;
+export const HomePage = () => {
+  const date: Date = new Date();
+  const [hour, minute] = date.toLocaleTimeString("vi-VN").split(/:| /);
+  const timeOfDay = (function () {
+    const hourTime = date.getHours();
+    if (hourTime >= 19 || hourTime < 5) return "buổi tối";
+    if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
+    return "buổi chiều";
+  })();
+  let deviceRefs: React.RefObject<any>[];
+  const [weatherDeviceId, setWeatherDeviceId] = useState<number>(-1);
 
-  constructor(props: {}) {
-    super(props);
-    this.deviceRefs = [];
-    this.weatherDeviceId = 0;
-    this.state = {
-      deviceElements: (
-        <Box margins="mb16">
-          <InlineLoading
-            message="Đang tải danh sách thiết bị..."
-            kind="loading"
-          />
-        </Box>
-      ),
-      weatherElements: (
-        <Box margins="mb16">
-          <InlineLoading
-            message="Đang tải thông tin cảm biến..."
-            kind="loading"
-          />
-        </Box>
-      ),
-    };
-    this.createMockData = this.createMockData.bind(this);
-    this.fetchError = this.fetchError.bind(this);
-    this.date = new Date();
-    [this.hour, this.minute, this.second] = this.date
-      .toLocaleTimeString("vi-VN")
-      .split(/:| /);
+  const initialDeviceElement = (
+    <Box margins="mb16">
+      <InlineLoading message="Đang tải danh sách thiết bị..." kind="loading" />
+    </Box>
+  );
+  const initialWeatherElement = (
+    <Box margins="mb16">
+      <InlineLoading message="Đang tải thông tin cảm biến..." kind="loading" />
+    </Box>
+  );
 
-    this.timeOfDay = function (this: HomePage) {
-      const hourTime = this.date.getHours();
-      if (hourTime >= 19 || hourTime < 5) return "buổi tối";
-      if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
-      return "buổi chiều";
-    }.bind(this)();
-  }
+  const [deviceElements, setDeviceElements] =
+    useState<JSX.Element[] | JSX.Element>(initialDeviceElement);
+  const [weatherElements, setWeatherElements] = useState<
+    JSX.Element[] | JSX.Element
+  >(initialWeatherElement);
 
-  componentDidMount() {
+  useEffect(() => {
     document.title = "SmartHome";
     const url = baseURL + "/@" + testUser + "/devices";
 
@@ -79,21 +57,21 @@ class HomePage extends React.Component<{}, Homestates> {
       const socketData = JSON.parse(message.data)["message"];
       console.log(socketData);
       if (socketData && socketData.device_id && socketData.value) {
-        if (socketData.device_id === this.weatherDeviceId) {
+        if (socketData.device_id === weatherDeviceId) {
           const temphumid: string[] = socketData.value.split("-");
           if (temphumid.length !== 2) {
             console.log("WARNING: Possibly wrong temperature/humid format");
           }
-          const weatherElements = (
+          const newWeatherElements = (
             <WeatherElement temp={temphumid[0]} humid={temphumid[1]} />
           );
-          this.setState({ weatherElements: weatherElements });
+          setWeatherElements(newWeatherElements);
           console.log("Updated weather data");
           return;
         }
-        for (var i = 0; i < this.deviceRefs.length; i++) {
-          if (this.deviceRefs[i].current.device_id === socketData.device_id) {
-            this.deviceRefs[i].current.setIsToggleOn(
+        for (var i = 0; i < deviceRefs.length; i++) {
+          if (deviceRefs[i].current.device_id === socketData.device_id) {
+            deviceRefs[i].current.setIsToggleOn(
               socketData.value === "0" ? false : true
             );
             return;
@@ -106,9 +84,10 @@ class HomePage extends React.Component<{}, Homestates> {
       console.log(ev);
       websocketConnection.close();
     };
+
     axios(url)
       .then((res) => {
-        const deviceElements = [];
+        const newDeviceElements = [];
         const statusMapping: { [key: number]: boolean } = {
           1: true,
           0: false,
@@ -117,7 +96,7 @@ class HomePage extends React.Component<{}, Homestates> {
           fan: "Fan",
           light: "Light",
         };
-        let weatherElements;
+        let newWeatherElements;
         if (!(res.data && res.data.devices && res.data.devices.length)) {
           console.log("Wrong data format.");
           console.log(res);
@@ -138,8 +117,8 @@ class HomePage extends React.Component<{}, Homestates> {
 
           if (device_type === "fan" || device_type === "light") {
             const deviceRef = React.createRef<HTMLDivElement>();
-            this.deviceRefs.push(deviceRef);
-            deviceElements.push(
+            deviceRefs.push(deviceRef);
+            newDeviceElements.push(
               <Box key={i} margins="mb16">
                 <DeviceCard
                   deviceType={deviceTypeMapping[device_type]}
@@ -153,77 +132,41 @@ class HomePage extends React.Component<{}, Homestates> {
               </Box>
             );
           } else if (device_type === "temperature") {
-            this.weatherDeviceId = device["device_id"];
-            console.log(this.weatherDeviceId);
+            if (typeof device.device_id !== "number") {
+              console.log("Wrong device_id type");
+              return;
+            }
+            setWeatherDeviceId(device.device_id);
+            console.log(weatherDeviceId);
             const temphumid = device.status.split("-");
-            weatherElements = (
+            newWeatherElements = (
               <WeatherElement temp={temphumid[0]} humid={temphumid[1]} />
             );
           }
         }
-        this.setState({
-          deviceElements: deviceElements,
-          weatherElements: weatherElements,
-        });
+        setDeviceElements(newDeviceElements);
+        if (newWeatherElements) {
+          setWeatherElements(newWeatherElements);
+        }
       })
       .catch((err) => {
         console.log(err);
-        this.fetchError(url);
+        fetchError(url);
       });
-  }
+  }, []);
 
-  componentWillUnmount() {
-    // console.log("WebSocket closing connection");
-    // websocketConnection.close(1000);
-  }
-
-  render() {
-    return (
-      <>
-        {/* Navbar ----- */}
-        {/* ------------- */}
-        <Navbar />
-        <Box margins="mb32">
-          <Divider />
-        </Box>
-
-        {/* Welcome ----- */}
-        {/* ------------- */}
-        <WelcomeMessage
-          timeOfDay={this.timeOfDay}
-          hour={this.hour}
-          minute={this.minute}
-        />
-        {/* Weather ----- */}
-        {/* ------------- */}
-        <Box margins="mb16">
-          <Text kind="h3">Thời tiết</Text>
-        </Box>
-        {this.state.weatherElements}
-        {/* Devices ----- */}
-        {/* ------------- */}
-        <Box margins="mb16">
-          <Text kind="h3">Thiết bị</Text>
-        </Box>
-        {this.state.deviceElements}
-      </>
-    );
-  }
-
-  fetchError(url: string) {
+  const fetchError = (url: string) => {
     console.log("Error fetching url: " + url);
-    this.setState({
-      deviceElements: (
-        <FetchErrorElement message="Không thể tải danh sách thiết bị từ server" />
-      ),
-      weatherElements: (
-        <FetchErrorElement message="Không thể tải dữ liệu nhiệt độ, độ ẩm từ server" />
-      ),
-    });
-    setTimeout(this.createMockData, 0);
-  }
+    setDeviceElements(
+      <FetchErrorElement message="Không thể tải danh sách thiết bị từ server" />
+    );
+    setWeatherElements(
+      <FetchErrorElement message="Không thể tải dữ liệu nhiệt độ, độ ẩm từ server" />
+    );
+    setTimeout(createMockData, 0);
+  };
 
-  createMockData() {
+  const createMockData = () => {
     const mockDevicesData = (
       <>
         <Box margins="mb32">
@@ -235,6 +178,7 @@ class HomePage extends React.Component<{}, Homestates> {
         <FakeDevice seed={3} />
       </>
     );
+
     const mockWeatherData = (
       <>
         <Box margins="mb16">
@@ -243,12 +187,36 @@ class HomePage extends React.Component<{}, Homestates> {
         <WeatherElement humid="68" temp="32" />
       </>
     );
-    this.setState({
-      deviceElements: mockDevicesData,
-      weatherElements: mockWeatherData,
-    });
-  }
-}
+    setDeviceElements(mockDevicesData);
+    setWeatherElements(mockWeatherData);
+  };
+  return (
+    <>
+      {/* Navbar ----- */}
+      {/* ------------- */}
+      <Navbar />
+      <Box margins="mb32">
+        <Divider />
+      </Box>
+
+      {/* Welcome ----- */}
+      {/* ------------- */}
+      <WelcomeMessage timeOfDay={timeOfDay} hour={hour} minute={minute} />
+      {/* Weather ----- */}
+      {/* ------------- */}
+      <Box margins="mb16">
+        <Text kind="h3">Thời tiết</Text>
+      </Box>
+      {weatherElements}
+      {/* Devices ----- */}
+      {/* ------------- */}
+      <Box margins="mb16">
+        <Text kind="h3">Thiết bị</Text>
+      </Box>
+      {deviceElements}
+    </>
+  );
+};
 
 const Divider = () => {
   return (
@@ -363,5 +331,3 @@ const FetchErrorElement = (props: { message: string }) => {
     </Box>
   );
 };
-
-export { HomePage };
