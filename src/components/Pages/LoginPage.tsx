@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Box, Button, InlineLoading, Text } from "..";
+import { baseURL } from "../api";
 
 export const LoginPage = () => {
   const inputstyles: React.CSSProperties = {
@@ -12,28 +14,65 @@ export const LoginPage = () => {
     borderRadius: "var(--border-radius)",
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("access_token")) {
+      history.replace("/");
+    }
+  }, []);
+
   const history = useHistory();
   const [signInState, setSignInState] =
     useState<"initial" | "loading" | "done">("initial");
 
   const formSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("form submitted");
+    console.log(e);
     e.preventDefault();
   };
 
-  const signInClicked = () => {
+  const submitFormManually = () => {
     setSignInState("loading");
-    setTimeout(() => {
-      setSignInState("done");
-      setTimeout(() => {
-        let path = `/device`;
-        history.push(path);
-      }, 1000);
-    }, 5000);
+    axios
+      .post(baseURL + "/login", {
+        phone_number: usernameInputRef.current?.value,
+        password: passwordInputRef.current?.value,
+      })
+      .then((response) => {
+        const access_token = response.data.access_token;
+        const refresh_token = response.data.refresh_token;
+        if (access_token) {
+          localStorage.setItem("access_token", access_token);
+        }
+        if (refresh_token) {
+          localStorage.setItem("refresh_token", refresh_token);
+        }
+
+        history.replace("/");
+        console.log("replaced!");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    // setTimeout(() => {
+    //   setSignInState("done");
+    //   setTimeout(() => {
+    //     let path = `/device`;
+    //     history.push(path);
+    //   }, 1000);
+    // }, 5000);
   };
 
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+
   const passwordKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-    if (evt.code === "Enter" || evt.key === "Enter") signInClicked();
+    if (evt.code === "Enter" || evt.key === "Enter") submitFormManually();
+  };
+
+  const usernameKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if (evt.code === "Enter" || evt.key === "Enter") {
+      passwordInputRef.current?.focus();
+      evt.preventDefault();
+    }
   };
 
   return (
@@ -60,6 +99,8 @@ export const LoginPage = () => {
             style={inputstyles}
             placeholder="03842xx.xx"
             autoFocus
+            onKeyDown={usernameKeyDown}
+            ref={usernameInputRef}
           />
         </Box>
         <label htmlFor="password">
@@ -74,13 +115,14 @@ export const LoginPage = () => {
             name="password"
             style={inputstyles}
             placeholder="Mật khẩu"
+            ref={passwordInputRef}
             onKeyDown={passwordKeyDown}
           />
         </Box>
         {signInState === "initial" ? (
           <Button
             text="Đăng nhập"
-            onClick={signInClicked}
+            onClick={submitFormManually}
             iconPosition="right"
             iconName="Arrow-Right-Dash"
           />

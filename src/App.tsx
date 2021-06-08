@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import {
   HomePage,
@@ -8,7 +8,13 @@ import {
   ProfilePage,
   StatisticsPage,
 } from "./components";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  RouteComponentProps,
+  Redirect,
+} from "react-router-dom";
 
 function App() {
   return (
@@ -26,12 +32,11 @@ function App() {
               <Route path="/statistics">
                 <StatisticsPage />
               </Route>
-              <Route path="/devices/:device_id">
-                <DeviceInfoPage />
-              </Route>
-              <Route path="/">
-                <HomePage />
-              </Route>
+              <AuthRoute
+                Component={DeviceInfoPage}
+                path="/devices/:device_id"
+              />
+              <AuthRoute Component={HomePage} path="/" />
             </Switch>
           </Box>
         </div>
@@ -39,5 +44,37 @@ function App() {
     </Router>
   );
 }
+
+interface Props {
+  Component: React.FC<RouteComponentProps>;
+  path: string;
+  exact?: boolean;
+}
+
+const AuthRoute = ({ Component, path, exact = false }: Props): JSX.Element => {
+  const isAuthed = !!localStorage.getItem("access_token");
+  const message = "Please log in to view this page";
+  return (
+    <Route
+      exact={exact}
+      path={path}
+      render={(props: RouteComponentProps) =>
+        isAuthed ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: {
+                message,
+                requestedPath: path,
+              },
+            }}
+          />
+        )
+      }
+    />
+  );
+};
 
 export default App;

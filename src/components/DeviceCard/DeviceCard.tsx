@@ -87,6 +87,9 @@ const DeviceBrief = React.forwardRef((props: deviceBriefProps, ref) => {
         device_id: props.device_id,
         data: isToggleOn ? "0" : "1",
       },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
     };
     let response: AxiosResponse;
     async function toggleDeviceRemote() {

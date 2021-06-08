@@ -10,7 +10,7 @@ import {
   InlineLoading,
 } from "..";
 import { baseURL, testUser, websocketURL } from "../api";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const websocketConnection = new WebSocket(websocketURL);
 export const HomePage = () => {
@@ -22,8 +22,8 @@ export const HomePage = () => {
     if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
     return "buổi chiều";
   })();
-  let deviceRefs: React.RefObject<any>[];
-  const [weatherDeviceId, setWeatherDeviceId] = useState<number>(-1);
+  let deviceRefs: React.RefObject<any>[] = [];
+  const [weatherDeviceId, setWeatherDeviceId] = useState<string>("");
 
   const initialDeviceElement = (
     <Box margins="mb16">
@@ -85,7 +85,13 @@ export const HomePage = () => {
       websocketConnection.close();
     };
 
-    axios(url)
+    const requestConfig: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    };
+
+    axios(url, requestConfig)
       .then((res) => {
         const newDeviceElements = [];
         const statusMapping: { [key: number]: boolean } = {
@@ -132,12 +138,8 @@ export const HomePage = () => {
               </Box>
             );
           } else if (device_type === "temperature") {
-            if (typeof device.device_id !== "number") {
-              console.log("Wrong device_id type");
-              return;
-            }
             setWeatherDeviceId(device.device_id);
-            console.log(weatherDeviceId);
+            console.log("weatherDeviceId: " + device.device_id);
             const temphumid = device.status.split("-");
             newWeatherElements = (
               <WeatherElement temp={temphumid[0]} humid={temphumid[1]} />
