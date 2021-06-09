@@ -35,17 +35,29 @@ export const DeviceInfoPage = (props: propsTypes) => {
   };
 
   const handleOnDeleteSchedule = (id: string) => {
-    if (!scheduleListRef.current || !Array.isArray(scheduleListRef.current))
-      return;
-    for (var i = 0; i < scheduleListRef.current.length; i++) {
-      if (scheduleListRef.current[i].props.id === id) {
-        const copyList = scheduleListRef.current.slice();
-        copyList.splice(i, 1);
-        scheduleListRef.current = copyList;
-        setScheduleList(copyList);
-        return;
-      }
-    }
+    const customRequestConf = { ...requestConfig };
+    customRequestConf["data"] = {
+      schedule_id: id,
+    };
+    customRequestConf["method"] = "DELETE";
+    axios(baseURL + "/addsched", customRequestConf)
+      .then((response) => {
+        if (!scheduleListRef.current || !Array.isArray(scheduleListRef.current))
+          return;
+        if (response.status !== 202) return;
+        for (var i = 0; i < scheduleListRef.current.length; i++) {
+          if (scheduleListRef.current[i].props.id === id) {
+            const copyList = scheduleListRef.current.slice();
+            copyList.splice(i, 1);
+            scheduleListRef.current = copyList;
+            setScheduleList(copyList);
+            return;
+          }
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const handleNewScheduleClick: React.MouseEventHandler<HTMLButtonElement> =
@@ -60,24 +72,31 @@ export const DeviceInfoPage = (props: propsTypes) => {
       const customRequestConf = { ...requestConfig };
       customRequestConf["method"] = "POST";
       customRequestConf["data"] = newSchedData;
-      axios(baseURL + "/addsched", customRequestConf).then((response) => {
-        if (!scheduleListRef.current || !Array.isArray(scheduleListRef.current))
-          return;
-        const copyList = scheduleListRef.current.slice();
-        copyList.unshift(
-          <ScheduledTask
-            key={response.data.schedule_id}
-            id={response.data.schedule_id}
-            enabledDays={[]}
-            isDefaultRepeat={false}
-            timeOn="07:00"
-            timeOff="09:00"
-            onDelete={handleOnDeleteSchedule}
-          />
-        );
-        scheduleListRef.current = copyList;
-        setScheduleList(copyList);
-      });
+      axios(baseURL + "/addsched", customRequestConf)
+        .then((response) => {
+          if (
+            !scheduleListRef.current ||
+            !Array.isArray(scheduleListRef.current)
+          )
+            return;
+          const copyList = scheduleListRef.current.slice();
+          copyList.unshift(
+            <ScheduledTask
+              key={response.data.schedule_id}
+              id={response.data.schedule_id}
+              enabledDays={[]}
+              isDefaultRepeat={false}
+              timeOn="07:00"
+              timeOff="09:00"
+              onDelete={handleOnDeleteSchedule}
+            />
+          );
+          scheduleListRef.current = copyList;
+          setScheduleList(copyList);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     };
 
   useEffect(() => {
