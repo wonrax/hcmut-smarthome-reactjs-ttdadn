@@ -9,10 +9,10 @@ export const InlineLoading = (props: {
   useEffect(() => {
     const messageKind = {
       loading: props.message || "Đang xác thực...",
-      done: "Anh Bảnh đã OK.",
+      done: props.message || "OK.",
       error: props.message || "Lỗi",
       // extra:
-      waitMore: "Đợi thêm chút nữa",
+      waitMore: props.message || "Đợi thêm chút nữa",
     };
     setMessage(messageKind[props.kind]);
     const timeout = setTimeout(() => {

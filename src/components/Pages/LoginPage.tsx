@@ -144,7 +144,7 @@ export const LoginPage = () => {
         ) : (
           <InlineLoading
             message={
-              signInState == "error"
+              signInState === "error"
                 ? "Sai tên đăng nhập hoặc mật khẩu"
                 : undefined
             }
