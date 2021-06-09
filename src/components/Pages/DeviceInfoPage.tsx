@@ -3,7 +3,7 @@ import { Icon, Box, Text, Button, InlineLoading } from "..";
 import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
 import { TitledPageTemplate } from "../Utils";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { baseURL } from "../api";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -30,8 +30,23 @@ export const DeviceInfoPage = (props: propsTypes) => {
 
   const { device_id } = useParams<{ device_id: string }>();
 
+  const history = useHistory();
+
   const toggleScheduleEnabled = () => {
-    setScheduleEnabled(!isScheduleEnabled);
+    const newSchedData = {
+      device_id: device_id,
+      automation_mode: isScheduleEnabled ? 0 : 1,
+    };
+    const customRequestConf = { ...requestConfig };
+    customRequestConf["method"] = "PATCH";
+    customRequestConf["data"] = newSchedData;
+    axios(baseURL + "/addsched", customRequestConf)
+      .then((response) => {
+        setScheduleEnabled(!isScheduleEnabled);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const handleOnDeleteSchedule = (id: string) => {
@@ -115,11 +130,18 @@ export const DeviceInfoPage = (props: propsTypes) => {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       };
-      let response = await axios(url, requestConfig);
-      console.log(response.data);
-      setResponse(response);
-      setFetched(true);
-      setScheduleEnabled(response.data.mode !== 0 ? true : false);
+      try {
+        let response = await axios(url, requestConfig);
+        console.log(response.data);
+        setResponse(response);
+        setFetched(true);
+        setScheduleEnabled(response.data.mode !== 0 ? true : false);
+      } catch (e) {
+        if (e.response.status === 401) {
+          localStorage.clear();
+          history.push("/login");
+        }
+      }
     };
     fetchDeviceInfo();
   }, [device_id]);
