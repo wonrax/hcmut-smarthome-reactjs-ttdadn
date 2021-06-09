@@ -11,9 +11,11 @@ import {
 } from "..";
 import { baseURL, testUser, websocketURL } from "../api";
 import axios, { AxiosRequestConfig } from "axios";
+import { useHistory } from "react-router";
 
 const websocketConnection = new WebSocket(websocketURL);
 export const HomePage = () => {
+  const history = useHistory();
   const date: Date = new Date();
   const [hour, minute] = date.toLocaleTimeString("vi-VN").split(/:| /);
   const timeOfDay = (function () {
@@ -152,7 +154,10 @@ export const HomePage = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status == 401) {
+          localStorage.removeItem("access_token");
+          history.push("/login");
+        }
         fetchError(url);
       });
   }, []);
