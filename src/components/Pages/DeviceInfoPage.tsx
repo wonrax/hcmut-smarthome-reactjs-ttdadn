@@ -17,6 +17,7 @@ const requestConfig: AxiosRequestConfig = {
 
 export const DeviceInfoPage = (props: propsTypes) => {
   const [isScheduleEnabled, setScheduleEnabled] = useState<boolean>(false);
+  const [isAutoEnabled, setAutoEnabled] = useState<boolean>(false);
   const deviceInfo = (
     <InlineLoading kind="loading" message="Đang tải thông tin thiết bị..." />
   );
@@ -42,7 +43,30 @@ export const DeviceInfoPage = (props: propsTypes) => {
     customRequestConf["data"] = newSchedData;
     axios(baseURL + "/addsched", customRequestConf)
       .then((response) => {
+        if (!isScheduleEnabled) {
+          setAutoEnabled(false);
+        }
         setScheduleEnabled(!isScheduleEnabled);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const toggleAutoEnabled = () => {
+    const newSchedData = {
+      device_id: device_id,
+      automation_mode: isAutoEnabled ? 0 : 2,
+    };
+    const customRequestConf = { ...requestConfig };
+    customRequestConf["method"] = "PATCH";
+    customRequestConf["data"] = newSchedData;
+    axios(baseURL + "/addsched", customRequestConf)
+      .then((response) => {
+        if (!isAutoEnabled) {
+          setScheduleEnabled(false);
+        }
+        setAutoEnabled((isAutoEnabled) => !isAutoEnabled);
       })
       .catch((e) => {
         console.log(e);
@@ -116,7 +140,6 @@ export const DeviceInfoPage = (props: propsTypes) => {
 
   useEffect(() => {
     document.title = "Device";
-    console.log("useeffect fired");
 
     const url =
       baseURL +
@@ -135,7 +158,8 @@ export const DeviceInfoPage = (props: propsTypes) => {
         console.log(response.data);
         setResponse(response);
         setFetched(true);
-        setScheduleEnabled(response.data.mode !== 0 ? true : false);
+        setScheduleEnabled(response.data.automation_mode === 1 ? true : false);
+        setAutoEnabled(response.data.automation_mode === 2 ? true : false);
       } catch (e) {
         if (e.response.status === 401) {
           localStorage.clear();
@@ -189,6 +213,37 @@ export const DeviceInfoPage = (props: propsTypes) => {
                 lhref="/statistics"
               />
             </Box>
+
+            <Box margins="mb8">
+              <Text kind="h3">Chế độ tự động</Text>
+            </Box>
+            <Box margins="mb8">
+              <Button
+                onClick={toggleAutoEnabled}
+                noDecoration
+                wid="100"
+                textAlign="left"
+              >
+                <InlineIcon>
+                  <Box wid="100" hei="100" margins="mr16" align="vcenter">
+                    <Text kind="normal">Kích hoạt chế độ tự động</Text>
+                  </Box>
+                  <Icon icon={isAutoEnabled ? "Toggle-On" : "Toggle-Off"} />
+                </InlineIcon>
+              </Button>
+            </Box>
+            <Box margins="mb32">
+              <InlineIcon>
+                <Icon icon="Info-Circle" />
+                <Box margins="ml16">
+                  <Text kind="normalcap" color="gray70">
+                    Đèn sẽ được tự động bật/tắt khi cường độ ánh sáng trong ngày
+                    thay đổi.
+                  </Text>
+                </Box>
+              </InlineIcon>
+            </Box>
+
             <Box margins="mb8">
               <Text kind="h3">Hẹn giờ</Text>
             </Box>
