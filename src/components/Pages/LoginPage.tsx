@@ -23,7 +23,7 @@ export const LoginPage = () => {
   }, [history]);
 
   const [signInState, setSignInState] =
-    useState<"initial" | "loading" | "done">("initial");
+    useState<"initial" | "loading" | "done" | "error">("initial");
 
   const formSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     console.log(e);
@@ -60,6 +60,12 @@ export const LoginPage = () => {
       })
       .catch((e) => {
         console.log(e);
+        if (e.response.status !== 200) {
+          setSignInState("error");
+          setTimeout(() => {
+            setSignInState("initial");
+          }, 2000);
+        }
       });
     // setTimeout(() => {
     //   setSignInState("done");
@@ -136,7 +142,14 @@ export const LoginPage = () => {
             iconName="Arrow-Right-Dash"
           />
         ) : (
-          <InlineLoading kind={signInState} />
+          <InlineLoading
+            message={
+              signInState == "error"
+                ? "Sai tên đăng nhập hoặc mật khẩu"
+                : undefined
+            }
+            kind={signInState}
+          />
         )}
       </form>
     </>
