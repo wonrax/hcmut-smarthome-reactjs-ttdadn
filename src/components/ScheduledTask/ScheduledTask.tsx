@@ -1,7 +1,15 @@
+import axios, { AxiosRequestConfig } from "axios";
 import classnames from "classnames";
-import React, { ReactChild, useEffect, useState } from "react";
+import React, { ReactChild, useState } from "react";
 import { Box, Button, Text, Checkbox } from "..";
+import { baseURL } from "../api";
 import styles from "./ScheduledTask.module.css";
+
+const requestConfig: AxiosRequestConfig = {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  },
+};
 
 export const ScheduledTask = (props: {
   id: string;
@@ -13,8 +21,10 @@ export const ScheduledTask = (props: {
 }) => {
   const [animationState, setAnimationState] =
     useState<"initial" | "running">("initial");
-  const [timeOn, setTimeOn] = useState<string>("");
-  const [timeOff, setTimeOff] = useState<string>("");
+  const [timeOn, setTimeOn] = useState<string>(props.timeOn);
+  const [timeOff, setTimeOff] = useState<string>(props.timeOff);
+  const [isRepeat, setIsRepeat] = useState<boolean>(props.isDefaultRepeat);
+  const [enabledDays, setEnabledDays] = useState<number[]>(props.enabledDays);
   const [timeModifyModalVisible, setTimeModifyModalVisible] =
     useState<boolean>(false);
   const enabledDayMapping: { [key: number]: boolean } = {};
@@ -25,15 +35,122 @@ export const ScheduledTask = (props: {
     return undefined;
   });
 
+  const sendAndUpdateSched = (data: any) => {
+    const customRequestConf = { ...requestConfig };
+    customRequestConf["data"] = data;
+    customRequestConf["method"] = "POST";
+    axios(baseURL + "/addsched", customRequestConf).then((response) => {
+      if (response.status !== 202) {
+        console.log(
+          "Cannot update schedule. Server returned code " + response.status
+        );
+        return;
+      }
+      const data = response.data;
+      if (
+        !(
+          data.schedule_id &&
+          data.time_on &&
+          data.time_off &&
+          data.is_repeat !== undefined &&
+          data.repeat_day
+        )
+      ) {
+        console.log("Possibly wrong data format:\n" + data);
+        return;
+      }
+    });
+  };
+
+  const handleDayToggle = (day: { [key: number]: boolean }) => {
+    const days = enabledDays.slice(0);
+    for (const d in day) {
+      const intD = parseInt(d);
+      if (day[d]) {
+        if (days.includes(intD)) continue;
+        days.push(intD);
+        setEnabledDays(days);
+        continue;
+      }
+      if (days.includes(intD)) {
+        var index = days.indexOf(intD);
+        days.splice(index, 1);
+        setEnabledDays(days);
+      }
+    }
+    const data = {
+      schedule_id: props.id,
+      is_repeat: isRepeat,
+      repeat_day: days,
+      time_on: props.timeOn,
+      time_off: props.timeOff,
+    };
+    sendAndUpdateSched(data);
+  };
+
+  const handleIsRepeatToggle = (checked: boolean) => {
+    const data = {
+      schedule_id: props.id,
+      is_repeat: checked,
+      repeat_day: enabledDays,
+      time_on: props.timeOn,
+      time_off: props.timeOff,
+    };
+    setIsRepeat(checked);
+    sendAndUpdateSched(data);
+  };
+
   const listOfDays = (
     <>
-      <Day isDefaultEnabled={enabledDayMapping[2]}>T2</Day>
-      <Day isDefaultEnabled={enabledDayMapping[3]}>T3</Day>
-      <Day isDefaultEnabled={enabledDayMapping[4]}>T4</Day>
-      <Day isDefaultEnabled={enabledDayMapping[5]}>T5</Day>
-      <Day isDefaultEnabled={enabledDayMapping[6]}>T6</Day>
-      <Day isDefaultEnabled={enabledDayMapping[7]}>T7</Day>
-      <Day isDefaultEnabled={enabledDayMapping[1]}>CN</Day>
+      <Day
+        handleDayToggle={handleDayToggle}
+        isDefaultEnabled={enabledDayMapping[2]}
+        index={2}
+      >
+        T2
+      </Day>
+      <Day
+        handleDayToggle={handleDayToggle}
+        isDefaultEnabled={enabledDayMapping[3]}
+        index={3}
+      >
+        T3
+      </Day>
+      <Day
+        handleDayToggle={handleDayToggle}
+        isDefaultEnabled={enabledDayMapping[4]}
+        index={4}
+      >
+        T4
+      </Day>
+      <Day
+        handleDayToggle={handleDayToggle}
+        isDefaultEnabled={enabledDayMapping[5]}
+        index={5}
+      >
+        T5
+      </Day>
+      <Day
+        handleDayToggle={handleDayToggle}
+        isDefaultEnabled={enabledDayMapping[6]}
+        index={6}
+      >
+        T6
+      </Day>
+      <Day
+        handleDayToggle={handleDayToggle}
+        isDefaultEnabled={enabledDayMapping[7]}
+        index={7}
+      >
+        T7
+      </Day>
+      <Day
+        handleDayToggle={handleDayToggle}
+        isDefaultEnabled={enabledDayMapping[1]}
+        index={1}
+      >
+        CN
+      </Day>
     </>
   );
 
@@ -73,10 +190,10 @@ export const ScheduledTask = (props: {
       : styles.scheduledTask
   );
 
-  useEffect(() => {
-    setTimeOn(props.timeOn);
-    setTimeOff(props.timeOff);
-  }, [props.timeOn, props.timeOff]);
+  // useEffect(() => {
+  //   setTimeOn(props.timeOn);
+  //   setTimeOff(props.timeOff);
+  // }, [props.timeOn, props.timeOff]);
 
   return (
     <div className={cs} onTransitionEnd={handleOnAnimationEnd}>
@@ -88,6 +205,7 @@ export const ScheduledTask = (props: {
           isDefaultChecked={props.isDefaultRepeat}
           label="Lặp lại"
           id={props.id}
+          onCheck={handleIsRepeatToggle}
         />
       </Box>
       <Box margins="mb24">{listOfDays}</Box>
@@ -160,7 +278,12 @@ export const ScheduledTask = (props: {
   );
 };
 
-const Day = (props: { children: ReactChild; isDefaultEnabled: boolean }) => {
+const Day = (props: {
+  children: ReactChild;
+  isDefaultEnabled: boolean;
+  handleDayToggle: any;
+  index: number;
+}) => {
   const [isEnabled, setIsEnabled] = useState<boolean>(props.isDefaultEnabled);
 
   const cs = classnames(
@@ -171,6 +294,8 @@ const Day = (props: { children: ReactChild; isDefaultEnabled: boolean }) => {
   const textColor = isEnabled ? "primary" : "gray50";
 
   const toggleEnabled = () => {
+    const data = { [props.index]: !isEnabled };
+    props.handleDayToggle(data);
     setIsEnabled(!isEnabled);
   };
 

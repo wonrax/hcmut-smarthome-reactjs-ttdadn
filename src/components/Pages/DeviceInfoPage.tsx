@@ -9,6 +9,12 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 type propsTypes = {};
 
+const requestConfig: AxiosRequestConfig = {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  },
+};
+
 export const DeviceInfoPage = (props: propsTypes) => {
   const [isScheduleEnabled, setScheduleEnabled] = useState<boolean>(false);
   const deviceInfo = (
@@ -44,23 +50,34 @@ export const DeviceInfoPage = (props: propsTypes) => {
 
   const handleNewScheduleClick: React.MouseEventHandler<HTMLButtonElement> =
     () => {
-      if (!scheduleListRef.current || !Array.isArray(scheduleListRef.current))
-        return;
-      const copyList = scheduleListRef.current.slice();
-      copyList.unshift(
-        <ScheduledTask
-          //TODO: Get the properly key e.g. by incrementing the current larget index
-          key={new Date().toString()}
-          id={new Date().toString()}
-          enabledDays={[]}
-          isDefaultRepeat={false}
-          timeOn="07:00"
-          timeOff="09:00"
-          onDelete={handleOnDeleteSchedule}
-        />
-      );
-      scheduleListRef.current = copyList;
-      setScheduleList(copyList);
+      const newSchedData = {
+        device_id: device_id,
+        is_repeat: false,
+        repeat_day: [],
+        time_on: "07:00",
+        time_off: "09:00",
+      };
+      const customRequestConf = { ...requestConfig };
+      customRequestConf["method"] = "POST";
+      customRequestConf["data"] = newSchedData;
+      axios(baseURL + "/addsched", customRequestConf).then((response) => {
+        if (!scheduleListRef.current || !Array.isArray(scheduleListRef.current))
+          return;
+        const copyList = scheduleListRef.current.slice();
+        copyList.unshift(
+          <ScheduledTask
+            key={response.data.schedule_id}
+            id={response.data.schedule_id}
+            enabledDays={[]}
+            isDefaultRepeat={false}
+            timeOn="07:00"
+            timeOff="09:00"
+            onDelete={handleOnDeleteSchedule}
+          />
+        );
+        scheduleListRef.current = copyList;
+        setScheduleList(copyList);
+      });
     };
 
   useEffect(() => {

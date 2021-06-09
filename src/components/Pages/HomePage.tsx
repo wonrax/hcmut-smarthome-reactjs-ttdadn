@@ -14,7 +14,6 @@ import axios, { AxiosRequestConfig } from "axios";
 import { useHistory } from "react-router";
 
 export const HomePage = () => {
-  console.log("HOMEPAGE fired");
   const websocketConnection = useRef<WebSocket | null>(null);
   const history = useHistory();
   const date: Date = new Date();
@@ -50,7 +49,6 @@ export const HomePage = () => {
   // WEBSOCKET useEffect
   //////////////////////
   useEffect(() => {
-    console.log("WEBSOCKET useEffect fired");
     if (websocketConnection.current) return;
     document.title = "SmartHome";
 
@@ -105,7 +103,6 @@ export const HomePage = () => {
   //FETCH API useEffect
   /////////////////////
   useEffect(() => {
-    console.log("FETCH API useEffect fired");
     const url = baseURL + "/@" + localStorage.getItem("username") + "/devices";
     const requestConfig: AxiosRequestConfig = {
       headers: {
