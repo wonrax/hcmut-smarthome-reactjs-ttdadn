@@ -5,6 +5,8 @@ import { Box, Button, Text, TitledPageTemplate } from "..";
 export const ProfilePage = () => {
   const history = useHistory();
   const logOut = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     history.push("/login");
   };
   return (

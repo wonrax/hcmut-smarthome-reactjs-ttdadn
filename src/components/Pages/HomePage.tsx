@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Icon,
   Text,
@@ -13,8 +13,9 @@ import { baseURL, testUser, websocketURL } from "../api";
 import axios, { AxiosRequestConfig } from "axios";
 import { useHistory } from "react-router";
 
-const websocketConnection = new WebSocket(websocketURL);
 export const HomePage = () => {
+  console.log("HOMEPAGE fired");
+  const websocketConnection = useRef<WebSocket | null>(null);
   const history = useHistory();
   const date: Date = new Date();
   const [hour, minute] = date.toLocaleTimeString("vi-VN").split(/:| /);
@@ -24,8 +25,8 @@ export const HomePage = () => {
     if (hourTime >= 5 && hourTime < 12) return "buổi sáng";
     return "buổi chiều";
   })();
-  let deviceRefs: React.RefObject<any>[] = [];
-  const [weatherDeviceId, setWeatherDeviceId] = useState<string>("");
+  const deviceRefs = useRef<React.RefObject<any | null>[]>([]);
+  const weatherDeviceId = useRef<string>("");
 
   const initialDeviceElement = (
     <Box margins="mb16">
@@ -44,22 +45,27 @@ export const HomePage = () => {
     JSX.Element[] | JSX.Element
   >(initialWeatherElement);
 
+  // WEBSOCKET useEffect
+  //////////////////////
   useEffect(() => {
+    console.log("WEBSOCKET useEffect fired");
+    if (websocketConnection.current) return;
     document.title = "SmartHome";
-    const url = baseURL + "/@" + testUser + "/devices";
 
-    websocketConnection.onopen = () => {
+    websocketConnection.current = new WebSocket(websocketURL);
+
+    websocketConnection.current.onopen = () => {
       console.log("WebSocket connected");
     };
 
-    websocketConnection.onmessage = (message: any) => {
+    websocketConnection.current.onmessage = (message: any) => {
       if (!message.data) {
         return;
       }
       const socketData = JSON.parse(message.data)["message"];
       console.log(socketData);
       if (socketData && socketData.device_id && socketData.value) {
-        if (socketData.device_id === weatherDeviceId) {
+        if (socketData.device_id === weatherDeviceId.current) {
           const temphumid: string[] = socketData.value.split("-");
           if (temphumid.length !== 2) {
             console.log("WARNING: Possibly wrong temperature/humid format");
@@ -71,9 +77,11 @@ export const HomePage = () => {
           console.log("Updated weather data");
           return;
         }
-        for (var i = 0; i < deviceRefs.length; i++) {
-          if (deviceRefs[i].current.device_id === socketData.device_id) {
-            deviceRefs[i].current.setIsToggleOn(
+        for (var i = 0; i < deviceRefs.current.length; i++) {
+          if (
+            deviceRefs.current[i].current?.device_id === socketData.device_id
+          ) {
+            deviceRefs.current[i].current.setIsToggleOn(
               socketData.value === "0" ? false : true
             );
             return;
@@ -82,11 +90,21 @@ export const HomePage = () => {
       }
     };
 
-    websocketConnection.onclose = (ev: any) => {
+    websocketConnection.current.onclose = (ev: any) => {
       console.log(ev);
-      websocketConnection.close();
+      websocketConnection.current?.close();
     };
 
+    return () => {
+      websocketConnection.current?.close();
+    };
+  }, []);
+
+  //FETCH API useEffect
+  /////////////////////
+  useEffect(() => {
+    console.log("FETCH API useEffect fired");
+    const url = baseURL + "/@" + testUser + "/devices";
     const requestConfig: AxiosRequestConfig = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -125,7 +143,7 @@ export const HomePage = () => {
 
           if (device_type === "fan" || device_type === "light") {
             const deviceRef = React.createRef<HTMLDivElement>();
-            deviceRefs.push(deviceRef);
+            deviceRefs.current.push(deviceRef);
             newDeviceElements.push(
               <Box key={i} margins="mb16">
                 <DeviceCard
@@ -140,7 +158,7 @@ export const HomePage = () => {
               </Box>
             );
           } else if (device_type === "temperature") {
-            setWeatherDeviceId(device.device_id);
+            weatherDeviceId.current = device.device_id;
             console.log("weatherDeviceId: " + device.device_id);
             const temphumid = device.status.split("-");
             newWeatherElements = (
@@ -154,24 +172,24 @@ export const HomePage = () => {
         }
       })
       .catch((err) => {
-        if (err.response.status == 401) {
+        if (err.response && err.response.status === 401) {
           localStorage.removeItem("access_token");
           history.push("/login");
         }
         fetchError(url);
       });
-  }, []);
 
-  const fetchError = (url: string) => {
-    console.log("Error fetching url: " + url);
-    setDeviceElements(
-      <FetchErrorElement message="Không thể tải danh sách thiết bị từ server" />
-    );
-    setWeatherElements(
-      <FetchErrorElement message="Không thể tải dữ liệu nhiệt độ, độ ẩm từ server" />
-    );
-    setTimeout(createMockData, 0);
-  };
+    const fetchError = (url: string) => {
+      console.log("Error fetching url: " + url);
+      setDeviceElements(
+        <FetchErrorElement message="Không thể tải danh sách thiết bị từ server" />
+      );
+      setWeatherElements(
+        <FetchErrorElement message="Không thể tải dữ liệu nhiệt độ, độ ẩm từ server" />
+      );
+      setTimeout(createMockData, 0);
+    };
+  }, [history]);
 
   const createMockData = () => {
     const mockDevicesData = (
@@ -194,6 +212,7 @@ export const HomePage = () => {
         <WeatherElement humid="68" temp="32" />
       </>
     );
+
     setDeviceElements(mockDevicesData);
     setWeatherElements(mockWeatherData);
   };
@@ -222,18 +241,6 @@ export const HomePage = () => {
       </Box>
       {deviceElements}
     </>
-  );
-};
-
-const Divider = () => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "1.5px",
-        backgroundColor: "var(--gray-20)",
-      }}
-    ></div>
   );
 };
 
@@ -284,6 +291,18 @@ const WeatherElement = (props: { temp: string; humid: string }) => {
         <BriefInfo main={props.humid + "%"} info="Độ ẩm trong nhà hiện tại" />
       </Box>
     </>
+  );
+};
+
+const Divider = () => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "1.5px",
+        backgroundColor: "var(--gray-20)",
+      }}
+    ></div>
   );
 };
 

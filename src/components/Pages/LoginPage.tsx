@@ -14,13 +14,14 @@ export const LoginPage = () => {
     borderRadius: "var(--border-radius)",
   };
 
+  const history = useHistory();
+
   useEffect(() => {
     if (localStorage.getItem("access_token")) {
       history.replace("/");
     }
-  }, []);
+  }, [history]);
 
-  const history = useHistory();
   const [signInState, setSignInState] =
     useState<"initial" | "loading" | "done">("initial");
 
