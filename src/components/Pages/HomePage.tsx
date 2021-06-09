@@ -45,6 +45,8 @@ export const HomePage = () => {
     JSX.Element[] | JSX.Element
   >(initialWeatherElement);
 
+  const isMounted = useIsMounted();
+
   // WEBSOCKET useEffect
   //////////////////////
   useEffect(() => {
@@ -59,7 +61,7 @@ export const HomePage = () => {
     };
 
     websocketConnection.current.onmessage = (message: any) => {
-      if (!message.data) {
+      if (!message.data || !isMounted.current) {
         return;
       }
       const socketData = JSON.parse(message.data)["message"];
@@ -166,6 +168,7 @@ export const HomePage = () => {
             );
           }
         }
+        if (!isMounted.current) return;
         setDeviceElements(newDeviceElements);
         if (newWeatherElements) {
           setWeatherElements(newWeatherElements);
@@ -181,6 +184,7 @@ export const HomePage = () => {
 
     const fetchError = (url: string) => {
       console.log("Error fetching url: " + url);
+      if (!isMounted.current) return;
       setDeviceElements(
         <FetchErrorElement message="Không thể tải danh sách thiết bị từ server" />
       );
@@ -212,6 +216,8 @@ export const HomePage = () => {
         <WeatherElement humid="68" temp="32" />
       </>
     );
+
+    if (!isMounted.current) return;
 
     setDeviceElements(mockDevicesData);
     setWeatherElements(mockWeatherData);
@@ -357,3 +363,17 @@ const FetchErrorElement = (props: { message: string }) => {
     </Box>
   );
 };
+
+//TODO Turn this into a module
+function useIsMounted() {
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  return isMounted;
+}

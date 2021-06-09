@@ -38,6 +38,14 @@ export const LoginPage = () => {
         password: passwordInputRef.current?.value,
       })
       .then((response) => {
+        if (response.status !== 200) {
+          console.log("ERROR: Server returned code " + response.status);
+          return;
+        }
+        localStorage.setItem(
+          "username",
+          usernameInputRef.current ? usernameInputRef.current.value : ""
+        );
         const access_token = response.data.access_token;
         const refresh_token = response.data.refresh_token;
         if (access_token) {

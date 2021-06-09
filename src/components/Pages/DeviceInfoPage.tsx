@@ -5,7 +5,7 @@ import { ScheduledTask } from "..";
 import { TitledPageTemplate } from "../Utils";
 import { useParams } from "react-router";
 import { baseURL, testUser } from "../api";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 type propsTypes = {};
 
@@ -67,9 +67,20 @@ export const DeviceInfoPage = (props: propsTypes) => {
     document.title = "Device";
     console.log("useeffect fired");
 
-    const url = baseURL + "/@" + testUser + "/devices/" + device_id;
+    const url =
+      baseURL +
+      "/@" +
+      localStorage.getItem("username") +
+      "/devices/" +
+      device_id;
     const fetchDeviceInfo = async function () {
-      let response = await axios(url);
+      const requestConfig: AxiosRequestConfig = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      };
+      let response = await axios(url, requestConfig);
+      console.log(response.data);
       setResponse(response);
       setFetched(true);
       setScheduleEnabled(response.data.mode !== 0 ? true : false);
