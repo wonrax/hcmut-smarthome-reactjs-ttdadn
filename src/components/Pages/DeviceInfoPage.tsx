@@ -168,7 +168,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
       }
     };
     fetchDeviceInfo();
-  }, [device_id]);
+  }, [device_id, history]);
 
   useEffect(() => {
     if (!isFetched) return;

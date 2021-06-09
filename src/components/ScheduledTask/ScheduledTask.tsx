@@ -82,8 +82,8 @@ export const ScheduledTask = (props: {
       schedule_id: props.id,
       is_repeat: isRepeat,
       repeat_day: days,
-      time_on: props.timeOn,
-      time_off: props.timeOff,
+      time_on: timeOn,
+      time_off: timeOff,
     };
     sendAndUpdateSched(data);
   };
@@ -93,8 +93,8 @@ export const ScheduledTask = (props: {
       schedule_id: props.id,
       is_repeat: checked,
       repeat_day: enabledDays,
-      time_on: props.timeOn,
-      time_off: props.timeOff,
+      time_on: timeOn,
+      time_off: timeOff,
     };
     setIsRepeat(checked);
     sendAndUpdateSched(data);
@@ -172,6 +172,17 @@ export const ScheduledTask = (props: {
     //Make a request to server
     e.preventDefault();
     setTimeModifyModalVisible(false);
+  };
+
+  const handleOnTimeSave = () => {
+    const data = {
+      schedule_id: props.id,
+      is_repeat: isRepeat,
+      repeat_day: enabledDays,
+      time_on: timeOn,
+      time_off: timeOff,
+    };
+    sendAndUpdateSched(data);
   };
 
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -262,7 +273,11 @@ export const ScheduledTask = (props: {
           onChange={handleTimeChange}
         />
         <Box margins={["mb16", "mt16"]}>
-          <Button kind="default" text="Lưu thay đổi" />
+          <Button
+            onClick={handleOnTimeSave}
+            kind="default"
+            text="Lưu thay đổi"
+          />
         </Box>
       </form>
 
