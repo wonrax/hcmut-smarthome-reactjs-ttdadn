@@ -4,7 +4,7 @@ import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
 import { TitledPageTemplate } from "../Utils";
 import { useParams } from "react-router";
-import { baseURL, testUser } from "../api";
+import { baseURL } from "../api";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 type propsTypes = {};

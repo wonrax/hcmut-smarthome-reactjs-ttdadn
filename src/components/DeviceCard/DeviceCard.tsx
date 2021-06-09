@@ -5,7 +5,7 @@ import { Box } from "..";
 import { InlineIcon, Icon } from "..";
 import { useHistory } from "react-router-dom";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { baseURL, testUser } from "../api";
+import { baseURL } from "../api";
 
 type Props = {
   deviceType: "Fan" | "Light";
@@ -79,7 +79,7 @@ const DeviceBrief = React.forwardRef((props: deviceBriefProps, ref) => {
   });
 
   const toggleDevice: React.MouseEventHandler<HTMLButtonElement> = () => {
-    let url = baseURL + "/@" + testUser + "/devices";
+    let url = baseURL + "/@" + localStorage.getItem("username") + "/devices";
     const postData: AxiosRequestConfig = {
       method: "post",
       url: url,

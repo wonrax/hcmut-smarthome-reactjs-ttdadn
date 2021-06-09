@@ -9,7 +9,7 @@ import {
   Button,
   InlineLoading,
 } from "..";
-import { baseURL, testUser, websocketURL } from "../api";
+import { baseURL, websocketURL } from "../api";
 import axios, { AxiosRequestConfig } from "axios";
 import { useHistory } from "react-router";
 
@@ -100,13 +100,13 @@ export const HomePage = () => {
     return () => {
       websocketConnection.current?.close();
     };
-  }, []);
+  }, [isMounted]);
 
   //FETCH API useEffect
   /////////////////////
   useEffect(() => {
     console.log("FETCH API useEffect fired");
-    const url = baseURL + "/@" + testUser + "/devices";
+    const url = baseURL + "/@" + localStorage.getItem("username") + "/devices";
     const requestConfig: AxiosRequestConfig = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -193,35 +193,35 @@ export const HomePage = () => {
       );
       setTimeout(createMockData, 0);
     };
-  }, [history]);
+    const createMockData = () => {
+      const mockDevicesData = (
+        <>
+          <Box margins="mb32">
+            <Text kind="caption">Displaying mock data</Text>
+          </Box>
+          <FakeDevice seed={0} />
+          <FakeDevice seed={1} />
+          <FakeDevice seed={2} />
+          <FakeDevice seed={3} />
+        </>
+      );
 
-  const createMockData = () => {
-    const mockDevicesData = (
-      <>
-        <Box margins="mb32">
-          <Text kind="caption">Displaying mock data</Text>
-        </Box>
-        <FakeDevice seed={0} />
-        <FakeDevice seed={1} />
-        <FakeDevice seed={2} />
-        <FakeDevice seed={3} />
-      </>
-    );
+      const mockWeatherData = (
+        <>
+          <Box margins="mb16">
+            <Text kind="caption">Displaying mock data</Text>
+          </Box>
+          <WeatherElement humid="68" temp="32" />
+        </>
+      );
 
-    const mockWeatherData = (
-      <>
-        <Box margins="mb16">
-          <Text kind="caption">Displaying mock data</Text>
-        </Box>
-        <WeatherElement humid="68" temp="32" />
-      </>
-    );
+      if (!isMounted.current) return;
 
-    if (!isMounted.current) return;
+      setDeviceElements(mockDevicesData);
+      setWeatherElements(mockWeatherData);
+    };
+  }, [history, isMounted]);
 
-    setDeviceElements(mockDevicesData);
-    setWeatherElements(mockWeatherData);
-  };
   return (
     <>
       {/* Navbar ----- */}
