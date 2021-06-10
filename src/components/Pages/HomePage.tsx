@@ -121,11 +121,6 @@ export const HomePage = () => {
           fan: "Fan",
           light: "Light",
         };
-        const autoModeMapping: { [key: number]: string } = {
-          0: "Tắt",
-          1: "Hẹn giờ",
-          2: "Tự động bật khi trời tối",
-        };
         let newWeatherElements;
         if (!(res.data && res.data.devices && res.data.devices.length)) {
           console.log("Wrong data format.");
@@ -140,6 +135,14 @@ export const HomePage = () => {
           const device_description = device.description || "";
           const device_id = device.device_id;
           const automation_mode = device.automation_mode;
+
+          const autoModeMapping: { [key: number]: string } = {
+            0: "Tắt",
+            1: "Hẹn giờ",
+            2:
+              "Tự động bật khi " +
+              `${device_type === "light" ? "trời tối" : "nhiệt độ cao"}`,
+          };
 
           if (!(device_type && device_name && device_status && device_id)) {
             console.log("Wrong device data format.");

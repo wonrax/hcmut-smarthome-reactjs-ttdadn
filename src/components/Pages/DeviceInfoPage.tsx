@@ -191,6 +191,9 @@ export const DeviceInfoPage = (props: propsTypes) => {
     setScheduleList(list_);
   }, [isFetched, response]);
 
+  const device_type_text =
+    response?.data.device_type === "light" ? "Đèn" : "Quạt";
+
   return (
     <TitledPageTemplate title="Thông tin thiết bị" scrollToTop>
       <>
@@ -237,8 +240,8 @@ export const DeviceInfoPage = (props: propsTypes) => {
                 <Icon icon="Info-Circle" />
                 <Box margins="ml16">
                   <Text kind="normalcap" color="gray70">
-                    Đèn sẽ được tự động bật/tắt khi cường độ ánh sáng trong ngày
-                    thay đổi.
+                    {`${device_type_text} sẽ được tự động bật/tắt khi cường độ ánh sáng trong ngày
+                    thay đổi.`}
                   </Text>
                 </Box>
               </InlineIcon>
@@ -267,8 +270,8 @@ export const DeviceInfoPage = (props: propsTypes) => {
                 <Icon icon="Info-Circle" />
                 <Box margins="ml16">
                   <Text kind="normalcap" color="gray70">
-                    Đèn sẽ được tự động bật/tắt theo danh sách lịch đã hẹn ở
-                    dưới đây.
+                    {`${device_type_text} sẽ được tự động bật/tắt theo danh sách lịch đã hẹn ở
+                    dưới đây.`}
                   </Text>
                 </Box>
               </InlineIcon>
