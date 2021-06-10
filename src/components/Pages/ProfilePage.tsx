@@ -112,9 +112,6 @@ export const ProfilePage = () => {
         </Text>
         <Text kind="normal">{address}</Text>
         <Box margins="mb16" />
-        <Text kind="normal" color="gray70">
-          SmartHome Co. Ltd.
-        </Text>
       </Box>
 
       <Box margins={["mb32"]}>
