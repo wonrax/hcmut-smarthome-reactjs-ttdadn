@@ -30,7 +30,6 @@ export const Button = (props: {
   as?: "div";
   textAlign?: "left";
 }) => {
-  var renderingElement;
   var renderingElementChildren;
   var renderingText;
 
@@ -41,7 +40,7 @@ export const Button = (props: {
     secondary: "white",
     ghost: "transparent",
     danger: "white",
-    disabled: "gray20",
+    disabled: "primary10",
   };
 
   const BUTTON_ICON_COLOR: { [key in ButtonKind]: IconColors } = {
@@ -49,7 +48,7 @@ export const Button = (props: {
     secondary: "primary",
     ghost: "primary",
     danger: "danger",
-    disabled: "gray50",
+    disabled: "primary",
   };
 
   const TEXT_COLOR_KIND: { [key in ButtonKind]: TextColors } = {
@@ -57,7 +56,7 @@ export const Button = (props: {
     secondary: "gray100",
     ghost: "primary",
     danger: "gray100",
-    disabled: "gray50",
+    disabled: "primary",
   };
 
   const bgColor = (function () {
@@ -135,8 +134,6 @@ export const Button = (props: {
     renderingElementChildren = renderingElementMainChild;
   }
 
-  const wrapperCs = classnames(styles.wrapper);
-
   const renderAs = () => {
     if (props.as) return props.as;
     if (props.lhref) return "div";
@@ -152,8 +149,6 @@ export const Button = (props: {
     },
     renderingElementChildren
   );
-
-  renderingElement = <div className={wrapperCs}>{renderingButton}</div>;
 
   if (props.lhref) {
     // Wrapping link outside

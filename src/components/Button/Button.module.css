@@ -31,10 +31,7 @@
 
 .disabled {
 	cursor: not-allowed;
-}
-
-.wrapper {
-	display: inline-flex;
+	border: 1.5px solid var(--primary);
 }
 
 .wid100 {

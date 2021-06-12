@@ -5,6 +5,7 @@ export const backgroundColors = [
   "transparent",
   "primaryDarker",
   "gray20",
+  "primary10",
 ] as const;
 
 export const iconColors = [

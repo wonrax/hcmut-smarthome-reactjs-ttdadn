@@ -100,19 +100,25 @@ export const ProfilePage = () => {
 
   return (
     <TitledPageTemplate title={homeName}>
-      <Box margins="mb16">
-        <Text kind="normalcap" color="gray50">
-          Tên đăng nhập
-        </Text>
-        <Text kind="normal">{phoneNumber}</Text>
-      </Box>
-      <Box margins="mb32">
-        <Text kind="normalcap" color="gray50">
-          Địa chỉ
-        </Text>
-        <Text kind="normal">{address}</Text>
-        <Box margins="mb16" />
-      </Box>
+      {homeName === "" ? (
+        <InlineLoading kind="loading" message="Đang tải dữ liệu..." />
+      ) : (
+        <>
+          <Box margins="mb16">
+            <Text kind="normalcap" color="gray50">
+              Tên đăng nhập
+            </Text>
+            <Text kind="normal">{phoneNumber}</Text>
+          </Box>
+          <Box margins="mb32">
+            <Text kind="normalcap" color="gray50">
+              Địa chỉ
+            </Text>
+            <Text kind="normal">{address}</Text>
+            <Box margins="mb16" />
+          </Box>
+        </>
+      )}
 
       <Box margins={["mb32"]}>
         <Button

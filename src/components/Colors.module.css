@@ -72,6 +72,10 @@
 	background-color: var(--gray-20);
 }
 
+.bgPrimary10 {
+	background-color: var(--primary-10);
+}
+
 .icon-primary svg path{
 	fill: var(--primary);
 }

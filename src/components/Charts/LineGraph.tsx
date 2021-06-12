@@ -51,21 +51,44 @@ Chart.register(
   Tooltip
 );
 
-export const LineGraph = () => {
+export const LineGraph = (props: { data: any }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const keys = [];
+    for (const k in props.data) {
+      keys.push(k);
+    }
+    keys.sort((a, b) => {
+      const da = a.split("/");
+      const db = b.split("/");
+      var dateA = new Date(
+        parseInt(da[2]),
+        parseInt(da[1]) - 1,
+        parseInt(da[0])
+      );
+      var dateB = new Date(
+        parseInt(db[2]),
+        parseInt(db[1]) - 1,
+        parseInt(db[0])
+      );
+      return dateA.getTime() - dateB.getTime();
+    });
+    const sortedData = [];
+    for (const k in keys) {
+      sortedData.push(props.data[keys[k]]);
+    }
     const ctx = chartRef.current?.getContext("2d");
     if (!ctx) return;
     const chart = new Chart(ctx, {
       type: "line",
       data: {
         //Bring in data
-        labels: ["17/05", "18/05", "19/05", "20/05", "21/05"],
+        labels: keys,
         datasets: [
           {
             label: "Số giờ sử dụng trong ngày",
-            data: [16, 17, 11, 20, 10],
+            data: sortedData,
             cubicInterpolationMode: "monotone",
             pointBackgroundColor: "#D8ECFF",
             borderColor: "#0B84F3",
@@ -87,7 +110,7 @@ export const LineGraph = () => {
     return () => {
       chart.destroy();
     };
-  }, []);
+  }, [props.data]);
 
   return (
     <div className={classes.graphContainer}>

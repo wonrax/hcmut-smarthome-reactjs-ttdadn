@@ -1,5 +1,15 @@
-import React, { useState } from "react";
-import { Box, Button, TitledPageTemplate, Text, LineGraph, BarGraph } from "..";
+import axios, { AxiosRequestConfig } from "axios";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  TitledPageTemplate,
+  Text,
+  LineGraph,
+  BarGraph,
+  InlineLoading,
+} from "..";
+import { baseURL } from "../api";
 
 export const StatisticsPage = () => {
   const [deviceType, setDeviceType] = useState<"fan" | "light">("light");
@@ -9,9 +19,6 @@ export const StatisticsPage = () => {
     // Request to devicetype, timerange
   };
 
-  const deviceTypeText = deviceType == "light" ? "Đèn" : "Quạt";
-  const timeRangeText = timeRange == "week" ? "tuần" : "tháng";
-
   return (
     <TitledPageTemplate title="Thống kê">
       <Box margins="mb32">
@@ -20,10 +27,10 @@ export const StatisticsPage = () => {
         </Box>
         <Box display="inlineFlex" margins="mr16">
           <Button
-            kind={deviceType == "light" ? "disabled" : "secondary"}
+            kind={deviceType === "light" ? "disabled" : "secondary"}
             iconPosition="left"
             iconName={
-              deviceType == "light" ? "Square-Ticked-Light" : "Square-Unticked"
+              deviceType === "light" ? "Square-Ticked" : "Square-Unticked"
             }
             text="Đèn"
             onClick={() => {
@@ -35,10 +42,10 @@ export const StatisticsPage = () => {
 
         <Box display="inlineFlex">
           <Button
-            kind={deviceType == "fan" ? "disabled" : "secondary"}
+            kind={deviceType === "fan" ? "disabled" : "secondary"}
             iconPosition="left"
             iconName={
-              deviceType == "fan" ? "Square-Ticked-Light" : "Square-Unticked"
+              deviceType === "fan" ? "Square-Ticked" : "Square-Unticked"
             }
             text="Quạt"
             onClick={() => {
@@ -55,10 +62,10 @@ export const StatisticsPage = () => {
         </Box>
         <Box display="inlineFlex" margins="mr16">
           <Button
-            kind={timeRange == "week" ? "disabled" : "secondary"}
+            kind={timeRange === "week" ? "disabled" : "secondary"}
             iconPosition="left"
             iconName={
-              timeRange == "week" ? "Square-Ticked-Light" : "Square-Unticked"
+              timeRange === "week" ? "Square-Ticked" : "Square-Unticked"
             }
             text="Tuần"
             onClick={() => {
@@ -70,10 +77,10 @@ export const StatisticsPage = () => {
 
         <Box display="inlineFlex">
           <Button
-            kind={timeRange == "month" ? "disabled" : "secondary"}
+            kind={timeRange === "month" ? "disabled" : "secondary"}
             iconPosition="left"
             iconName={
-              timeRange == "month" ? "Square-Ticked-Light" : "Square-Unticked"
+              timeRange === "month" ? "Square-Ticked" : "Square-Unticked"
             }
             text="Tháng"
             onClick={() => {
@@ -83,7 +90,60 @@ export const StatisticsPage = () => {
           />
         </Box>
       </Box>
+      <StatisticsData deviceType={deviceType} timeRange={timeRange} />
+    </TitledPageTemplate>
+  );
+};
 
+const requestConfig: AxiosRequestConfig = {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  },
+};
+
+const StatisticsData = (props: { deviceType: string; timeRange: string }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [deviceType, setDeviceType] = useState<string>(props.deviceType);
+  const [error, setError] = useState<JSX.Element>();
+  const [data, setData] = useState<any>(null);
+  useEffect(() => {
+    setIsLoading(true);
+    setDeviceType(props.deviceType);
+    requestConfig["method"] = "GET";
+    requestConfig["params"] = {
+      "device-type": props.deviceType,
+      range: props.timeRange,
+    };
+    axios(baseURL + "/statistics", requestConfig)
+      .then((response) => {
+        setData(response.data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setError(
+          <Text kind="normal" color="danger">
+            {e}
+          </Text>
+        );
+      });
+    return () => {
+      setIsLoading(true);
+    };
+  }, [props.deviceType, props.timeRange]);
+
+  if (isLoading)
+    return <InlineLoading kind="loading" message="Đang tải dữ liệu..." />;
+  if (error) return error;
+
+  const deviceTypeText = deviceType === "light" ? "Đèn" : "Quạt";
+  const timeRangeText = props.timeRange === "week" ? "tuần" : "tháng";
+
+  const { data_points, day_average, total } = data[deviceType];
+  const day_average_rounded = day_average.toFixed(1);
+  const total_rounded = total.toFixed(1);
+
+  return (
+    <>
       <Box margins="mb32">
         <Text kind="normal" color="primary">
           {`Đang hiển thị lịch sử sử dụng ${deviceTypeText} trong 1 ${timeRangeText} qua`}
@@ -91,14 +151,14 @@ export const StatisticsPage = () => {
       </Box>
 
       <Box margins="mb32">
-        <Text kind="h2">17,2 giờ</Text>
+        <Text kind="h2">{`${day_average_rounded} giờ`}</Text>
         <Text kind="normal" color="gray70">
           Thời gian sử dụng trung bình trong một ngày
         </Text>
       </Box>
 
       <Box margins="mb32">
-        <Text kind="h2">292,4 giờ</Text>
+        <Text kind="h2">{`${total_rounded} giờ`}</Text>
         <Text kind="normal" color="gray70">
           {`Tổng thời gian sử dụng trong ${timeRangeText} này`}
         </Text>
@@ -108,7 +168,7 @@ export const StatisticsPage = () => {
         <Text kind="h3">Biểu đồ thời gian sử dụng theo ngày</Text>
       </Box>
       <Box margins="mb32">
-        <LineGraph />
+        <LineGraph data={data_points} />
       </Box>
 
       <Box margins="mb32">
@@ -117,6 +177,6 @@ export const StatisticsPage = () => {
       <Box margins="mb32">
         <BarGraph />
       </Box>
-    </TitledPageTemplate>
+    </>
   );
 };
