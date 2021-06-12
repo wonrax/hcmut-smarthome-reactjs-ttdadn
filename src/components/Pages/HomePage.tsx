@@ -233,23 +233,20 @@ export const HomePage = () => {
       {/* Navbar ----- */}
       {/* ------------- */}
       <Navbar />
-      <Box margins="mb32">
-        <Divider />
-      </Box>
+      <Box margins="mb32"></Box>
 
       {/* Welcome ----- */}
       {/* ------------- */}
-      <WelcomeMessage timeOfDay={timeOfDay} hour={hour} minute={minute} />
+      <Box margins="mb32">
+        <WelcomeMessage timeOfDay={timeOfDay} hour={hour} minute={minute} />
+      </Box>
       {/* Weather ----- */}
       {/* ------------- */}
-      <Box margins="mb16">
-        <Text kind="h3">Thời tiết</Text>
-      </Box>
       {weatherElements}
       {/* Devices ----- */}
       {/* ------------- */}
       <Box margins="mb16">
-        <Text kind="h3">Thiết bị</Text>
+        <Text kind="h2">Thiết bị</Text>
       </Box>
       {deviceElements}
     </>
@@ -293,14 +290,9 @@ const FakeDevice = (props: { seed: 0 | 1 | 2 | 3 }) => {
 const WeatherElement = (props: { temp: string; humid: string }) => {
   return (
     <>
-      <Box>
-        <BriefInfo
-          main={props.temp + "°C"}
-          info="Nhiệt độ trong nhà hiện tại"
-        />
-      </Box>
-      <Box margins="mb32">
-        <BriefInfo main={props.humid + "%"} info="Độ ẩm trong nhà hiện tại" />
+      <Box display="inlineFlex" wid="100" margins="mb32">
+        <BriefInfo main={props.temp + "°C"} info="Nhiệt độ" />
+        <BriefInfo main={props.humid + "%"} info="Độ ẩm" marginLeft />
       </Box>
     </>
   );
@@ -323,7 +315,9 @@ const Navbar = () => {
     <Box margins="mb32">
       <InlineIcon iconBackground>
         <Box wid="100" hei="100">
-          <Text kind="h3">SmartHome</Text>
+          <Text kind="h3" color="primary">
+            SmartHome
+          </Text>
         </Box>
         <Button as="div" lhref="/profile" noDecoration>
           <Icon icon="Profile" iconBackground></Icon>

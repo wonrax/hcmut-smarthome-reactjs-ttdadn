@@ -1,5 +1,5 @@
 :root {
-	--gray-10: #f0f0f0;
+	--gray-10: #FAFAFA;
 	--gray-20: #E6E6E6;
 	--gray-50: #8C8C8C;
 	--gray-70: #656565;
@@ -8,6 +8,7 @@
 	--primary: #0B84F3;
 	--primary-darker: #0a6fce;
 	--primary-10: #D8ECFF;
+	--primary-50: #66A9E7;
 	--danger: #df2b37;
 	--success: #3bbb27;
 }
@@ -42,6 +43,10 @@
 
 .primary {
 	color: var(--primary);
+}
+
+.primary50 {
+	color: var(--primary-50);
 }
 
 .primary10 {

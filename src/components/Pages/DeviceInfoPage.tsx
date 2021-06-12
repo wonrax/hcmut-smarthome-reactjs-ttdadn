@@ -200,7 +200,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
         {isFetched ? (
           <>
             <Box margins="mb8">
-              <Text kind="normal">{response?.data.device_name}</Text>
+              <Text kind="h3">{response?.data.device_name}</Text>
             </Box>
             <Box margins="mb32">
               <Text kind="normal" color="gray70">

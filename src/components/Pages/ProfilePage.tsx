@@ -99,9 +99,11 @@ export const ProfilePage = () => {
   };
 
   return (
-    <TitledPageTemplate title={homeName}>
+    <TitledPageTemplate title={homeName === "" ? "Nhà của bạn" : homeName}>
       {homeName === "" ? (
-        <InlineLoading kind="loading" message="Đang tải dữ liệu..." />
+        <Box margins={["mt16", "mb32"]}>
+          <InlineLoading kind="loading" message="Đang tải dữ liệu..." />
+        </Box>
       ) : (
         <>
           <Box margins="mb16">

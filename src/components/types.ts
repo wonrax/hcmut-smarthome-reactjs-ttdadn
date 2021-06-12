@@ -25,5 +25,6 @@ export const textColors = [
   "white",
   "primary",
   "primary10",
+  "primary50",
   "danger",
 ] as const;
