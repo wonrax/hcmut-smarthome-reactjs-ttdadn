@@ -3,7 +3,7 @@ import { Icon, Box, Text, Button, InlineLoading } from "..";
 import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
 import { TitledPageTemplate } from "../Utils";
-import { useHistory, useParams } from "react-router";
+import { Redirect, useHistory, useParams } from "react-router";
 import { baseURL } from "../api";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -138,6 +138,14 @@ export const DeviceInfoPage = (props: propsTypes) => {
         });
     };
 
+  const handleViewStatisticsClick: React.MouseEventHandler<HTMLButtonElement> =
+    () => {
+      history.push({
+        pathname: "/statistics",
+        state: { defaultDeviceType: response?.data.device_type },
+      });
+    };
+
   useEffect(() => {
     document.title = "Device";
 
@@ -213,7 +221,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
                 kind="secondary"
                 iconPosition="left"
                 iconName="Graph"
-                lhref="/statistics"
+                onClick={handleViewStatisticsClick}
               />
             </Box>
 

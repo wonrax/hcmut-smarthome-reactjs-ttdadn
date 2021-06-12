@@ -51,21 +51,29 @@ Chart.register(
   Tooltip
 );
 
-export const BarGraph = () => {
+export const BarGraph = (props: {
+  data: { device_name: string; total: number }[];
+}) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const labels: string[] = [];
+    const data: number[] = [];
+    for (const index in props.data) {
+      labels.push(props.data[index].device_name);
+      data.push(props.data[index].total);
+    }
     const ctx = chartRef.current?.getContext("2d");
     if (!ctx) return;
     const chart = new Chart(ctx, {
       type: "bar",
       data: {
         //Bring in data
-        labels: ["Đèn hành lang", "Đèn phòng ngủ", "Đèn phòng khách"],
+        labels: labels,
         datasets: [
           {
             label: "Số giờ sử dụng trong tháng",
-            data: [91, 131, 72],
+            data: data,
             borderColor: "#0B84F3",
             backgroundColor: "#D8ECFF",
             borderWidth: 2,

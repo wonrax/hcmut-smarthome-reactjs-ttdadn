@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import {
   Box,
   Button,
@@ -11,9 +12,21 @@ import {
 } from "..";
 import { baseURL } from "../api";
 
-export const StatisticsPage = () => {
-  const [deviceType, setDeviceType] = useState<"fan" | "light">("light");
-  const [timeRange, setTimeRange] = useState<"week" | "month">("month");
+type DeviceTypeType = "fan" | "light";
+type TimeRangeType = "week" | "month";
+
+export const StatisticsPage = (props: {
+  defaultDeviceType?: DeviceTypeType;
+  defaultTimeRange?: TimeRangeType;
+}) => {
+  const location = useLocation();
+  const state = location.state as { defaultDeviceType?: DeviceTypeType };
+  const [deviceType, setDeviceType] = useState<DeviceTypeType>(
+    state.defaultDeviceType || "light"
+  );
+  const [timeRange, setTimeRange] = useState<TimeRangeType>(
+    props.defaultTimeRange || "week"
+  );
 
   const handleFilterChange = () => {
     // Request to devicetype, timerange
@@ -101,9 +114,14 @@ const requestConfig: AxiosRequestConfig = {
   },
 };
 
-const StatisticsData = (props: { deviceType: string; timeRange: string }) => {
+const StatisticsData = (props: {
+  deviceType: DeviceTypeType;
+  timeRange: string;
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [deviceType, setDeviceType] = useState<string>(props.deviceType);
+  const [deviceType, setDeviceType] = useState<DeviceTypeType>(
+    props.deviceType
+  );
   const [error, setError] = useState<JSX.Element>();
   const [data, setData] = useState<any>(null);
   useEffect(() => {
@@ -125,6 +143,7 @@ const StatisticsData = (props: { deviceType: string; timeRange: string }) => {
             {e}
           </Text>
         );
+        setIsLoading(false);
       });
     return () => {
       setIsLoading(true);
@@ -138,7 +157,7 @@ const StatisticsData = (props: { deviceType: string; timeRange: string }) => {
   const deviceTypeText = deviceType === "light" ? "Đèn" : "Quạt";
   const timeRangeText = props.timeRange === "week" ? "tuần" : "tháng";
 
-  const { data_points, day_average, total } = data[deviceType];
+  const { data_points, day_average, total, device_usage } = data[deviceType];
   const day_average_rounded = day_average.toFixed(1);
   const total_rounded = total.toFixed(1);
 
@@ -175,7 +194,7 @@ const StatisticsData = (props: { deviceType: string; timeRange: string }) => {
         <Text kind="h3">Biểu đồ thời gian sử dụng theo đèn</Text>
       </Box>
       <Box margins="mb32">
-        <BarGraph />
+        <BarGraph data={device_usage} />
       </Box>
     </>
   );
