@@ -4,9 +4,16 @@ export const backgroundColors = [
   "danger",
   "transparent",
   "primaryDarker",
+  "gray20",
 ] as const;
 
-export const iconColors = ["primary", "white", "success", "danger"] as const;
+export const iconColors = [
+  "primary",
+  "white",
+  "success",
+  "danger",
+  "gray50",
+] as const;
 
 export const textColors = [
   "gray10",

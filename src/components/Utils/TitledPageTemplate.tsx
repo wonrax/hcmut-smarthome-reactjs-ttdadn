@@ -1,5 +1,5 @@
 import React, { ReactChild } from "react";
-import { Box, Text, BackButton, ScrollToTop } from "..";
+import { Box, Text, BackButton, ScrollToTop, InlineIcon } from "..";
 
 export const TitledPageTemplate = (props: {
   children?: ReactChild | ReactChild[];
@@ -10,10 +10,14 @@ export const TitledPageTemplate = (props: {
     <>
       {props.scrollToTop && <ScrollToTop />}
       <Box margins="mb32">
-        <BackButton />
-      </Box>
-      <Box margins="mb32">
-        <Text kind="h2">{props.title}</Text>
+        <InlineIcon>
+          <Box display="inline">
+            <BackButton />
+          </Box>
+          <Box display="inline" margins="ml16">
+            <Text kind="h2">{props.title}</Text>
+          </Box>
+        </InlineIcon>
       </Box>
       {props.children}
     </>

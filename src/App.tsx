@@ -23,9 +23,7 @@ function App() {
         <div className="container">
           <Box paddings={["pt64", "pb64", "pl16", "pr16"]}>
             <Switch>
-              <Route path="/profile">
-                <ProfilePage />
-              </Route>
+              <AuthRoute Component={ProfilePage} path="/profile" />
               <Route path="/login">
                 <LoginPage />
               </Route>

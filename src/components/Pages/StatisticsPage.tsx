@@ -1,42 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, TitledPageTemplate, Text, LineGraph, BarGraph } from "..";
 
 export const StatisticsPage = () => {
+  const [deviceType, setDeviceType] = useState<"fan" | "light">("light");
+  const [timeRange, setTimeRange] = useState<"week" | "month">("month");
+
+  const handleFilterChange = () => {
+    // Request to devicetype, timerange
+  };
+
+  const deviceTypeText = deviceType == "light" ? "Đèn" : "Quạt";
+  const timeRangeText = timeRange == "week" ? "tuần" : "tháng";
+
   return (
     <TitledPageTemplate title="Thống kê">
       <Box margins="mb32">
+        <Box margins="mb16">
+          <Text kind="caption">Loại thiết bị</Text>
+        </Box>
         <Box display="inlineFlex" margins="mr16">
           <Button
-            kind="secondary"
-            iconPosition="right"
-            iconName="Arrow-Down"
+            kind={deviceType == "light" ? "disabled" : "secondary"}
+            iconPosition="left"
+            iconName={
+              deviceType == "light" ? "Square-Ticked-Light" : "Square-Unticked"
+            }
             text="Đèn"
+            onClick={() => {
+              setDeviceType("light");
+              handleFilterChange();
+            }}
           />
         </Box>
 
         <Box display="inlineFlex">
           <Button
-            kind="secondary"
-            iconPosition="right"
-            iconName="Arrow-Down"
-            text="7 ngày"
+            kind={deviceType == "fan" ? "disabled" : "secondary"}
+            iconPosition="left"
+            iconName={
+              deviceType == "fan" ? "Square-Ticked-Light" : "Square-Unticked"
+            }
+            text="Quạt"
+            onClick={() => {
+              setDeviceType("fan");
+              handleFilterChange();
+            }}
           />
         </Box>
       </Box>
 
       <Box margins="mb32">
-        <Box display="inline" margins="mr4">
-          <Text kind="normal" color="gray70" display="inline">
-            Đang hiển thị lịch sử sử dụng
-          </Text>
+        <Box margins="mb16">
+          <Text kind="caption">Khoảng thời gian</Text>
         </Box>
-        <Box display="inline" margins="mr4">
-          <Text kind="normal" display="inline">
-            Đèn
-          </Text>
+        <Box display="inlineFlex" margins="mr16">
+          <Button
+            kind={timeRange == "week" ? "disabled" : "secondary"}
+            iconPosition="left"
+            iconName={
+              timeRange == "week" ? "Square-Ticked-Light" : "Square-Unticked"
+            }
+            text="Tuần"
+            onClick={() => {
+              setTimeRange("week");
+              handleFilterChange();
+            }}
+          />
         </Box>
-        <Text kind="normal" color="gray70" display="inline">
-          trong 7 ngày qua
+
+        <Box display="inlineFlex">
+          <Button
+            kind={timeRange == "month" ? "disabled" : "secondary"}
+            iconPosition="left"
+            iconName={
+              timeRange == "month" ? "Square-Ticked-Light" : "Square-Unticked"
+            }
+            text="Tháng"
+            onClick={() => {
+              setTimeRange("month");
+              handleFilterChange();
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Box margins="mb32">
+        <Text kind="normal" color="primary">
+          {`Đang hiển thị lịch sử sử dụng ${deviceTypeText} trong 1 ${timeRangeText} qua`}
         </Text>
       </Box>
 
@@ -50,7 +100,7 @@ export const StatisticsPage = () => {
       <Box margins="mb32">
         <Text kind="h2">292,4 giờ</Text>
         <Text kind="normal" color="gray70">
-          Thời gian sử dụng trong tháng này
+          {`Tổng thời gian sử dụng trong ${timeRangeText} này`}
         </Text>
       </Box>
 

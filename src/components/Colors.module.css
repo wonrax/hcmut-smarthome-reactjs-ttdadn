@@ -68,6 +68,10 @@
 	background-color: var(--danger);
 }
 
+.bgGray20 {
+	background-color: var(--gray-20);
+}
+
 .icon-primary svg path{
 	fill: var(--primary);
 }
@@ -82,4 +86,8 @@
 
 .icon-danger svg path{
 	fill: var(--danger);
+}
+
+.icon-gray50 svg path{
+	fill: var(--gray-50);
 }

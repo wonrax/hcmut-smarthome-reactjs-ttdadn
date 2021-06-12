@@ -8,7 +8,7 @@ import { iconColors } from "../types";
 import { backgroundColors } from "../types";
 import { textColors } from "../types";
 
-type ButtonKind = "default" | "secondary" | "ghost" | "danger";
+type ButtonKind = "default" | "secondary" | "ghost" | "danger" | "disabled";
 type IconColors = typeof iconColors[number];
 type TextColors = typeof textColors[number];
 type BackgroundColors = typeof backgroundColors[number];
@@ -41,6 +41,7 @@ export const Button = (props: {
     secondary: "white",
     ghost: "transparent",
     danger: "white",
+    disabled: "gray20",
   };
 
   const BUTTON_ICON_COLOR: { [key in ButtonKind]: IconColors } = {
@@ -48,6 +49,7 @@ export const Button = (props: {
     secondary: "primary",
     ghost: "primary",
     danger: "danger",
+    disabled: "gray50",
   };
 
   const TEXT_COLOR_KIND: { [key in ButtonKind]: TextColors } = {
@@ -55,6 +57,7 @@ export const Button = (props: {
     secondary: "gray100",
     ghost: "primary",
     danger: "gray100",
+    disabled: "gray50",
   };
 
   const bgColor = (function () {
@@ -89,14 +92,16 @@ export const Button = (props: {
   if (props.noDecoration) {
     cs = classnames(
       styles["button-nodecoration"],
-      props.textAlign && styles["textAlign" + props.textAlign]
+      props.textAlign && styles["textAlign" + props.textAlign],
+      props.wid && styles["wid" + props.wid]
     );
   } else {
     cs = classnames(
       styles.button,
       styles["button-nodecoration"],
       styles[kind],
-      colorStyles[bgColor]
+      colorStyles[bgColor],
+      props.wid && styles["wid" + props.wid]
     );
   }
 
@@ -130,10 +135,7 @@ export const Button = (props: {
     renderingElementChildren = renderingElementMainChild;
   }
 
-  const wrapperCs = classnames(
-    props.wid && styles["wid" + props.wid],
-    styles.wrapper
-  );
+  const wrapperCs = classnames(styles.wrapper);
 
   const renderAs = () => {
     if (props.as) return props.as;
@@ -143,7 +145,11 @@ export const Button = (props: {
 
   const renderingButton = React.createElement(
     renderAs(),
-    { className: cs, onClick: props.onClick, onFocus: props.onFocus },
+    {
+      className: cs,
+      onClick: props.onClick,
+      onFocus: props.onFocus,
+    },
     renderingElementChildren
   );
 
@@ -151,6 +157,6 @@ export const Button = (props: {
 
   if (props.lhref) {
     // Wrapping link outside
-    return <Link to={props.lhref}>{renderingElement}</Link>;
-  } else return renderingElement;
+    return <Link to={props.lhref}>{renderingButton}</Link>;
+  } else return renderingButton;
 };

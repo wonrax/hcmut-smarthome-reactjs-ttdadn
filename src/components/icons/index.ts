@@ -20,6 +20,7 @@ import { ReactComponent as Setting } from "./Setting.svg";
 import { ReactComponent as SquareTicked } from "./Square-Ticked.svg";
 import { ReactComponent as SquareUnticked } from "./Square-Unticked.svg";
 import { ReactComponent as Tick } from "./Tick.svg";
+import { ReactComponent as SquareTickedLight } from "./Square-Ticked-Light.svg";
 import { ReactComponent as TimeCircle } from "./Time-Circle.svg";
 import { ReactComponent as ToggleOff } from "./Toggle-Off.svg";
 import { ReactComponent as ToggleOn } from "./Toggle-On.svg";
@@ -51,4 +52,5 @@ export const Icons: any = {
   "Toggle-Off": ToggleOff,
   "Toggle-On": ToggleOn,
   Tick: Tick,
+  "Square-Ticked-Light": SquareTickedLight,
 };

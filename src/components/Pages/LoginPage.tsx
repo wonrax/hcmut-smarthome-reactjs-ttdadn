@@ -56,7 +56,6 @@ export const LoginPage = () => {
         }
 
         history.replace("/");
-        console.log("replaced!");
       })
       .catch((e) => {
         console.log(e);
@@ -94,10 +93,6 @@ export const LoginPage = () => {
     <>
       <Box margins="mb32">
         <Text kind="h2">Đăng nhập vào SmartHome</Text>
-        <Text kind="h4" color="danger">
-          Trang web đang ở trạng thái thử nghiệm, vui lòng KHÔNG nhập mật khẩu
-          thực.
-        </Text>
       </Box>
       <form onSubmit={formSubmitHandle}>
         <label htmlFor="phonenumber">
@@ -112,7 +107,7 @@ export const LoginPage = () => {
             id="phonenumber"
             type="text"
             style={inputstyles}
-            placeholder="03842xx.xx"
+            placeholder="038.999.9999"
             autoFocus
             onKeyDown={usernameKeyDown}
             ref={usernameInputRef}

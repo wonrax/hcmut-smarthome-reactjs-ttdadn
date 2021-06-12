@@ -12,7 +12,6 @@
 	transition-duration: 0.2s;
 	transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
 	display: inline-flex;
-	width: 100%;
 }
 
 .button {
@@ -30,6 +29,10 @@
 	box-shadow: var(--card-shadow);
 }
 
+.disabled {
+	cursor: not-allowed;
+}
+
 .wrapper {
 	display: inline-flex;
 }
@@ -38,31 +41,31 @@
 	width: 100%;
 }
 
-.wrapper:hover .secondary {
+.button.secondary:hover {
 	background-color: var(--primary);
 }
 
-.wrapper:hover .secondary p {
+.button.secondary:hover p {
 	color: var(--white);
 }
 
-.wrapper:hover .secondary path {
+.button.secondary:hover path {
 	fill: var(--white);
 }
 
-.wrapper:hover .danger {
+.button.danger:hover {
 	background-color: var(--danger);
 }
 
-.wrapper:hover .danger p {
+.button.danger:hover p {
 	color: var(--white);
 }
 
-.wrapper:hover .danger path {
+.button.danger:hover path {
 	fill: var(--white);
 }
 
-.wrapper:hover .default {
+.button.default:hover {
 	background-color: var(--primary-darker);
 }
 
