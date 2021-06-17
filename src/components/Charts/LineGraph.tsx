@@ -96,6 +96,16 @@ export const LineGraph = (props: { data: any }) => {
         ],
       },
       options: {
+        plugins: {
+          legend: {
+            labels: {
+              // This more specific font property overrides the global property
+              font: {
+                size: 16,
+              },
+            },
+          },
+        },
         scales: {
           x: {
             grid: {

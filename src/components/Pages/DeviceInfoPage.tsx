@@ -3,7 +3,7 @@ import { Icon, Box, Text, Button, InlineLoading } from "..";
 import { InlineIcon } from "../InlineIcon";
 import { ScheduledTask } from "..";
 import { TitledPageTemplate } from "../Utils";
-import { Redirect, useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { baseURL } from "../api";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -163,7 +163,6 @@ export const DeviceInfoPage = (props: propsTypes) => {
       };
       try {
         let response = await axios(url, requestConfig);
-        console.log(response.data);
         setResponse(response);
         setFetched(true);
         setScheduleEnabled(response.data.automation_mode === 1 ? true : false);

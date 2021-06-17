@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./BriefInfo.module.css";
-import { Box, Icon, InlineIcon, Text } from "..";
+import { Box, Text } from "..";
 import classNames from "classnames";
 
 export const BriefInfo = (props: {

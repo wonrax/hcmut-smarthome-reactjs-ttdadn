@@ -89,64 +89,70 @@ export const LoginPage = () => {
     }
   };
 
+  const styles: React.CSSProperties = {
+    marginTop: "calc(50vh - 250px)",
+  };
+
   return (
     <>
-      <Box margins="mb32">
-        <Text kind="h2">Đăng nhập vào SmartHome</Text>
-      </Box>
-      <form onSubmit={formSubmitHandle}>
-        <label htmlFor="phonenumber">
-          <Box margins="mb8">
-            <Text kind="caption">Số điện thoại</Text>
-          </Box>
-        </label>
-        <Box margins="mb16" wid="100">
-          <input
-            autoCapitalize="off"
-            name="phonenumber"
-            id="phonenumber"
-            type="text"
-            style={inputstyles}
-            placeholder="038.999.9999"
-            autoFocus
-            onKeyDown={usernameKeyDown}
-            ref={usernameInputRef}
-          />
+      <div style={styles}>
+        <Box margins="mb32">
+          <Text kind="h2">Đăng nhập vào Smarthome</Text>
         </Box>
-        <label htmlFor="password">
-          <Box margins="mb8">
-            <Text kind="caption">Mật khẩu</Text>
+        <form onSubmit={formSubmitHandle}>
+          <label htmlFor="phonenumber">
+            <Box margins="mb8">
+              <Text kind="caption">Số điện thoại</Text>
+            </Box>
+          </label>
+          <Box margins="mb16" wid="100">
+            <input
+              autoCapitalize="off"
+              name="phonenumber"
+              id="phonenumber"
+              type="text"
+              style={inputstyles}
+              placeholder="038.999.9999"
+              autoFocus
+              onKeyDown={usernameKeyDown}
+              ref={usernameInputRef}
+            />
           </Box>
-        </label>
-        <Box margins="mb24" wid="100">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            style={inputstyles}
-            placeholder="Mật khẩu"
-            ref={passwordInputRef}
-            onKeyDown={passwordKeyDown}
-          />
-        </Box>
-        {signInState === "initial" ? (
-          <Button
-            text="Đăng nhập"
-            onClick={submitFormManually}
-            iconPosition="right"
-            iconName="Arrow-Right-Dash"
-          />
-        ) : (
-          <InlineLoading
-            message={
-              signInState === "error"
-                ? "Sai tên đăng nhập hoặc mật khẩu"
-                : undefined
-            }
-            kind={signInState}
-          />
-        )}
-      </form>
+          <label htmlFor="password">
+            <Box margins="mb8">
+              <Text kind="caption">Mật khẩu</Text>
+            </Box>
+          </label>
+          <Box margins="mb24" wid="100">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              style={inputstyles}
+              placeholder="Mật khẩu"
+              ref={passwordInputRef}
+              onKeyDown={passwordKeyDown}
+            />
+          </Box>
+          {signInState === "initial" ? (
+            <Button
+              text="Đăng nhập"
+              onClick={submitFormManually}
+              iconPosition="right"
+              iconName="Arrow-Right-Dash"
+            />
+          ) : (
+            <InlineLoading
+              message={
+                signInState === "error"
+                  ? "Sai tên đăng nhập hoặc mật khẩu"
+                  : undefined
+              }
+              kind={signInState}
+            />
+          )}
+        </form>
+      </div>
     </>
   );
 };

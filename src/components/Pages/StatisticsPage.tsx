@@ -9,6 +9,8 @@ import {
   LineGraph,
   BarGraph,
   InlineLoading,
+  InlineIcon,
+  Icon,
 } from "..";
 import { baseURL } from "../api";
 
@@ -116,7 +118,7 @@ const requestConfig: AxiosRequestConfig = {
 
 const StatisticsData = (props: {
   deviceType: DeviceTypeType;
-  timeRange: string;
+  timeRange: "month" | "week";
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [deviceType, setDeviceType] = useState<DeviceTypeType>(
@@ -193,9 +195,54 @@ const StatisticsData = (props: {
       <Box margins="mb32">
         <Text kind="h3">Biểu đồ thời gian sử dụng theo đèn</Text>
       </Box>
-      <Box margins="mb32">
-        <BarGraph data={device_usage} />
+      <Box>
+        <BarGraph data={device_usage} range={props.timeRange} />
+      </Box>
+      <Box margins="mb16">
+        <Text kind="h3">Phân tích lưu lượng sử dụng</Text>
+        <Text kind="normal" color="gray70">
+          Sử dụng trí tuệ nhân tạo
+        </Text>
+      </Box>
+      <Box>
+        {device_usage.map((device: any) => (
+          <AnalyzerInfoBox
+            key={device.device_name + Date().toString()}
+            device_name={device.device_name}
+            isOveruse={device.isOverUsed}
+          />
+        ))}
       </Box>
     </>
+  );
+};
+
+const AnalyzerInfoBox = (props: {
+  device_name: string;
+  isOveruse: boolean;
+}) => {
+  const styles: React.CSSProperties = {
+    padding: "16px",
+    backgroundColor: props.isOveruse ? "#FFE2E2" : "#DBF8D7",
+    borderRadius: "8px",
+    marginBottom: "16px",
+  };
+  return (
+    <div style={styles}>
+      <InlineIcon>
+        <Icon
+          icon="Info-Circle"
+          color={props.isOveruse ? "danger" : "success"}
+        />
+        <Box margins="ml16">
+          <Text kind="h4">{props.device_name}</Text>
+          <Text kind="normal" color={props.isOveruse ? "danger" : "success"}>
+            {props.isOveruse
+              ? "Đang được sử dụng nhiều hơn bình thường"
+              : "Đang được sử dụng ở mức độ phù hợp"}
+          </Text>
+        </Box>
+      </InlineIcon>
+    </div>
   );
 };

@@ -63,7 +63,6 @@ export const HomePage = () => {
         return;
       }
       const socketData = JSON.parse(message.data)["message"];
-      console.log(socketData);
       if (socketData && socketData.device_id && socketData.value) {
         if (socketData.device_id === weatherDeviceId.current) {
           const temphumid: string[] = socketData.value.split("-");
@@ -167,7 +166,6 @@ export const HomePage = () => {
             );
           } else if (device_type === "temperature") {
             weatherDeviceId.current = device.device_id;
-            console.log("weatherDeviceId: " + device.device_id);
             const temphumid = device.status.split("-");
             newWeatherElements = (
               <WeatherElement temp={temphumid[0]} humid={temphumid[1]} />
@@ -298,25 +296,13 @@ const WeatherElement = (props: { temp: string; humid: string }) => {
   );
 };
 
-const Divider = () => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "1.5px",
-        backgroundColor: "var(--gray-20)",
-      }}
-    ></div>
-  );
-};
-
 const Navbar = () => {
   return (
     <Box margins="mb32">
       <InlineIcon iconBackground>
         <Box wid="100" hei="100">
           <Text kind="h3" color="primary">
-            SmartHome
+            Smarthome
           </Text>
         </Box>
         <Button as="div" lhref="/profile" noDecoration>
