@@ -24,7 +24,7 @@ export const StatisticsPage = (props: {
   const location = useLocation();
   const state = location.state as { defaultDeviceType?: DeviceTypeType };
   const [deviceType, setDeviceType] = useState<DeviceTypeType>(
-    state.defaultDeviceType || "light"
+    state?.defaultDeviceType || "light"
   );
   const [timeRange, setTimeRange] = useState<TimeRangeType>(
     props.defaultTimeRange || "week"
