@@ -246,7 +246,18 @@ export const HomePage = () => {
       <Box margins="mb16">
         <Text kind="h2">Thiết bị</Text>
       </Box>
-      {deviceElements}
+      <Box margins="mb32">{deviceElements}</Box>
+      <Box margins="mb32">
+        <Button
+          text="Xem thống kê sử dụng"
+          kind="default"
+          iconPosition="left"
+          iconName="Graph"
+          onClick={() => {
+            history.push("/statistics");
+          }}
+        />
+      </Box>
     </>
   );
 };
