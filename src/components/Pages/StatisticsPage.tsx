@@ -14,7 +14,7 @@ import {
 } from "..";
 import { baseURL } from "../api";
 
-type DeviceTypeType = "fan" | "light";
+type DeviceTypeType = "fan" | "light" | "temperature";
 type TimeRangeType = "week" | "month";
 
 export const StatisticsPage = (props: {
@@ -22,12 +22,15 @@ export const StatisticsPage = (props: {
   defaultTimeRange?: TimeRangeType;
 }) => {
   const location = useLocation();
-  const state = location.state as { defaultDeviceType?: DeviceTypeType };
+  const state = location.state as {
+    defaultDeviceType?: DeviceTypeType;
+    defaultTimeRange?: TimeRangeType;
+  };
   const [deviceType, setDeviceType] = useState<DeviceTypeType>(
     state?.defaultDeviceType || "light"
   );
   const [timeRange, setTimeRange] = useState<TimeRangeType>(
-    props.defaultTimeRange || "week"
+    state?.defaultTimeRange || "week"
   );
 
   const handleFilterChange = () => {
@@ -36,11 +39,11 @@ export const StatisticsPage = (props: {
 
   return (
     <TitledPageTemplate title="Thống kê">
-      <Box margins="mb32">
+      <Box margins="mb16">
         <Box margins="mb16">
           <Text kind="caption">Loại thiết bị</Text>
         </Box>
-        <Box display="inlineFlex" margins="mr16">
+        <Box display="inlineFlex" margins={["mr16", "mb16"]}>
           <Button
             kind={deviceType === "light" ? "disabled" : "secondary"}
             iconPosition="left"
@@ -55,7 +58,7 @@ export const StatisticsPage = (props: {
           />
         </Box>
 
-        <Box display="inlineFlex">
+        <Box display="inlineFlex" margins="mr16">
           <Button
             kind={deviceType === "fan" ? "disabled" : "secondary"}
             iconPosition="left"
@@ -65,6 +68,21 @@ export const StatisticsPage = (props: {
             text="Quạt"
             onClick={() => {
               setDeviceType("fan");
+              handleFilterChange();
+            }}
+          />
+        </Box>
+
+        <Box display="inlineFlex">
+          <Button
+            kind={deviceType === "temperature" ? "disabled" : "secondary"}
+            iconPosition="left"
+            iconName={
+              deviceType === "temperature" ? "Square-Ticked" : "Square-Unticked"
+            }
+            text="Nhiệt độ / Độ ẩm"
+            onClick={() => {
+              setDeviceType("temperature");
               handleFilterChange();
             }}
           />
@@ -156,8 +174,39 @@ const StatisticsData = (props: {
     return <InlineLoading kind="loading" message="Đang tải dữ liệu..." />;
   if (error) return error;
 
-  const deviceTypeText = deviceType === "light" ? "Đèn" : "Quạt";
+  const deviceTypeMapToText = {
+    light: "Đèn",
+    fan: "Quạt",
+    temperature: "Nhiệt độ, độ ẩm",
+  };
+
+  const deviceTypeText = deviceTypeMapToText[deviceType];
   const timeRangeText = props.timeRange === "week" ? "tuần" : "tháng";
+
+  if (deviceType === "temperature") {
+    const data_points = data.temperature[0].data_points;
+    return (
+      <>
+        <Box margins="mb32">
+          <Text kind="normal" color="primary">
+            {`Đang hiển thị lịch sử ${deviceTypeText} trong 1 ${timeRangeText} qua`}
+          </Text>
+        </Box>
+        <Box margins="mb32">
+          <Text kind="h3">Biểu đồ lịch sử nhiệt độ</Text>
+        </Box>
+        <Box margins="mb32">
+          <LineGraph data={data_points} deviceType="temp" />
+        </Box>
+        <Box margins="mb32">
+          <Text kind="h3">Biểu đồ lịch sử độ ẩm</Text>
+        </Box>
+        <Box margins="mb32">
+          <LineGraph data={data_points} deviceType="humid" />
+        </Box>
+      </>
+    );
+  }
 
   const { data_points, day_average, total, device_usage } = data[deviceType];
   const day_average_rounded = day_average.toFixed(1);

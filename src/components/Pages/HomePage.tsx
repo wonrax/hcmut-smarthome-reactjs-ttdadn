@@ -46,6 +46,27 @@ export const HomePage = () => {
 
   const isMounted = useIsMounted();
 
+  const WeatherElement = (props: { temp: string; humid: string }) => {
+    return (
+      <Button
+        wid="100"
+        textAlign="left"
+        noDecoration
+        onClick={() => {
+          history.push("/statistics", {
+            defaultDeviceType: "temperature",
+            defaultTimeRange: "month",
+          });
+        }}
+      >
+        <Box display="inlineFlex" wid="100" margins="mb32">
+          <BriefInfo main={props.temp + "°C"} info="Nhiệt độ" />
+          <BriefInfo main={props.humid + "%"} info="Độ ẩm" marginLeft />
+        </Box>
+      </Button>
+    );
+  };
+
   // WEBSOCKET useEffect
   //////////////////////
   useEffect(() => {
@@ -293,17 +314,6 @@ const FakeDevice = (props: { seed: 0 | 1 | 2 | 3 }) => {
         device_id={1}
       />
     </Box>
-  );
-};
-
-const WeatherElement = (props: { temp: string; humid: string }) => {
-  return (
-    <>
-      <Box display="inlineFlex" wid="100" margins="mb32">
-        <BriefInfo main={props.temp + "°C"} info="Nhiệt độ" />
-        <BriefInfo main={props.humid + "%"} info="Độ ẩm" marginLeft />
-      </Box>
-    </>
   );
 };
 

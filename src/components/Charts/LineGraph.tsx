@@ -51,7 +51,7 @@ Chart.register(
   Tooltip
 );
 
-export const LineGraph = (props: { data: any }) => {
+export const LineGraph = (props: { data: any; deviceType?: string }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -76,7 +76,23 @@ export const LineGraph = (props: { data: any }) => {
     });
     const sortedData = [];
     for (const k in keys) {
-      sortedData.push(props.data[keys[k]]);
+      var datum;
+      if (props.deviceType === undefined) datum = props.data[keys[k]];
+      else
+        datum =
+          props.deviceType === "temp"
+            ? props.data[keys[k]]["mean-tempe"]
+            : props.data[keys[k]]["humid"];
+      sortedData.push(datum);
+    }
+    var label;
+    if (props.deviceType === undefined) {
+      label = "Số giờ sử dụng theo ngày";
+    } else {
+      label =
+        props.deviceType === "temp"
+          ? "Lịch sử nhiệt độ theo ngày"
+          : "Lịch sử độ ẩm theo ngày";
     }
     const ctx = chartRef.current?.getContext("2d");
     if (!ctx) return;
@@ -87,7 +103,7 @@ export const LineGraph = (props: { data: any }) => {
         labels: keys,
         datasets: [
           {
-            label: "Số giờ sử dụng trong ngày",
+            label: label,
             data: sortedData,
             cubicInterpolationMode: "monotone",
             pointBackgroundColor: "#D8ECFF",
@@ -120,7 +136,7 @@ export const LineGraph = (props: { data: any }) => {
     return () => {
       chart.destroy();
     };
-  }, [props.data]);
+  }, [props.data, props.deviceType]);
 
   return (
     <div className={classes.graphContainer}>
