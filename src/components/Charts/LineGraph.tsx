@@ -74,6 +74,7 @@ export const LineGraph = (props: { data: any; deviceType?: string }) => {
       );
       return dateA.getTime() - dateB.getTime();
     });
+    const labels = keys.map((value, index) => value.substr(0, 5));
     const sortedData = [];
     for (const k in keys) {
       var datum;
@@ -100,7 +101,7 @@ export const LineGraph = (props: { data: any; deviceType?: string }) => {
       type: "line",
       data: {
         //Bring in data
-        labels: keys,
+        labels: labels,
         datasets: [
           {
             label: label,

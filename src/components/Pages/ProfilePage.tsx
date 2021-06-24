@@ -17,8 +17,9 @@ export const ProfilePage = () => {
     history.push("/login");
   };
 
-  const [changePasswordState, setChangePasswordState] =
-    useState<"initial" | "loading" | "done" | "error">("initial");
+  const [changePasswordState, setChangePasswordState] = useState<
+    "initial" | "loading" | "done" | "error"
+  >("initial");
   const [changePasswordErrorMessage, setChangePasswordErrorMessage] =
     useState<string>("");
 
@@ -33,6 +34,7 @@ export const ProfilePage = () => {
       const customRequestConf = { ...requestConfig };
       customRequestConf["method"] = "POST";
       customRequestConf["data"] = {
+        old_password: e.currentTarget["old_password"].value,
         password: e.currentTarget["password"].value,
       };
       e.currentTarget["password"].value = "";
@@ -46,7 +48,12 @@ export const ProfilePage = () => {
           }, 2000);
         })
         .catch((e) => {
-          console.log(e);
+          console.log(e.response);
+          setChangePasswordState("error");
+          setChangePasswordErrorMessage("Mật khẩu cũ không đúng!");
+          setTimeout(() => {
+            setChangePasswordState("initial");
+          }, 2000);
         });
     } else {
       setChangePasswordState("error");
@@ -136,6 +143,20 @@ export const ProfilePage = () => {
         <Text kind="h2">Đổi mật khẩu</Text>
       </Box>
       <form onSubmit={handlePasswordChangeSubmit}>
+        <label htmlFor="old_password">
+          <Box margins="mb8">
+            <Text kind="caption">Mật khẩu cũ</Text>
+          </Box>
+        </label>
+        <Box margins="mb24" wid="100">
+          <input
+            type="password"
+            id="old_password"
+            name="old_password"
+            style={inputstyles}
+            placeholder="Mật khẩu cũ"
+          />
+        </Box>
         <label htmlFor="password">
           <Box margins="mb8">
             <Text kind="caption">Mật khẩu mới</Text>
