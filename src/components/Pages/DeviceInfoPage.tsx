@@ -200,6 +200,8 @@ export const DeviceInfoPage = (props: propsTypes) => {
 
   const device_type_text =
     response?.data.device_type === "light" ? "Đèn" : "Quạt";
+  const auto_status =
+    response?.data.device_type === "light" ? "cường độ ánh sáng" : "nhiệt độ";
 
   return (
     <TitledPageTemplate title="Thông tin thiết bị" scrollToTop>
@@ -247,7 +249,7 @@ export const DeviceInfoPage = (props: propsTypes) => {
                 <Icon icon="Info-Circle" />
                 <Box margins="ml16">
                   <Text kind="normalcap" color="gray70">
-                    {`${device_type_text} sẽ được tự động bật/tắt khi cường độ ánh sáng trong ngày
+                    {`${device_type_text} sẽ được tự động bật/tắt khi ${auto_status} trong ngày
                     thay đổi.`}
                   </Text>
                 </Box>
